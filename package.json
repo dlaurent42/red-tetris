@@ -13,6 +13,7 @@
     "coverage": "NODE_ENV=test nyc --include src --all -r text -r lcov -r text --require babel-core/register mocha "
   },
   "dependencies": {
+    "lodash": "^4.17.11",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-redux": "^4.4.5",
@@ -37,8 +38,13 @@
     "eslint": "^2.13.1",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-react": "^5.2.2",
+    "jest": "23.6.0",
+    "jest-pnp-resolver": "1.0.2",
+    "jest-resolve": "23.6.0",
+    "jest-watch-typeahead": "^0.2.1",
     "mocha": "^2.4.5",
     "nyc": "^6.4.4",
+    "prop-types": "^15.7.2",
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1",
