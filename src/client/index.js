@@ -4,10 +4,10 @@ import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'                                                                                                                                                    
-import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
+import { storeStateMiddleWare } from './middleware/storeStateMiddleWare'
 import reducer from './reducers'
 import App from './containers/app'
-import {alert} from './actions/alert'
+import { alert } from './actions/alert'
 
 const initialState = {}
 
