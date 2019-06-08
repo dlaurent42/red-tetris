@@ -1,0 +1,49 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "airbnb",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "no-loop-func": 0,
+    "padded-blocks": 0,
+    "no-unused-vars": "warn",
+    "no-console": "warn",
+    "no-unexpected-multiline": "warn",
+    "react/prop-types": [
+      1,
+      {
+        "ignore": [
+          "children",
+          "history",
+          "location",
+          "match"
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "15.6.1"
+    }
+  },
+  "globals": {
+    "document": true,
+    "window": true,
+    "navigator": true
+  }
+}

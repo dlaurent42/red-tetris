@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base",
+    "plugin:node/recommended"
+  ],
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 8
+  },
+  "rules": {
+    "padded-blocks": "off",
+    "no-console": "off",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "req",
+          "res"
+        ]
+      }
+    ]
+  }
+}

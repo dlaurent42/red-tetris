@@ -1,0 +1,8 @@
+config
+dist
+node_modules
+public
+scripts
+*.lock
+*.tmp
+*serviceWorker.js
