@@ -18,11 +18,13 @@
     "plugin:react/recommended"
   ],
   "rules": {
-    "no-loop-func": 0,
-    "padded-blocks": 0,
+    "import/prefer-default-export": "off",
+    "no-loop-func": "off",
     "no-unused-vars": "warn",
     "no-console": "warn",
     "no-unexpected-multiline": "warn",
+    "object-curly-newline": "off",
+    "padded-blocks": "off",
     "react/prop-types": [
       1,
       {
