@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import Menu from '../menu/Menu';
+import './Header.scss';
 
-const header = (props) => {
-  
-  props.color = ['primary', 'secondary', 'transparent'];
-  props.variant = ['full', 'reduced', 'logo-only'];
-  return (
-    <nav className="header">
-      <Logo />
-      <Link to="/">Home</Link>
-      {/* user */}
-      <Link to="/login">Login</Link>
-      <Link to="/signup">Signup</Link>
-      <Link to="/profile">Signup</Link>
-      <Link to="/friends">Signup</Link>
-      {/* game */}
-      <Link to="/rooms">Rooms</Link>
-      <Link to="/room[hello]">Specific room</Link>
-    </nav>
-  );
+const header = props => (
+  <nav className={['header', props.color].join(' ')}>
+    <Menu variant={props.variant} />
+  </nav>
+);
+
+header.propTypes = {
+  color: PropTypes.string,
+  variant: PropTypes.string,
 };
 
-export default connect(mapStateToProps)(header);
+header.defaultProps = {
+  color: 'transparent',
+  variant: 'full',
+};
+
+export default header;

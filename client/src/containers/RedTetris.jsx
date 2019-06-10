@@ -10,9 +10,14 @@ const RedTetris = () => (
       <Route path="/" exact component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route path="/rooms" render={() => <>In rooms</>} />
-      <Route path="/profile" render={() => <>In profile</>} />
+      <Route path="/about" render={() => <>In rooms</>} />
+      <Route path="/leaderboard" render={() => <>In rooms</>} />
+      <Route path="/tournaments" render={() => <>In rooms</>} />
       <Route path="/:room[:username]" render={() => <>In room</>} />
+      <Route path="/profile/friends" render={() => <>In profile</>} />
+      <Route path="/profile/settings" render={() => <>In profile</>} />
+      <Route path="/profile/statistics" render={() => <>In profile</>} />
+      <Route path="/profile" render={() => <>In profile</>} />
       <Route render={() => <>404</>} />
     </Switch>
   </HashRouter>

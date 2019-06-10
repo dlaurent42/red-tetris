@@ -1,31 +1,26 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import LogoLarge from '../logo/Logo';
-import UserSubMenu from './UserSubMenu';
+import LeftSideSubmenu from './submenus/LeftSideSubmenu';
+import RightSideSubmenu from './submenus/RightSideSubmenu';
+import './Menu.scss';
 
 const menu = (props) => {
-  const currentPage = window.location.hash;
-  const leftSideMenu = (!currentPage.includes(/login|signup/))
-    ? <UserSubMenu /> : null;
+  console.log(window.location.hash);
   return (
     <nav>
-      <LogoLarge />
-      <div className="header-left">
-        xx
-      </div>
-      {leftSideMenu}
+      ttiti
+      <RightSideSubmenu variant={props.variant} />
+      <LeftSideSubmenu variant={props.variant} />
     </nav>
   );
 };
 
-menu.PropTypes = {
-
+menu.propTypes = {
+  variant: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
-  user: state.user.user,
-});
+menu.defaultProps = {
+  variant: 'full',
+};
 
-export default connect(mapStateToProps)(menu);
+export default menu;

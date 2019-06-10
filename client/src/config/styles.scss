@@ -1,0 +1,14 @@
+// Colors
+$primary: white;
+$secondary: rgb(40, 44, 52);
+$tertiary: rgb(76, 82, 94);
+
+// Mixin
+@mixin full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transition: .5s;
+}
