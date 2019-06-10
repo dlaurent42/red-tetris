@@ -1,0 +1,15 @@
+@import '../../../../config/styles.scss';
+
+.menu-right {
+  padding: 5px 20px;
+  & .menu-item {
+    @include link;
+    &.active { opacity: 1; border-bottom: 1px solid $tertiary-color; transition: .5s; }
+    &:link, &:visited, &:active { @include link-pseudo-classes; }
+    &:hover, &.active { @include link-hover; }
+    &.menu-signup {
+      border: 1px solid grey;
+      border-radius: 5px;
+    }
+  }
+}

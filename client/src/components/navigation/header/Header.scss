@@ -1,0 +1,12 @@
+@import '../../../config/styles.scss';
+
+.header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  &.transparent { background-color: transparent; color: $secondary-color; }
+  &.primary { background-color: $primary-color; color: $secondary-color; }
+  &.secondary { background-color: $secondary-color; color: $primary-color; }
+  &.tertiary { background-color: $tertiary-color; color: $primary-color; }
+}

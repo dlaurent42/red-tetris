@@ -1,10 +1,43 @@
 // Colors
-$primary: white;
-$secondary: rgb(40, 44, 52);
-$tertiary: rgb(76, 82, 94);
+$primary-color: white;
+$secondary-color: rgb(40, 44, 52);
+$tertiary-color: rgb(76, 82, 94);
+
+// Fonts
+$roboto: 16px 'Roboto';
+
+// Styles for link
+@mixin link {
+  font: $roboto;
+  letter-spacing: 2px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-bottom: 1px solid transparent;
+  opacity: .85;
+  transition: .5s;
+}
+@mixin link-pseudo-classes {
+  text-decoration: none;
+  color: inherit;
+  transition: .5s;
+}
+@mixin link-hover {
+  opacity: 1;
+  border-bottom: 1px solid grey;
+  transition: .5s;
+}
 
 // Mixin
-@mixin full-screen {
+@mixin fixed-full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  transition: .5s;
+}
+
+@mixin abs-full-screen {
   position: fixed;
   top: 0;
   left: 0;

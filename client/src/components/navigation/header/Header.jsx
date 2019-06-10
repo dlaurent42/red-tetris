@@ -4,9 +4,9 @@ import Menu from '../menu/Menu';
 import './Header.scss';
 
 const header = props => (
-  <nav className={['header', props.color].join(' ')}>
+  <header className={['header', props.color].join(' ')}>
     <Menu variant={props.variant} />
-  </nav>
+  </header>
 );
 
 header.propTypes = {

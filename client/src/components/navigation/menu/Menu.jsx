@@ -4,16 +4,12 @@ import LeftSideSubmenu from './submenus/LeftSideSubmenu';
 import RightSideSubmenu from './submenus/RightSideSubmenu';
 import './Menu.scss';
 
-const menu = (props) => {
-  console.log(window.location.hash);
-  return (
-    <nav>
-      ttiti
-      <RightSideSubmenu variant={props.variant} />
-      <LeftSideSubmenu variant={props.variant} />
-    </nav>
-  );
-};
+const menu = props => (
+  <nav className="menu">
+    <LeftSideSubmenu variant={props.variant} />
+    <RightSideSubmenu variant={props.variant} />
+  </nav>
+);
 
 menu.propTypes = {
   variant: PropTypes.string,

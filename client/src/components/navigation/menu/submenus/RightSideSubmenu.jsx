@@ -9,12 +9,12 @@ const rightSideSubmenu = (props) => {
 
   return (!props.user.uid) ? (
     <div className="menu-right">
-      <Link to="/login" className="menu-right-item menu-login">LOG IN</Link>
-      <Link to="/signup" className="menu-right-item menu-signup">SIGN UP</Link>
+      <Link to="/login" className="menu-item menu-login">LOG IN</Link>
+      <Link to="/signup" className="menu-item menu-signup">SIGN UP</Link>
     </div>
   ) : (
     <div className="menu-right">
-      <Link to="/profile" className="menu-right-item menu-profile">
+      <Link to="/profile" className="menu-item menu-profile">
         <img className="menu-avatar" src={require(`../../../../assets/avatars/${user.avatar}`) /* eslint-disable-line */} alt="avatar" /> 
       </Link>
     </div>
