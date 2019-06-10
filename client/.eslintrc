@@ -25,6 +25,7 @@
     "no-unexpected-multiline": "warn",
     "object-curly-newline": "off",
     "padded-blocks": "off",
+    "react/destructuring-assignment": "off",
     "react/prop-types": [
       1,
       {

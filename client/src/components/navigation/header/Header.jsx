@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 const header = (props) => {
-  const currentPage = window.location.hash;
-
-  console.log(window.location.hash);
+  
+  props.color = ['primary', 'secondary', 'transparent'];
+  props.variant = ['full', 'reduced', 'logo-only'];
   return (
     <nav className="header">
+      <Logo />
       <Link to="/">Home</Link>
       {/* user */}
       <Link to="/login">Login</Link>
@@ -21,9 +20,5 @@ const header = (props) => {
     </nav>
   );
 };
-
-const mapStateToProps = state => ({
-  user: state.user.user,
-});
 
 export default connect(mapStateToProps)(header);
