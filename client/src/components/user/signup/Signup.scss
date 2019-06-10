@@ -1,0 +1,49 @@
+@import '../../../config/styles.scss';
+
+.signup-container {
+  @include abs-full-screen;
+  display: flex;
+  & .signup-form-container {
+    flex: 3;
+    & .signup-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50vh;
+      transform: translateY(-50%);
+      & * { color: $secondary-color; }
+      & .signup-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 150px;
+        margin: 10px;
+        border: 1px solid rgba($secondary-color, 0.1);
+        opacity: .85;
+        transition: .5s;
+        cursor: pointer;
+      }
+      & .input { width: 300px; }
+      & .button { margin: 45px 0; opacity: .85 }
+      & .signup-link {
+        @include link;
+        &:link, &:visited, &:active { @include link-pseudo-classes; }
+        font-size: 12px;
+        color: $tertiary-color;
+        opacity: 0.25;
+        width: 300px;
+        margin: -5px 0;
+        &:hover { opacity: 1; }
+      }
+    }
+  }
+  & .signup-background {
+    flex: 5;
+    background-image: url('../../../assets/backgrounds/arcade01.jpg');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(80%);
+    -webkit-filter: grayscale(80%);
+  }
+}

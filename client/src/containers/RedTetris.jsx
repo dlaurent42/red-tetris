@@ -3,6 +3,8 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import Home from '../components/home/Home';
 import Login from '../components/user/login/Login';
 import Signup from '../components/user/signup/Signup';
+import RecoverPassword from '../components/user/recover-password/RecoverPassword';
+import './RedTetris.scss';
 
 const RedTetris = () => (
   <HashRouter>
@@ -10,6 +12,7 @@ const RedTetris = () => (
       <Route path="/" exact component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/recover-password" component={RecoverPassword} />
       <Route path="/about" render={() => <>In rooms</>} />
       <Route path="/leaderboard" render={() => <>In rooms</>} />
       <Route path="/tournaments" render={() => <>In rooms</>} />

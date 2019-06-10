@@ -1,0 +1,17 @@
+@import '../../../config/styles.scss';
+
+.avatars-dialog {
+  & .avatars-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    & .avatars-list-item {
+      width: auto;
+      & * {
+        width: 100px;
+        height: 100px;
+        margin: 0;
+      }
+    }
+  } 
+}

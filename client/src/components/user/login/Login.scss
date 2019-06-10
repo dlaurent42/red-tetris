@@ -1,0 +1,39 @@
+@import '../../../config/styles.scss';
+
+.login-container {
+  @include abs-full-screen;
+  display: flex;
+  & .login-form-container {
+    flex: 3;
+    & .login-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50vh;
+      transform: translateY(-50%);
+      & * { color: $secondary-color; }
+      & .input { width: 300px; }
+      & .button { margin: 45px 0; opacity: .85 }
+      & .login-link {
+        @include link;
+        &:link, &:visited, &:active { @include link-pseudo-classes; }
+        font-size: 12px;
+        color: $tertiary-color;
+        opacity: 0.25;
+        width: 300px;
+        margin: -5px 0;
+        &:hover { opacity: 1; }
+      }
+    }
+  }
+  & .login-background {
+    flex: 5;
+    background-image: url('../../../assets/backgrounds/arcade04.jpg');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(80%);
+    -webkit-filter: grayscale(80%);
+  }
+}

@@ -1,0 +1,8 @@
+@import '../config/styles.scss';
+
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  font: $roboto;
+  color: $secondary-color;
+}

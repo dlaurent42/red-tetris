@@ -3,8 +3,10 @@
 .header {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   width: 100vw;
+  z-index: 100;
+  &.reduced { top: 10px; left: 10px; width: auto; }
   &.transparent { background-color: transparent; color: $secondary-color; }
   &.primary { background-color: $primary-color; color: $secondary-color; }
   &.secondary { background-color: $secondary-color; color: $primary-color; }

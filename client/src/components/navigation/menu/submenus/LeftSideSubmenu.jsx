@@ -8,7 +8,7 @@ const leftSideSubmenu = (props) => {
   if (props.variant === 'full') {
     return (
       <div className="menu-left">
-        <Link to="/" className="menu-logo"><Logo /></Link>
+        <Link to="/" className="menu-logo"><Logo variant={props.variant} /></Link>
         <Link to="/tournaments" className={['menu-item'].concat((window.location.hash === '#/tournaments') ? 'active' : '').join(' ')}>TOURNAMENTS</Link>
         <Link to="/leaderboard" className={['menu-item'].concat((window.location.hash === '#/leaderboard') ? 'active' : '').join(' ')}>LEADERBOARD</Link>
         <Link to="/about" className={['menu-item'].concat((window.location.hash === '#/about') ? 'active' : '').join(' ')}>ABOUT</Link>
@@ -18,7 +18,7 @@ const leftSideSubmenu = (props) => {
   if (props.variant === 'reduced') {
     return (
       <div className="menu-left">
-        <Link to="/" className="menu-item"><Logo /></Link>
+        <Link to="/" className="menu-logo reduced-logo"><Logo variant={props.variant} /></Link>
       </div>
     );
   }

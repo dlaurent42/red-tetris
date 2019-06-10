@@ -4,7 +4,7 @@ import Menu from '../menu/Menu';
 import './Header.scss';
 
 const header = props => (
-  <header className={['header', props.color].join(' ')}>
+  <header className={['header', props.color, props.variant].join(' ')}>
     <Menu variant={props.variant} />
   </header>
 );
