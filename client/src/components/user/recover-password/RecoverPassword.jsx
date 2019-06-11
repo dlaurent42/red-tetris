@@ -29,7 +29,7 @@ const recoverPassword = (props) => {
 
   if (props.user.uid) return <Redirect to="/" />;
   return (
-    <div className="app-container">
+    <div>
       <Header variant="reduced" />
       <div className="recover-password-container">
         <div className="recover-password-form-container">

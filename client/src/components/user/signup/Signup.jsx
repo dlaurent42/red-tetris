@@ -48,7 +48,7 @@ const signup = (props) => {
 
   if (props.user.uid) return <Redirect to="/" />;
   return (
-    <div className="app-container">
+    <div>
       <Header variant="reduced" />
       <div className="signup-container">
         <div className="signup-form-container">

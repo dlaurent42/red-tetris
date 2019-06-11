@@ -5,4 +5,6 @@ html {
   -webkit-font-smoothing: antialiased;
   font: $roboto;
   color: $secondary-color;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }

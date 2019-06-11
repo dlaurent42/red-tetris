@@ -15,7 +15,7 @@ header.propTypes = {
 };
 
 header.defaultProps = {
-  color: 'transparent',
+  color: 'dark',
   variant: 'full',
 };
 

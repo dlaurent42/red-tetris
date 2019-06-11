@@ -1,0 +1,6 @@
+@import '../../../config/styles.scss';
+
+.main-container {
+  @include fixed-full-screen;
+  cursor: pointer;
+}

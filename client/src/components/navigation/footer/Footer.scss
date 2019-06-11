@@ -1,0 +1,35 @@
+@import '../../../config/styles.scss';
+
+.footer {
+  height: 60px;
+  width: 100vw;
+  color: $primary-color;
+  background: $secondary-color;
+  border-top: 1px solid $tertiary-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  & ul {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    text-align: center;
+    // line-height: 60px;
+    letter-spacing: 1px;
+    padding: 0;
+    margin: 0;
+    & li {
+      padding: 0 15px;
+      &:not(:first-child) {
+        border-left: 1px solid $primary-color;
+      }
+      & a {
+        opacity: .85;
+        transition: .5s;
+        &.active { opacity: 1; transition: .5s; }
+        &:link, &:visited { @include link-pseudo-classes; }
+        &:hover { opacity: 1; transition: .5s; }
+      }
+    }
+  }
+}

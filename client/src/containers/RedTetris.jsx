@@ -4,6 +4,11 @@ import Home from '../components/home/Home';
 import Login from '../components/user/login/Login';
 import Signup from '../components/user/signup/Signup';
 import RecoverPassword from '../components/user/recover-password/RecoverPassword';
+import RecoverPasswordKey from '../components/user/recover-password/RecoverPasswordKey';
+import About from '../components/misc/About';
+import Tournaments from '../components/game/tournaments/Tournaments';
+import Leaderboard from '../components/game/leaderboard/Leaderboard';
+import Page404 from '../components/navigation/404/404';
 import './RedTetris.scss';
 
 const RedTetris = () => (
@@ -13,15 +18,16 @@ const RedTetris = () => (
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/recover-password" component={RecoverPassword} />
-      <Route path="/about" render={() => <>In rooms</>} />
-      <Route path="/leaderboard" render={() => <>In rooms</>} />
-      <Route path="/tournaments" render={() => <>In rooms</>} />
-      <Route path="/:room[:username]" render={() => <>In room</>} />
-      <Route path="/profile/friends" render={() => <>In profile</>} />
-      <Route path="/profile/settings" render={() => <>In profile</>} />
-      <Route path="/profile/statistics" render={() => <>In profile</>} />
-      <Route path="/profile" render={() => <>In profile</>} />
-      <Route render={() => <>404</>} />
+      <Route path="/recover-password[:key]" component={RecoverPasswordKey} />
+      <Route path="/about" component={About} />
+      <Route path="/leaderboard" component={Leaderboard} />
+      <Route path="/tournaments" component={Tournaments} />
+      <Route path="/:room[:username]" render={() => <></>} />
+      <Route path="/profile/friends" render={() => <></>} />
+      <Route path="/profile/settings" render={() => <></>} />
+      <Route path="/profile/statistics" render={() => <></>} />
+      <Route path="/profile" render={() => <></>} />
+      <Route component={Page404} />
     </Switch>
   </HashRouter>
 );
