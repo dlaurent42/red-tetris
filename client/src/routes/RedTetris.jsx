@@ -8,7 +8,7 @@ import RecoverPasswordKey from './recover-password/RecoverPasswordKey';
 import About from './about/About';
 import Tournaments from './tournaments/Tournaments';
 import Leaderboard from './leaderboard/Leaderboard';
-import Page404 from '../components/navigation/404/404';
+import Page404 from '../misc/navigation/404/404';
 import './RedTetris.scss';
 
 const RedTetris = () => (

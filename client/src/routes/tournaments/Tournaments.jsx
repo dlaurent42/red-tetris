@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
+import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -18,8 +19,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
-import Header from '../../components/navigation/header/Header';
-import Footer from '../../components/navigation/footer/Footer';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Header from '../../misc/navigation/header/Header';
+import Footer from '../../misc/navigation/footer/Footer';
 import { ICONS, GAME_MODES } from '../../config/constants';
 import './Tournaments.scss';
 
@@ -225,9 +229,59 @@ const tournaments = (props) => {
       >
         <DialogTitle id="create-room">Create Room</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            In order to create a room, create a room :)
-          </DialogContentText>
+          <TextField
+            required
+            autoFocus
+            margin="dense"
+            // error={errors.username}
+            // helperText="Room name must contain at least 6 alphanumeric characters."
+            id="standard-room-name"
+            label="Room name"
+            className="input"
+            // value={values.username}
+            // onChange={handleValueChange('username')}
+            fullWidth
+          />
+          <FormControl fullWidth>
+            <InputLabel htmlFor="max-players-select">Max. Players</InputLabel>
+            <Select
+              // value={values.age}
+              // onChange={handleChange}
+              value={1}
+              inputProps={{
+                name: 'maxPlayers',
+                id: 'max-players-select',
+              }}
+            >
+              <MenuItem value={1}>solo</MenuItem>
+              <MenuItem value={2}>versus</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="mode-select">Mode</InputLabel>
+            <Select
+              // value={values.age}
+              // onChange={handleChange}
+              value={GAME_MODES[0]}
+              inputProps={{
+                name: 'mode',
+                id: 'mode-select',
+              }}
+            >
+              {GAME_MODES.map(mode => <MenuItem key={mode} value={mode}>{mode}</MenuItem>)}
+            </Select>
+          </FormControl>
+          <TextField
+            margin="dense"
+            // error={errors.username}
+            // helperText="Room password must contain at least 6 alphanumeric characters."
+            id="standard-room-pwd"
+            label="Room password (optional)"
+            className="input"
+            // value={values.username}
+            // onChange={handleValueChange('username')}
+            fullWidth
+          />
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={() => setOpenDialogCreate(false)} color="primary">

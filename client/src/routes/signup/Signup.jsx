@@ -65,6 +65,7 @@ const signup = (props) => {
               ) : null}
             <Avatar className="signup-avatar" onClick={() => toggleAvatarSelectionWindow(true)} src={require(`../../assets/avatars/${values.avatar}`)} alt={values.avatar} /> {/* eslint-disable-line */}
             <TextField
+              autoFocus
               required
               error={errors.username}
               helperText={(errors.username) ? 'Username must contain at least 6 alphanumeric characters.' : null}
@@ -88,6 +89,7 @@ const signup = (props) => {
               margin="normal"
             />
             <TextField
+              required
               error={errors.password}
               helperText={(errors.password) ? 'Password must contain at least 8 characters including at least one uppercase and one lowercase letter, one digit and one special character.' : null}
               id="standard-password-input"
@@ -100,6 +102,7 @@ const signup = (props) => {
               margin="normal"
             />
             <TextField
+              required
               error={errors.cpassword}
               helperText={(errors.cpassword) ? 'Confirmed password is different than entered password.' : null}
               id="standard-cpassword-input"

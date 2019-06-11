@@ -7,8 +7,8 @@ import List from '@material-ui/core/List';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Header from '../../components/navigation/header/Header';
-import Footer from '../../components/navigation/footer/Footer';
+import Header from '../../misc/navigation/header/Header';
+import Footer from '../../misc/navigation/footer/Footer';
 import { AVATARS, ICONS } from '../../config/constants';
 import './Leaderboard.scss';
 

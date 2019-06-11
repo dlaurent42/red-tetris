@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Header from '../../components/navigation/header/Header';
+import Header from '../../misc/navigation/header/Header';
 import { REGEX } from '../../config/constants';
 import './Login.scss';
 
@@ -41,6 +41,7 @@ const login = (props) => {
             <h1>LOG IN</h1>
             <TextField
               required
+              autoFocus
               error={errors.email}
               helperText={(errors.email) ? 'Email must be valid.' : null}
               id="standard-email"
@@ -52,6 +53,7 @@ const login = (props) => {
               margin="normal"
             />
             <TextField
+              required
               error={errors.password}
               helperText={(errors.password) ? 'Password must contain at least 8 characters including at least one uppercase and one lowercase letter, one digit and one special character.' : null}
               id="standard-password-input"

@@ -1,9 +1,7 @@
 import React from 'react';
-// import Divider from '@material-ui/core/Divider';
-// import Typography from '@material-ui/core/Typography';
-import Card from '../../components/UI/Card';
-import Header from '../../components/navigation/header/Header';
-import Footer from '../../components/navigation/footer/Footer';
+import Card from '../../misc/UI/card/Card';
+import Header from '../../misc/navigation/header/Header';
+import Footer from '../../misc/navigation/footer/Footer';
 import './About.scss';
 
 const about = () => (

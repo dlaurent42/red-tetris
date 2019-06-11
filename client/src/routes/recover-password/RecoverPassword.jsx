@@ -37,6 +37,7 @@ const recoverPassword = (props) => {
             <h1>RECOVER PASSWORD</h1>
             <TextField
               required
+              autoFocus
               error={errors.email}
               helperText={(errors.email) ? 'Email must be valid.' : null}
               id="standard-email"

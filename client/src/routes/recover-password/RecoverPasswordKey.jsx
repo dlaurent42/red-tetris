@@ -43,6 +43,8 @@ const recoverPassword = (props) => {
           <form className="recover-password-form" autoComplete="off">
             <h1>RECOVER PASSWORD</h1>
             <TextField
+              required
+              autoFocus
               error={errors.password}
               helperText={(errors.password) ? 'Password must contain at least 8 characters including at least one uppercase and one lowercase letter, one digit and one special character.' : null}
               id="standard-password-input"
@@ -55,6 +57,7 @@ const recoverPassword = (props) => {
               margin="normal"
             />
             <TextField
+              required
               error={errors.cpassword}
               helperText={(errors.cpassword) ? 'Confirmed password is different than entered password.' : null}
               id="standard-cpassword-input"
