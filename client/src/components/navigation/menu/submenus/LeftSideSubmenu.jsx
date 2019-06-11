@@ -11,7 +11,7 @@ const leftSideSubmenu = (props) => {
         <Link to="/" className="menu-logo"><Logo variant={props.variant} /></Link>
         <Link to="/tournaments" className={['menu-item'].concat((window.location.hash === '#/tournaments') ? 'active' : '').join(' ')}>TOURNAMENTS</Link>
         <Link to="/leaderboard" className={['menu-item'].concat((window.location.hash === '#/leaderboard') ? 'active' : '').join(' ')}>LEADERBOARD</Link>
-        <Link to="/about" className={['menu-item'].concat((window.location.hash === '#/about') ? 'active' : '').join(' ')}>ABOUT</Link>
+        <Link to="/about" className={['menu-item'].concat((window.location.hash === '#/about') ? 'active' : '').join(' ')}>ABOUT US</Link>
       </div>
     );
   }

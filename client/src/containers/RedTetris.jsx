@@ -5,7 +5,7 @@ import Login from '../components/user/login/Login';
 import Signup from '../components/user/signup/Signup';
 import RecoverPassword from '../components/user/recover-password/RecoverPassword';
 import RecoverPasswordKey from '../components/user/recover-password/RecoverPasswordKey';
-import About from '../components/misc/About';
+import About from '../components/about/About';
 import Tournaments from '../components/game/tournaments/Tournaments';
 import Leaderboard from '../components/game/leaderboard/Leaderboard';
 import Page404 from '../components/navigation/404/404';
