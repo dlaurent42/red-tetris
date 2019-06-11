@@ -78,3 +78,19 @@ export const AVATARS = [
   'woman-9.png',
   'woman.png',
 ];
+
+export const ICONS = {
+  TROPHY: 'trophy',
+  MEDAL: 'medal',
+  AWARD: 'award',
+  LOCK: 'lock',
+  EYE: 'eye',
+  EYE_SLASH: 'eye-slash',
+  SEARCH: 'search',
+};
+
+export const GAME_MODES = [
+  'classic',
+  'survival',
+  'invisible',
+];

@@ -13,6 +13,7 @@
     background-position: center;
     width: 100vw;
     height: 100vh;
+    transition: .5s;
     filter: grayscale(80%);
     -webkit-filter: grayscale(80%);
   }
@@ -109,6 +110,7 @@
 
   & .home-presentation {
     display: flex;
+    min-height: 80vh;
     flex-direction: column;
     padding: 10vh 0;
     & h1 {

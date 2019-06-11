@@ -1,9 +1,37 @@
-.leaderboard-container {
-  height: 100vh;
+@import '../../../config/styles.scss';
 
-  .footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+.leaderboard-container {
+  @include abs-full-screen;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  & .leaderboard-subcontainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    & .leaderboard-card {
+      display: flex;
+      width: 50vw;
+      margin: 2vh auto;
+      width: 750px;
+
+      &:hover .leaderboard-cover { filter: grayscale(0.3); transition: .5s; }
+      & .leaderboard-cover {
+        width: 450px;
+        filter: grayscale(1);
+        transition: .5s;
+      }
+      & .leaderboard-list {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+      & .leaderboard-icon {
+        font-size: 2rem;
+        color: $secondary-color;
+        color: $tertiary-color;
+      }
+    }
   }
 }

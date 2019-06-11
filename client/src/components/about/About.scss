@@ -29,7 +29,7 @@
       justify-content: space-evenly;
       margin-top: 50vh;
       transform: translateY(-50%);
-      & > * { width: 30vw; filter: grayscale(1); transition: .5s;
+      & > * { width: 375px; filter: grayscale(1); transition: .5s;
         &:hover { filter: grayscale(.3); transition: .5s;} }
     }
   }
