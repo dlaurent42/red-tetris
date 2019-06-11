@@ -6,7 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Header from '../../misc/navigation/header/Header';
-import SelectAvatar from '../../misc/UI/avatar/SelectAvatar';
+import SelectAvatar from '../../misc/UI/selectAvatar/SelectAvatar';
 import { DEFAULT, REGEX } from '../../config/constants';
 import './Signup.scss';
 

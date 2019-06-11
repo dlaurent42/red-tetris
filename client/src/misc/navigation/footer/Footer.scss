@@ -9,24 +9,19 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   & ul {
     display: flex;
     justify-content: center;
     list-style-type: none;
     text-align: center;
-    // line-height: 60px;
     letter-spacing: 1px;
     padding: 0;
     margin: 0;
-    & li {
-      font-size: 0.875rem;
-      padding: 0 15px;
-      &:not(:first-child) {
-        border-left: 1px solid $primary-color;
-      }
-      & a {
-        opacity: .85;
-        transition: .5s;
+
+    & li { font-size: 0.875rem; padding: 0 15px;
+      &:not(:first-child) { border-left: 1px solid $primary-color; }
+      & a { opacity: .85; transition: .5s;
         &.active { opacity: 1; transition: .5s; }
         &:link, &:visited { @include link-pseudo-classes; }
         &:hover { opacity: 1; transition: .5s; }

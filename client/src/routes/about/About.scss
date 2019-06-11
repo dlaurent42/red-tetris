@@ -7,22 +7,25 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
   & .about-subcontainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    // margin: 10vh 0;
     width: 100vw;
+
     & .title {
       letter-spacing: 2px;
       text-align: center;
     }
+
     & .paragraph {
       color: $tertiary-color;
       width: 60vw;
       text-align: center;
       margin: 20px auto 100px;
     }
+
     & .about-cards {
       display: flex;
       flex-direction: row;
@@ -33,6 +36,7 @@
         &:hover { filter: grayscale(.3); transition: .5s;} }
     }
   }
+
   & .footer {
     position: absolute;
     bottom: 0;

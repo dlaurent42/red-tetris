@@ -7,8 +7,5 @@
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  & * {
-    display: flex;
-    align-items: center;
-  }
+  & * { display: flex; align-items: center; }
 }

@@ -8,12 +8,6 @@ const about = () => (
   <div className="about-container">
     <Header color="dark" />
     <div className="about-subcontainer">
-      {/* <Typography gutterBottom variant="h2" component="h1" className="title">ABOUT</Typography>
-      <Divider variant="middle" className="separator" />
-      <Typography variant="h5" paragraph className="paragraph">
-        The objective of this project is to develop a networked multiplayer&nbsp;
-        tetris game from a stack of software exclusively Full Stack Javascript.
-      </Typography> */}
       <div className="about-cards">
         <Card
           title="dlaurent"
