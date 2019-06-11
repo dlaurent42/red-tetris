@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { ACTIONS, DEFAULT } from '../config/constants';
+import { ACTIONS, DEFAULT } from '../../config/constants';
 
 const initialState = {
   user: {

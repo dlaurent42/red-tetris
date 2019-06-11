@@ -1,4 +1,4 @@
-import { ACTIONS } from '../config/constants';
+import { ACTIONS } from '../../config/constants';
 
 export const userLogin = payload => ({
   type: ACTIONS.USER_LOGIN,

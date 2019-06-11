@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Header from '../../navigation/header/Header';
-import { REGEX } from '../../../config/constants';
-import './Login.scss';
+import { Link, Redirect } from 'react-router-dom';
+import Header from '../../misc/navigation/header/Header';
+import { REGEX } from '../../config/constants';
+import './RecoverPassword.scss';
 
-const login = (props) => {
+const recoverPassword = (props) => {
 
   // Handle form data
   const [values, setValues] = useState({
     email: '',
-    password: '',
   });
   const [errors, setErrors] = useState({
     email: false,
-    password: false,
   });
   const handleValueChange = name => event => setValues({ ...values, [name]: event.target.value });
 
@@ -26,7 +24,6 @@ const login = (props) => {
     event.preventDefault();
     setErrors({
       email: !(REGEX.EMAIL.test(values.email)),
-      password: !(REGEX.PASSWORD.test(values.password)),
     });
   };
 
@@ -34,11 +31,10 @@ const login = (props) => {
   return (
     <div>
       <Header variant="reduced" />
-      <div className="login-container">
-        <div className="login-form-container">
-          <form className="login-form" autoComplete="off">
-
-            <h1>LOG IN</h1>
+      <div className="recover-password-container">
+        <div className="recover-password-form-container">
+          <form className="recover-password-form" autoComplete="off">
+            <h1>RECOVER PASSWORD</h1>
             <TextField
               required
               error={errors.email}
@@ -51,34 +47,22 @@ const login = (props) => {
               onChange={handleValueChange('email')}
               margin="normal"
             />
-            <TextField
-              error={errors.password}
-              helperText={(errors.password) ? 'Password must contain at least 8 characters including at least one uppercase and one lowercase letter, one digit and one special character.' : null}
-              id="standard-password-input"
-              label="Password"
-              className="input"
-              type="password"
-              autoComplete="current-password"
-              value={values.password}
-              onChange={handleValueChange('password')}
-              margin="normal"
-            />
             <Button variant="contained" className="button" onClick={validateForm}>Validate</Button>
-            <Link className="login-link" to="/signup">Don&#39;t have account?</Link>
-            <Link className="login-link" to="/recover-password">Forgot password?</Link>
+            <Link className="recover-password-link" to="/signup">Don&#39;t have account?</Link>
+            <Link className="recover-password-link" to="/login">Remember password?</Link>
           </form>
         </div>
-        <div className="login-background" />
+        <div className="recover-password-background" />
       </div>
     </div>
   );
 };
 
-login.propTypes = {
+recoverPassword.propTypes = {
   user: PropTypes.objectOf(PropTypes.any),
 };
 
-login.defaultProps = {
+recoverPassword.defaultProps = {
   user: {},
 };
 
@@ -86,4 +70,4 @@ const mapStateToProps = state => ({
   user: state.user.user,
 });
 
-export default connect(mapStateToProps)(login);
+export default connect(mapStateToProps)(recoverPassword);

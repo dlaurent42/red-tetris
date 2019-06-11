@@ -1,11 +1,11 @@
-@import '../../../config/styles.scss';
+@import '../../config/styles.scss';
 
-.recover-password-container {
+.login-container {
   @include abs-full-screen;
   display: flex;
-  & .recover-password-form-container {
+  & .login-form-container {
     flex: 3;
-    & .recover-password-form {
+    & .login-form {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -14,7 +14,7 @@
       & * { color: $secondary-color; }
       & .input { width: 300px; }
       & .button { margin: 45px 0; opacity: .85 }
-      & .recover-password-link {
+      & .login-link {
         @include link;
         &:link, &:visited, &:active { @include link-pseudo-classes; }
         font-size: 12px;
@@ -26,9 +26,10 @@
       }
     }
   }
-  & .recover-password-background {
+  & .login-background {
     flex: 5;
-    background-image: url('../../../assets/backgrounds/arcade02.jpg');
+    background-image: url('../../assets/backgrounds/arcade04.jpg');
+    background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

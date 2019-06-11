@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link, Redirect } from 'react-router-dom';
-import Header from '../../navigation/header/Header';
-import { REGEX } from '../../../config/constants';
+import Header from '../../misc/navigation/header/Header';
+import { REGEX } from '../../config/constants';
 import './RecoverPassword.scss';
 
 const recoverPassword = (props) => {
 
   // Handle form data
   const [values, setValues] = useState({
-    email: '',
+    password: '',
+    cpassword: '',
   });
   const [errors, setErrors] = useState({
-    email: false,
+    password: false,
+    cpassword: false,
   });
   const handleValueChange = name => event => setValues({ ...values, [name]: event.target.value });
 
@@ -23,9 +25,14 @@ const recoverPassword = (props) => {
   const validateForm = (event) => {
     event.preventDefault();
     setErrors({
-      email: !(REGEX.EMAIL.test(values.email)),
+      password: !(REGEX.PASSWORD.test(values.password)),
+      cpassword: (values.password !== values.cpassword),
     });
   };
+
+  useEffect(() => {
+    /* check key */
+  }, []);
 
   if (props.user.uid) return <Redirect to="/" />;
   return (
@@ -36,15 +43,27 @@ const recoverPassword = (props) => {
           <form className="recover-password-form" autoComplete="off">
             <h1>RECOVER PASSWORD</h1>
             <TextField
-              required
-              error={errors.email}
-              helperText={(errors.email) ? 'Email must be valid.' : null}
-              id="standard-email"
-              label="Email"
+              error={errors.password}
+              helperText={(errors.password) ? 'Password must contain at least 8 characters including at least one uppercase and one lowercase letter, one digit and one special character.' : null}
+              id="standard-password-input"
+              label="Password"
               className="input"
-              type="email"
-              value={values.email}
-              onChange={handleValueChange('email')}
+              type="password"
+              autoComplete="current-password"
+              value={values.password}
+              onChange={handleValueChange('password')}
+              margin="normal"
+            />
+            <TextField
+              error={errors.cpassword}
+              helperText={(errors.cpassword) ? 'Confirmed password is different than entered password.' : null}
+              id="standard-cpassword-input"
+              label="Confirm password"
+              className="input"
+              type="password"
+              autoComplete="current-password"
+              value={values.cpassword}
+              onChange={handleValueChange('cpassword')}
               margin="normal"
             />
             <Button variant="contained" className="button" onClick={validateForm}>Validate</Button>

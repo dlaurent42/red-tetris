@@ -5,9 +5,9 @@ import { Link, Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Header from '../../navigation/header/Header';
-import SelectAvatar from '../avatar/SelectAvatar';
-import { DEFAULT, REGEX } from '../../../config/constants';
+import Header from '../../misc/navigation/header/Header';
+import SelectAvatar from '../../misc/UI/avatar/SelectAvatar';
+import { DEFAULT, REGEX } from '../../config/constants';
 import './Signup.scss';
 
 const signup = (props) => {
@@ -63,7 +63,7 @@ const signup = (props) => {
                   selectedValue={values.avatar}
                 />
               ) : null}
-            <Avatar className="signup-avatar" onClick={() => toggleAvatarSelectionWindow(true)} src={require(`../../../assets/avatars/${values.avatar}`)} alt={values.avatar} /> {/* eslint-disable-line */}
+            <Avatar className="signup-avatar" onClick={() => toggleAvatarSelectionWindow(true)} src={require(`../../assets/avatars/${values.avatar}`)} alt={values.avatar} /> {/* eslint-disable-line */}
             <TextField
               required
               error={errors.username}

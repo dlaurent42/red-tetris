@@ -11,8 +11,8 @@ import {
   faEyeSlash,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
-import store from './reducers';
-import RedTetris from './containers/RedTetris';
+import store from './store/reducers';
+import RedTetris from './routes/RedTetris';
 import * as serviceWorker from './serviceWorker';
 
 library.add(

@@ -1,20 +1,20 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-import Home from '../components/home/Home';
-import Login from '../components/user/login/Login';
-import Signup from '../components/user/signup/Signup';
-import RecoverPassword from '../components/user/recover-password/RecoverPassword';
-import RecoverPasswordKey from '../components/user/recover-password/RecoverPasswordKey';
-import About from '../components/about/About';
-import Tournaments from '../components/game/tournaments/Tournaments';
-import Leaderboard from '../components/game/leaderboard/Leaderboard';
+import Homepage from './homepage/Homepage';
+import Login from './login/Login';
+import Signup from './signup/Signup';
+import RecoverPassword from './recover-password/RecoverPassword';
+import RecoverPasswordKey from './recover-password/RecoverPasswordKey';
+import About from './about/About';
+import Tournaments from './tournaments/Tournaments';
+import Leaderboard from './leaderboard/Leaderboard';
 import Page404 from '../components/navigation/404/404';
 import './RedTetris.scss';
 
 const RedTetris = () => (
   <HashRouter>
     <Switch>
-      <Route path="/" exact component={Home} />
+      <Route path="/" exact component={Homepage} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/recover-password" component={RecoverPassword} />
