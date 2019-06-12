@@ -11,6 +11,7 @@
     flex: 1;
     flex-direction: column;
     justify-content: center;
+
     & .tournaments-form {
       align-items: center;
       justify-content: center;
@@ -20,13 +21,17 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
       & * { font-size: 14px; }
+
       & .tournament-searchbar {
         margin-right: 20px;
         line-height: 36px;
+
         & input { margin-right: 15px; width: 0px; border: none; border-bottom: 1px solid rgba($secondary-color, 0); transition: .8s }
         & input:focus { width: 150px; border: none; border-bottom: 1px solid rgba($secondary-color, .7); transition: .8s; outline:none; }
         & * { color: $secondary-color; }
+
         & svg {
           position: relative;
           top: 2px;
@@ -38,31 +43,34 @@
       }
 
     }
+
     & .tournaments-table {
       min-width: 650px;
       max-width: 1300px;
       margin: 0 auto 10vh;
       color: $secondary-color;
-      & .tournaments-table-head { font-weight: bold; }
-      & .tournaments-table-body {
-        & .tournaments-table-row {
-          cursor: pointer;
-          opacity: .85;
-          transition: .5s;
 
-          &:hover {            
-            background-color:rgba($secondary-color, .05);
-            opacity: 1;
-            transition: .5s;
-          }
-          & .tournaments-lock {
-            opacity: .85;
-            &.unlock { color: rgba($secondary-color, 0); }
-          }
+      & .tournaments-table-head { font-weight: bold; }
+      & .tournaments-table-body .tournaments-table-row {
+        cursor: pointer;
+        opacity: .85;
+        transition: .5s;
+
+        &:hover {            
+          background-color:rgba($secondary-color, .05);
+          opacity: 1;
+          transition: .5s;
+        }
+        & .tournaments-lock { opacity: .85;
+          &.unlock { color: rgba($secondary-color, 0); }
         }
       }
     }
   }
+}
+
+.create-room-input {
+  margin: 10px 10px !important;
 }
 
 #alert-dialog-description {
