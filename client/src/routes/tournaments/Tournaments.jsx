@@ -8,7 +8,7 @@ import Settings from './Settings';
 import Table from './Table';
 import JoinRoom from './JoinRoom';
 import CreateRoom from './CreateRoom';
-import { GAME_MODES } from '../../config/constants';
+import { GAME_MODES, SOCKETS } from '../../config/constants';
 import './Tournaments.scss';
 
 const fakeRoomNames = ['Acrimony', 'Gridelin', 'Abattoir', 'Diorism', 'Turdine', 'Abattoir', 'Camsteary', 'Ganister', 'Luminous', 'ZaazAnole', 'Sapsago', 'Torsibility', 'Testaceous', 'Hypnosophy', 'Tampion', 'Isogeny', 'Abattoir', 'Luminous', 'Scientism', 'Magnanimous', 'Moriadon8', 'Costard', 'Abderian', 'Verrucose', 'Xenolalia', 'Skiagram', 'Pellucid', 'Ptyalagogue', 'Blauwbok', 'Adnomination', 'Luminous', 'Acrimony', 'Pejorism', 'Divaricate', 'Papyrography', 'Affranchise', 'Luminous', 'Abattoir', 'Luminous', 'Tattersall', 'Jackanapes', 'Schmutz', 'ComplainZygote', 'Ensorcell', 'HoiPolloi', 'Cacophony', 'Freewheeling', 'SpittinYoyo', 'Whodunit', 'Petcock', 'DamperGuffaw', 'Alfresco', 'Bugbear', 'PlotclassDaedal', 'JohnmuerJunket', 'Muffuletta', 'Joementum', 'Emo1Wigout', 'Godwottery', 'Pomposity', 'Toothsome', 'Ostinato', 'Currish', 'Toupeeba4000', 'Whatsis', 'Gubbins', 'Blinker', 'Tookusde0909', 'Whisternefet', 'Erinaceous', 'Sternutate', 'Tumultuous', 'Maelstrom', 'Ephemeral', 'Moniker', 'Shartnuts334', 'Zonkedle1128', 'Sthenereu12345', 'Quokkareap3r', 'Manorexic'];
@@ -30,7 +30,7 @@ const tournaments = (props) => {
 
   // ComponentDidMount: fetch rooms list
   useEffect(() => {
-    props.socket.emit('getRoomsList');
+    props.socket.emit(SOCKETS.EMIT_FETCH_ROOMS);
     const fakeData = [];
     for (let index = 0; index < 45; index += 1) {
       const a = rdmNbr(2) + 1;
@@ -51,7 +51,7 @@ const tournaments = (props) => {
 
   // Add event listener on rooms updates
   useEffect(() => {
-    props.socket.on('updateRoomsList', (data) => {
+    props.socket.on(SOCKETS.ON_ROOMS_UPDATE, (data) => {
       console.log('[Tournaments] receive data from event listener');
       setTournamentsList(data);
     });

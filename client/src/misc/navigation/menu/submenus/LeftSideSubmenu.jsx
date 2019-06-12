@@ -7,7 +7,7 @@ import './LeftSideSubmenu.scss';
 const leftSideSubmenu = (props) => {
   if (props.variant === 'full') {
     return (
-      <div className="menu-left">
+      <div className={['menu-left', props.color].join(' ')}>
         <Link to="/" className="menu-logo"><Logo variant={props.variant} /></Link>
         <Link to="/tournaments" className={['menu-item'].concat((window.location.hash === '#/tournaments') ? 'active' : '').join(' ')}>TOURNAMENTS</Link>
         <Link to="/leaderboard" className={['menu-item'].concat((window.location.hash === '#/leaderboard') ? 'active' : '').join(' ')}>LEADERBOARD</Link>
@@ -17,7 +17,7 @@ const leftSideSubmenu = (props) => {
   }
   if (props.variant === 'reduced') {
     return (
-      <div className="menu-left">
+      <div className={['menu-left', props.color].join(' ')}>
         <Link to="/" className="menu-logo reduced-logo"><Logo variant={props.variant} /></Link>
       </div>
     );
@@ -26,10 +26,12 @@ const leftSideSubmenu = (props) => {
 };
 
 leftSideSubmenu.propTypes = {
+  color: PropTypes.string,
   variant: PropTypes.string,
 };
 
 leftSideSubmenu.defaultProps = {
+  color: 'dark',
   variant: 'full',
 };
 

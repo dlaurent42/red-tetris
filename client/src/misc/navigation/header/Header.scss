@@ -8,6 +8,6 @@
   z-index: 100;
 
   &.reduced { top: 10px; left: 10px; width: auto; }
-  &.dark { background-color: transparent; color: $secondary-color; }
-  &.light { background-color: transparent; color: black; filter: invert(1); }
+  & .dark { background-color: transparent; color: $secondary-color; }
+  & .light { background-color: transparent; color: black; filter: invert(1); }
 }

@@ -25,6 +25,13 @@ library.add(
   faSearch,
 );
 
-ReactDOM.render(<Provider store={store}><RedTetris /></Provider>, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <React.StrictMode>
+      <RedTetris />
+    </React.StrictMode>
+  </Provider>,
+  document.getElementById('root'),
+);
 
 serviceWorker.unregister();

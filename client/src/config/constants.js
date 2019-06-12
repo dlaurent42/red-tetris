@@ -96,3 +96,22 @@ export const GAME_MODES = [
   'survival',
   'invisible',
 ];
+
+export const NOTIFICATIONS = {
+  FRIEND_CONNECTION: {
+    variant: 'success',
+    autoHideDuration: 2000,
+  },
+  PLAYER_LEFT: {
+    variant: 'warning',
+    autoHideDuration: 3000,
+  },
+};
+
+export const SOCKETS = {
+  ON_FRIEND_CONNECTION: 'friendConnection',
+  ON_PLAYER_LEFT_GAME: 'playerLeftGame',
+  EMIT_NEW_ROOM: 'newRoom',
+  EMIT_FETCH_ROOMS: 'getRoomsList',
+  ON_ROOMS_UPDATE: 'updateRoomsList',
+};

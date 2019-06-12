@@ -14,8 +14,7 @@
     width: 100vw;
     height: 100vh;
     transition: .5s;
-    filter: grayscale(80%);
-    -webkit-filter: grayscale(80%);
+    filter: grayscale(80%) blur(4px);
   }
   & .home-bg-layer {
     @include abs-full-screen;
@@ -38,16 +37,22 @@
     & * {
       text-align: center;
       width: fit-content;
-      &:nth-child(1) {
-        font-weight: bold;
-        letter-spacing: 4px;
-        margin: auto;
-        color: $secondary-color;
-        background-color: $primary-color;
-      }
-      &:nth-child(2) {margin: 40px auto 0; opacity: .95;}
     }
-  }
+    & h1 {
+      font-weight: bold;
+      letter-spacing: 4px;
+      margin: auto;
+      color: $secondary-color;
+      background-color: $primary-color;
+      padding: 10px 20px;
+    }
+    & p {
+      margin: 40px auto 0;
+      opacity: .95;
+      letter-spacing: 4px;
+      & div { margin: 10px auto; font-size: 1.3rem; }
+    }
+}
 
   & .scroll-down {
     position: absolute;

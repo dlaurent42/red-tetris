@@ -3,6 +3,7 @@ import { ACTIONS, DEFAULT } from '../../config/constants';
 
 const initialState = {
   user: {
+    // uid: 1,
     uid: Cookies.get('uid'),
     username: '',
     avatar: DEFAULT.AVATAR,

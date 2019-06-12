@@ -2,7 +2,7 @@
 
 .menu-right {
   padding: 5px 20px;
-  & .menu-item {
+  .menu-item {
     @include link;
     &.active { opacity: 1; border-bottom: 1px solid $tertiary-color; transition: .5s; }
     &:link, &:visited, &:active { @include link-pseudo-classes; }
@@ -12,8 +12,10 @@
       border-radius: 5px;
     }
   }
-  & .menu-avatar {
+  & .menu-profile-avatar {
     width: 50px;
     height: 50px;
+    cursor:pointer;
+    z-index: 9999999;
   }
 }
