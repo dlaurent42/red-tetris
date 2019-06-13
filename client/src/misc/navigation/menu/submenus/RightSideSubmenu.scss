@@ -7,9 +7,16 @@
     &.active { opacity: 1; border-bottom: 1px solid $tertiary-color; transition: .5s; }
     &:link, &:visited, &:active { @include link-pseudo-classes; }
     &:hover, &.active { @include link-hover; }
-    &.menu-signup {
-      border: 1px solid grey;
-      border-radius: 5px;
+  }
+  .menu-signup {
+    @include link;
+    border: 1px solid $secondary-color;
+    border-radius: 5px;
+    transition: .5s;
+    &:link, &:visited, &:active { @include link-pseudo-classes; }
+    &:hover, &.active {
+      color: rgba($secondary-color, .9);
+      transition: .5s;
     }
   }
   & .menu-profile-avatar {

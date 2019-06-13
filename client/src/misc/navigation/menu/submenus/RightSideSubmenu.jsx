@@ -11,7 +11,7 @@ const rightSideSubmenu = (props) => {
   return (!props.user.uid) ? (
     <div className={['menu-right', props.color].join(' ')}>
       <Link to="/login" className="menu-item menu-login">LOG IN</Link>
-      <Link to="/signup" className="menu-item menu-signup">SIGN UP</Link>
+      <Link to="/signup" className="menu-signup">SIGN UP</Link>
     </div>
   ) : (
     <div className="menu-right">
