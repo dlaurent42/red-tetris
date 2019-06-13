@@ -7,8 +7,6 @@ import { NOTIFICATIONS, SOCKETS } from '../../config/constants';
 
 const notifications = (props) => {
 
-  console.log('[Notifications]');
-
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const action = key => (
     <React.Fragment>

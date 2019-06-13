@@ -15,7 +15,7 @@ const rightSideSubmenu = (props) => {
     </div>
   ) : (
     <div className="menu-right">
-      <Link to="/profile"><Avatar onClick={handleClick} className="menu-profile-avatar" src={require(`../../../../assets/avatars/${props.user.avatar}`) /* eslint-disable-line */} alt="avatar" /></Link>
+      <Link to="/profile"><Avatar className="menu-profile-avatar" src={require(`../../../../assets/avatars/${props.user.avatar}`) /* eslint-disable-line */} alt="avatar" /></Link>
     </div>
   );
 };

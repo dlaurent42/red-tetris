@@ -52,7 +52,6 @@ const tournaments = (props) => {
   // Add event listener on rooms updates
   useEffect(() => {
     props.socket.on(SOCKETS.ON_ROOMS_UPDATE, (data) => {
-      console.log('[Tournaments] receive data from event listener');
       setTournamentsList(data);
     });
   }, [tournamentsList]);

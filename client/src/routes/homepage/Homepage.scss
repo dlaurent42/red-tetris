@@ -18,17 +18,15 @@
   }
   & .home-bg-layer {
     @include abs-full-screen;
-    // background-color: $secondary-color;
-    // opacity: .8;
     background-color: rgb(24,24,24);
     opacity: .85;
   }
   & .home-bg-text {
     @include abs-full-screen;
+    display: flex;
+    flex-direction: column;
     top: 50vh;
     height: auto;
-    // width: 900px;
-    // margin: 60px 10vw;
     transform: translateY(-50%);
     color: $primary-color;
     letter-spacing: 2px;
@@ -47,11 +45,12 @@
       padding: 10px 20px;
     }
     & p {
-      margin: 40px auto 0;
       opacity: .95;
       letter-spacing: 4px;
-      & div { margin: 10px auto; font-size: 1.3rem; }
     }
+    & em { margin: 10px auto; font-size: 1.3rem; opacity: .6; }      
+    & p:nth-child(2) {margin: 40px auto 0;}
+    & p:last-child {margin: 0 auto 40px;}
 }
 
   & .scroll-down {

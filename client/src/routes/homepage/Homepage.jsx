@@ -35,11 +35,9 @@ const home = () => {
       <div className="home-bg-layer" />
       <div className="home-bg-text">
         <Typography gutterBottom variant="h2" component="h1">R E D&nbsp;&nbsp;&nbsp;T E T R I S</Typography>
-        <Typography gutterBottom variant="h4" paragraph>
-          Tetris Network
-          <div><em> with </em></div>
-          Red Pelicans Sauce
-        </Typography>
+        <Typography gutterBottom variant="h4" paragraph>Tetris Network</Typography>
+        <em> with </em>
+        <Typography gutterBottom variant="h4" paragraph>Red Pelicans Sauce</Typography>
       </div>
       <div
         role="presentation"
