@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import http from 'http';
 import express from 'express';
+import socketIO from 'socket.io';
 
-import SERVER from './config/constants';
+import { SERVER, SOCKETS } from './config/constants';
 
 class Server {
   constructor() {
@@ -10,11 +11,13 @@ class Server {
     this.app = express();
     this.http = http.Server(this.app);
 
-    // Sockets handler
-    this.io = require('socket.io')(this.http, { pingTimeout: 60000 }); // eslint-disable-line
+    // Game tables
     this.roomTable = {};
     this.playerTable = {};
+    // Sockets handler
+    this.io = socketIO(this.http, { pingTimeout: 60000 }); // eslint-disable-line
     this.io.sockets.on('connection', (socket) => {
+      console.log(`connection from: ${socket.id}`);
       // Add correlation UserId - SocketId when login event is triggered
       socket.on('loginUser', (uid) => {
         if (!_.isEmpty(uid)) {
@@ -34,19 +37,45 @@ class Server {
         }
       });
 
-      // Handle if a given user is connected or not
-      socket.on('isOnline', (userIds) => {
-        const onlineUsers = userIds.map((userId) => {
-          const id = parseInt(userId, 10);
-          let isOnline = false;
-          Object.keys(this.playerTable).forEach((key) => {
-            if (parseInt(key, 10) === id && !_.isEmpty(this.playerTable[key])) isOnline = true;
-          });
-          return { id, isOnline };
-        });
-        this.io.to(`${socket.id}`).emit('isOnline', { data: { onlineUsers } });
+      // Part of Game
+
+      socket.on(SOCKETS.newRoom, (data) => {
+        try {
+          const parsed = JSON.parse(data);
+          const newRoom = {
+            tiles: [],
+            players: [],
+            pwd: parsed.pwd,
+            mode: parsed.mode,
+            hasPwd: parsed.hasPwd,
+            roomId: parsed.roomId,
+            roomName: parsed.roomName,
+            maxPlayers: parsed.maxPlayers,
+          };
+          Object.assign(this.roomTable, newRoom);
+          // Send something back
+        } catch (error) { // Parsing error
+          console.log(error);
+        }
       });
 
+      socket.on(SOCKETS.getRoomList, () => {
+        const ret = {};
+        this.roomTable.forEach((room) => {
+          const tmp = {
+            hasPwd: room.hasPwd,
+            mode: room.mode,
+            roomId: room.roomId,
+            roomName: room.roomName,
+            maxPlayers: room.maxPlayers,
+            players: room.players.length,
+          };
+          Object.assign(ret, tmp);
+        });
+        this.io.to(`${socket.id}`).emit('getRoomList', JSON.stringify(ret));
+      });
+
+      // /Part of Game
       // [PRESET EVENT] remove socket Id from playerTable(later game table)
       socket.on('disconnect', () => {
         const key = _.findKey(this.playerTable, socketIds => (
