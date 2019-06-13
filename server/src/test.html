@@ -10,13 +10,24 @@
 		<script>
 			const socketIO = io.connect('http://localhost:8080');
 
-			socketIO.on('connection', (socket) => {
-			  console.log('a user connected');
+			async function newRoom(id = 0) {
+				const fakeData = { mode: 'test', roomId: `aasdsa${id}`, hasPwd: true, pwd: 'secret', roomName: 'test room2', maxPlayers: 3 };
+				await socketIO.emit('newRoom', fakeData, (callback) => {
+					console.log(callback);
+				});
+			};
 
-			  socket.on('disconnect', () => {
-			    console.log('user disconnected');
-			  });
-			});
+			async function getRoomList() {
+				await socketIO.emit('getRoomList', {}, (data) => {
+					console.log(data);
+				});
+			};
+
+			async function startGame(id = 0) {
+				await socketIO.emit('startGame', { id }, (callback) => {
+					console.log(callback);
+				});
+			};
 		</script>
 	</body>
 </html>
