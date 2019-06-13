@@ -80,13 +80,13 @@ class Server {
       socket.on(SOCKETS.GAME_START, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.owner === socket.id);
         if (key === -1) callback({ error: 'You don\'t have any lobby to start game on' });
-        else if (this.roomTable[key].started) callback({ message: 'Game is already started' });
+        else if (this.roomTable[key].started) callback({ error: 'Game is already started' });
         else {
           this.roomTable[key].started = true;
-          // NOT NEEDED PROBABLT: Return to owner(game starter) game structure again IDK WHY.
-          callback(this.roomTable[key]);
           // Emit to all player in this lobby to force game start
-
+          this.roomTable[key].players.forEach((player) => { // Double check this
+            this.io.to(`${player.id}`).emit('gameHasStarted', this.roomTable[key]);
+          });
           // Generate and spawn first tile
 
         }
