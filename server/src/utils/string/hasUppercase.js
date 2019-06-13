@@ -1,3 +1,3 @@
 const hasUppercase = str => /[A-Z]/.test(str);
 
-module.exports = hasUppercase;
+export default hasUppercase;

@@ -1,4 +1,4 @@
-const isNumeric = require('../string/isNumeric');
+import isNumeric from '../string/isNumeric';
 
 const mean = (data) => {
 
@@ -15,4 +15,4 @@ const mean = (data) => {
   return (error ? null : sum / data.length);
 };
 
-module.exports = mean;
+export default mean;

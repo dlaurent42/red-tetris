@@ -1,4 +1,4 @@
-const isNumeric = require('../string/isNumeric');
+import isNumeric from '../string/isNumeric';
 
 const percentile = (data, percent) => {
 
@@ -16,4 +16,4 @@ const percentile = (data, percent) => {
 
 };
 
-module.exports = percentile;
+export default percentile;

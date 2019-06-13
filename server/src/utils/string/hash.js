@@ -6,4 +6,4 @@ const sha512 = (password, salt) => {
   return hash.digest('hex');
 };
 
-module.exports = sha512;
+export default sha512;

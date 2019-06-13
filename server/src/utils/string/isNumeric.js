@@ -11,4 +11,4 @@ const isNumeric = (input) => {
   return false;
 };
 
-module.exports = isNumeric;
+export default isNumeric;

@@ -8,4 +8,4 @@ const template = (strings, ...keys) => (...values) => {
   return result.join('');
 };
 
-module.exports = template;
+export default template;

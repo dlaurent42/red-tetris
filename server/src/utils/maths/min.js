@@ -1,4 +1,4 @@
-const isNumeric = require('../string/isNumeric');
+import isNumeric from '../string/isNumeric';
 
 const min = (data) => {
 
@@ -18,4 +18,4 @@ const min = (data) => {
   return (error ? null : minimum);
 };
 
-module.exports = min;
+export default min;

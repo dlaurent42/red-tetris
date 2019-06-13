@@ -1,4 +1,4 @@
-const isNumeric = require('../string/isNumeric');
+import isNumeric from '../string/isNumeric';
 
 const max = (data) => {
 
@@ -18,4 +18,4 @@ const max = (data) => {
   return (error ? null : maximum);
 };
 
-module.exports = max;
+export default max;

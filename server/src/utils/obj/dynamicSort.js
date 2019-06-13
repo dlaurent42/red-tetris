@@ -12,4 +12,4 @@ const dynamicSort = (property) => {
   };
 };
 
-module.exports = dynamicSort;
+export default dynamicSort;

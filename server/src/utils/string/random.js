@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 const randomString = length => (
   crypto.randomBytes(Math.ceil(length / 2))
@@ -6,4 +6,4 @@ const randomString = length => (
     .slice(0, length)
 );
 
-module.exports = randomString;
+export default randomString;

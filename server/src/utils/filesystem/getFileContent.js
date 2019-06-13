@@ -1,5 +1,5 @@
-const fs = require('fs');
-const isEmpty = require('../obj/isEmpty');
+import fs from 'fs';
+import isEmpty from '../obj/isEmpty';
 
 const getFileContent = filename => (
   (isEmpty(filename) || !fs.existsSync(filename))
@@ -7,4 +7,4 @@ const getFileContent = filename => (
     : fs.readFileSync(filename, 'utf-8')
 );
 
-module.exports = getFileContent;
+export default getFileContent;

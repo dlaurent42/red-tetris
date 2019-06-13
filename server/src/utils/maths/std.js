@@ -1,4 +1,4 @@
-const mean = require('./mean');
+import mean from './mean';
 
 const std = (data) => {
 
@@ -15,4 +15,4 @@ const std = (data) => {
 
 };
 
-module.exports = std;
+export default std;

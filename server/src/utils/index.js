@@ -25,7 +25,7 @@ const isFloat = require('./string/isFloat');
 const isNumeric = require('./string/isNumeric');
 const random = require('./string/random');
 
-module.exports = {
+export {
   getFileContent,
   mean,
   mathsMax,
