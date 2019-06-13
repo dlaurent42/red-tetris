@@ -13,6 +13,7 @@ const notifications = (props) => {
       <Button size="small" style={{ color: 'white' }} onClick={() => closeSnackbar(key)}>Dismiss</Button>
     </React.Fragment>
   );
+
   useEffect(() => {
     props.socket.on(
       SOCKETS.ON_FRIEND_CONNECTION,
@@ -24,6 +25,20 @@ const notifications = (props) => {
     props.socket.on(
       SOCKETS.ON_PLAYER_LEFT_GAME,
       data => enqueueSnackbar(`${data.username} has left the room.`, { action, ...NOTIFICATIONS.PLAYER_LEFT }),
+    );
+  });
+
+  useEffect(() => {
+    props.socket.on(
+      SOCKETS.ON_PLAYER_ENTERS_GAME,
+      data => enqueueSnackbar(`${data.username} has joined the room.`, { action, ...NOTIFICATIONS.PLAYER_ENTERS }),
+    );
+  });
+
+  useEffect(() => {
+    props.socket.on(
+      SOCKETS.ON_NEW_ROOM,
+      data => enqueueSnackbar(`${data.roomName} room created.`, { action, ...NOTIFICATIONS.ROOM_CREATED }),
     );
   });
 

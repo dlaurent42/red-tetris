@@ -27,9 +27,7 @@ library.add(
 
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <RedTetris />
-    </React.StrictMode>
+    <RedTetris />
   </Provider>,
   document.getElementById('root'),
 );

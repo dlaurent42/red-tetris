@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import { GAME_MODES, REGEX, SOCKETS } from '../../config/constants';
+import { DEFAULT, GAME_MODES, REGEX, SOCKETS, ROOM_ROLES } from '../../config/constants';
 
 const makeid = (length) => {
   let result = '';
@@ -49,14 +49,15 @@ const createRoom = (props) => {
       pwd: form.pwd.length > 0 && !REGEX.ROOM_PWD.test(form.pwd),
     });
     if (Object.values(formErrors).includes(true)) return;
+    const roomId = makeid(64);
     props.socket.emit(SOCKETS.EMIT_NEW_ROOM, {
       payload: {
         ...form,
         hasPwd: form.pwd.lenght > 0,
-        roomId: makeid(64),
+        roomId,
       },
     });
-    props.history.push('/');
+    props.history.push(`/${form.roomName}[${props.user.username || DEFAULT.USERNAME}][${roomId}][${form.pwd}][${ROOM_ROLES.CREATOR}]`);
   };
 
   return (
@@ -139,6 +140,7 @@ const createRoom = (props) => {
 };
 
 createRoom.propTypes = {
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
   socket: PropTypes.objectOf(PropTypes.any).isRequired,
   displayCreateRoomDialogBox: PropTypes.bool.isRequired,
   setDisplayCreateRoomDialogBox: PropTypes.func.isRequired,
@@ -146,6 +148,7 @@ createRoom.propTypes = {
 
 const mapStateToProps = state => ({
   socket: state.socket.socket,
+  user: state.user.user,
 });
 
 export default withRouter(connect(mapStateToProps)(createRoom));

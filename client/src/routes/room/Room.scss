@@ -1,0 +1,15 @@
+@import '../../config/styles.scss';
+
+.room-container {
+  @include abs-full-screen;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  & .room-paper {
+    display: block;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

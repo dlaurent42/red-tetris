@@ -32,7 +32,7 @@ const tournaments = (props) => {
   useEffect(() => {
     props.socket.emit(SOCKETS.EMIT_FETCH_ROOMS);
     const fakeData = [];
-    for (let index = 0; index < 45; index += 1) {
+    for (let index = 0; index < 30; index += 1) {
       const a = rdmNbr(2) + 1;
       const b = rdmNbr(3) + 1;
       const hasPwd = Math.random() >= 0.5;

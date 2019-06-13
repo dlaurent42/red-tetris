@@ -11,6 +11,7 @@ export const ACTIONS = {
 
 export const DEFAULT = {
   AVATAR: 'man.png',
+  USERNAME: 'unknown-user',
 };
 
 export const CONFIG = {
@@ -102,16 +103,47 @@ export const NOTIFICATIONS = {
     variant: 'success',
     autoHideDuration: 2000,
   },
+  PLAYER_ENTERS: {
+    variant: 'success',
+    autoHideDuration: 2000,
+  },
   PLAYER_LEFT: {
     variant: 'warning',
     autoHideDuration: 3000,
+  },
+  ROOM_CREATED: {
+    variant: 'success',
+    autoHideDuration: 2000,
   },
 };
 
 export const SOCKETS = {
   ON_FRIEND_CONNECTION: 'friendConnection',
+  ON_NEW_ROOM: 'newRoom',
+  ON_PLAYER_ENTERS_GAME: 'playerEntersGame',
   ON_PLAYER_LEFT_GAME: 'playerLeftGame',
-  EMIT_NEW_ROOM: 'newRoom',
-  EMIT_FETCH_ROOMS: 'getRoomsList',
   ON_ROOMS_UPDATE: 'updateRoomsList',
+  EMIT_FETCH_ROOM: 'getRoomInfo',
+  EMIT_FETCH_ROOMS: 'getRoomsList',
+  EMIT_NEW_ROOM: 'newRoom',
+  EMIT_JOIN_ROOM: 'joinRoom',
+};
+
+export const ROOM_ROLES = {
+  CREATOR: 'creator',
+  PLAYER: 'player',
+  SPECTATOR: 'spectator',
+};
+
+export const KEYS = {
+  ARROW_UP: 38,
+  ARROW_DOWN: 40,
+  ARROW_LEFT: 37,
+  ARROW_RIGHT: 39,
+  SPACEBAR: 32,
+};
+
+export const GAME_SETTINGS = {
+  GRID_WIDTH: 10,
+  GRID_HEIGHT: 20,
 };

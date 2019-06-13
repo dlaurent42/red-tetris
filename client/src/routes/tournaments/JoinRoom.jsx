@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,6 +9,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
+import { DEFAULT, ROOM_ROLES } from '../../config/constants';
 
 const joinRoom = (props) => {
 
@@ -16,8 +18,8 @@ const joinRoom = (props) => {
   const handleValidation = (status) => {
     if (status === 'player'
       && ((props.roomData.hasPwd && roomPassword !== props.roomData.pwd)
-      || props.roomData.nbPlayers < props.roomData.maxPlayers)) return;
-    props.history.push('/');
+      || props.roomData.nbPlayers >= props.roomData.maxPlayers)) return;
+    props.history.push(`/${props.roomData.roomName}[${props.user.username || DEFAULT.USERNAME}][${props.roomData.roomId}][${props.roomData.pwd}][${status}]`);
   };
 
   return (
@@ -78,9 +80,14 @@ const joinRoom = (props) => {
 };
 
 joinRoom.propTypes = {
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
   roomData: PropTypes.objectOf(PropTypes.any).isRequired,
   displayJoinRoomDialogBox: PropTypes.bool.isRequired,
   setDisplayJoinRoomDialogBox: PropTypes.func.isRequired,
 };
 
-export default withRouter(joinRoom);
+const mapStateToProps = state => ({
+  user: state.user.user,
+});
+
+export default withRouter(connect(mapStateToProps)(joinRoom));
