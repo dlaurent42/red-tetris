@@ -4,8 +4,9 @@ const SERVER = {
 };
 
 const SOCKETS = {
-  newRoom: 'newRoom',
-  getRoomList: 'getRoomList',
+  NEW_ROOM: 'newRoom',
+  ROOM_LIST: 'getRoomList',
+  GAME_START: 'startGame',
 };
 
 const REGEX = {

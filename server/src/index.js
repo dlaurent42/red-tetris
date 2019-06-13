@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import http from 'http';
-import express from 'express';
 import path from 'path';
+import express from 'express'; // Just for testing
 import socketIO from 'socket.io';
 
 import { SERVER, SOCKETS } from './config/constants';
@@ -15,11 +15,12 @@ class Server {
     // Game tables
     this.roomTable = [];
     this.playerTable = {};
-    // Sockets handler
+    // Just for me to able to test socket logic
     this.app.get('/', (req, res) => {
       res.sendFile(path.join(`${__dirname}/test.html`));
     });
 
+    // Sockets handler
     this.io = socketIO(this.http, { pingTimeout: 60000 }); // eslint-disable-line
     this.io.sockets.on('connection', (socket) => {
       console.log(`connection from: ${socket.id}`);
@@ -43,24 +44,55 @@ class Server {
       });
 
       // Part of Game
-
-      socket.on(SOCKETS.newRoom, (data) => {
+      // newRoom creation
+      socket.on(SOCKETS.NEW_ROOM, (data, callback) => {
+        /*
+          Has to be improved. Validation etc.
+        */
         const newRoom = {
           tiles: [],
-          players: [socket.id],
+          players: [
+            { // Owner of lobby is a player also
+              tile: 0,
+              winner: false,
+              id: socket.id,
+              type: 'player',
+            },
+          ],
+          started: false,
           pwd: data.pwd,
           mode: data.mode,
+          owner: socket.id,
           hasPwd: data.hasPwd,
           roomId: data.roomId,
           roomName: data.roomName,
           maxPlayers: data.maxPlayers,
         };
-        if (this.roomTable.every(el => el.roomId !== newRoom.roomId)) this.roomTable.push(newRoom);
-        else console.log('Error such table already exists');
-        console.log(this.roomTable);
+        if (this.roomTable.every(el => el.roomId !== newRoom.roomId)) {
+          this.roomTable.push(newRoom);
+          callback(newRoom);
+          //
+        } else callback({ error: 'Room with this roomId already exists!' });
+        console.log(this.roomTable); // for debugging
       });
 
-      socket.on(SOCKETS.getRoomList, () => {
+      // startGame logic
+      socket.on(SOCKETS.GAME_START, (data, callback) => {
+        const key = _.findIndex(this.roomTable, elm => elm.owner === socket.id);
+        if (key === -1) callback({ error: 'You don\'t have any lobby to start game on' });
+        else if (this.roomTable[key].started) callback({ message: 'Game is already started' });
+        else {
+          this.roomTable[key].started = true;
+          // NOT NEEDED PROBABLT: Return to owner(game starter) game structure again IDK WHY.
+          callback(this.roomTable[key]);
+          // Emit to all player in this lobby to force game start
+
+          // Generate and spawn first tile
+
+        }
+      });
+
+      socket.on(SOCKETS.ROOM_LIST, (data, callback) => {
         const ret = {};
         this.roomTable.forEach((room) => {
           const tmp = {
@@ -73,12 +105,16 @@ class Server {
           };
           _.assign(ret, tmp);
         });
-        this.io.to(`${socket.id}`).emit('getRoomList', JSON.stringify(ret));
+        callback(ret);
       });
 
       // /Part of Game
       // [PRESET EVENT] remove socket Id from playerTable(later game table)
       socket.on('disconnect', () => {
+        // Delete user rooms on his disconnect
+        // TODO: Implament kick out of lobby for other players.
+        _.remove(this.roomTable, el => el.owner === socket.id);
+        // /game
         const key = _.findKey(this.playerTable, socketIds => (
           socketIds.indexOf(socket.id) > -1
         ));
