@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import http from 'http';
 import express from 'express';
+import path from 'path';
 import socketIO from 'socket.io';
 
 import { SERVER, SOCKETS } from './config/constants';
@@ -12,9 +13,13 @@ class Server {
     this.http = http.Server(this.app);
 
     // Game tables
-    this.roomTable = {};
+    this.roomTable = [];
     this.playerTable = {};
     // Sockets handler
+    this.app.get('/', (req, res) => {
+      res.sendFile(path.join(`${__dirname}/test.html`));
+    });
+
     this.io = socketIO(this.http, { pingTimeout: 60000 }); // eslint-disable-line
     this.io.sockets.on('connection', (socket) => {
       console.log(`connection from: ${socket.id}`);
@@ -40,37 +45,33 @@ class Server {
       // Part of Game
 
       socket.on(SOCKETS.newRoom, (data) => {
-        try {
-          const parsed = JSON.parse(data);
-          const newRoom = {
-            tiles: [],
-            players: [],
-            pwd: parsed.pwd,
-            mode: parsed.mode,
-            hasPwd: parsed.hasPwd,
-            roomId: parsed.roomId,
-            roomName: parsed.roomName,
-            maxPlayers: parsed.maxPlayers,
-          };
-          Object.assign(this.roomTable, newRoom);
-          // Send something back
-        } catch (error) { // Parsing error
-          console.log(error);
-        }
+        const newRoom = {
+          tiles: [],
+          players: [socket.id],
+          pwd: data.pwd,
+          mode: data.mode,
+          hasPwd: data.hasPwd,
+          roomId: data.roomId,
+          roomName: data.roomName,
+          maxPlayers: data.maxPlayers,
+        };
+        if (this.roomTable.every(el => el.roomId !== newRoom.roomId)) this.roomTable.push(newRoom);
+        else console.log('Error such table already exists');
+        console.log(this.roomTable);
       });
 
       socket.on(SOCKETS.getRoomList, () => {
         const ret = {};
         this.roomTable.forEach((room) => {
           const tmp = {
-            hasPwd: room.hasPwd,
             mode: room.mode,
             roomId: room.roomId,
+            hasPwd: room.hasPwd,
             roomName: room.roomName,
             maxPlayers: room.maxPlayers,
             players: room.players.length,
           };
-          Object.assign(ret, tmp);
+          _.assign(ret, tmp);
         });
         this.io.to(`${socket.id}`).emit('getRoomList', JSON.stringify(ret));
       });
