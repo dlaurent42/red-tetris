@@ -14,6 +14,7 @@ const SOCKETS = {
   ROOM_INFO: 'getRoomInfo',
   PLAYER_SCORE: 'playerIsScoring',
   APPLY_PENALTY: 'applyPenalty',
+  END_OF_GAME: 'endOfGame',
 };
 
 const REGEX = {

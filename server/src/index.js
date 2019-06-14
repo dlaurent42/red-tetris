@@ -212,17 +212,32 @@ class Server {
         return callback(this.roomTable[key].players[playerKey]);
       });
 
-      /*
+      /* !!! EXPERIMENTAL
         Action:     player just finished game and it should
                     finish for other players too
+                    !! Logic: player reached top and LOST. So other players considered as winners
         Input:      data => { roomId: 'id of room' }
-        Output:     callback -> (player that ended game) && emit to other room players.
+        Output:     callback -> (player that ended game) && emit to other room players && close room
       */
       socket.on(SOCKETS.FINISH_GAME, (data, callback) => {
+        let self = {};
+        const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
+        if (key === -1) return callback({ error: 'There is no such room' });
+        if (this.roomTable[key].started === false) return callback({ error: 'There is nothing to end on this room' });
 
+        // Set other players as winners
+        this.roomTable[key].players.forEach((player, index) => {
+          if (player.id !== socket.id) this.roomTable[key].players[index].winner = true;
+          else self = player;
+          // emit announcing that game ended and sending it's own player struct const
+          this.io.to(`${player.id}`).emit(SOCKETS.END_OF_GAME, { ...this.roomTable[key].players[index], gameState: 'over' });
+          // TODO: send info to API to add scores and stats for player
+        });
+        // Remove game structure
+        this.roomTable.splice(key, 1);
+        return callback({ ...self, gameState: 'over' });
       });
 
-      // EMIT_SCORING: 'playerIsScoring', -- player lines scored
       // /Part of Game
       /*
         TODO: implement on player leave and room deletion etc.
