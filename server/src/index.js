@@ -5,6 +5,8 @@ import express from 'express'; // Just for testing
 import socketIO from 'socket.io';
 
 import { SERVER, SOCKETS } from './config/constants';
+import generatePiece from './helpers/generator';
+import formatRoomList from './helpers/rooms';
 
 class Server {
   constructor() {
@@ -71,7 +73,8 @@ class Server {
         if (this.roomTable.every(el => el.roomId !== newRoom.roomId)) {
           this.roomTable.push(newRoom);
           callback(newRoom);
-          //
+          // update everyones room list
+          socket.broadcast.emit(SOCKETS.ROOM_LIST, formatRoomList(this.roomTable));
         } else callback({ error: 'Room with this roomId already exists!' });
         console.log(this.roomTable); // for debugging
       });
@@ -83,29 +86,37 @@ class Server {
         else if (this.roomTable[key].started) callback({ error: 'Game is already started' });
         else {
           this.roomTable[key].started = true;
+          // Generate and spawn first tile
+          this.roomTable[key].tiles.push(generatePiece());
           // Emit to all player in this lobby to force game start
-          this.roomTable[key].players.forEach((player) => { // Double check this
+          this.roomTable[key].players.forEach((player) => {
             this.io.to(`${player.id}`).emit('gameHasStarted', this.roomTable[key]);
           });
-          // Generate and spawn first tile
-
+          callback(this.roomTable[key]);
         }
       });
 
-      socket.on(SOCKETS.ROOM_LIST, (data, callback) => {
-        const ret = {};
-        this.roomTable.forEach((room) => {
-          const tmp = {
-            mode: room.mode,
-            roomId: room.roomId,
-            hasPwd: room.hasPwd,
-            roomName: room.roomName,
-            maxPlayers: room.maxPlayers,
-            players: room.players.length,
-          };
-          _.assign(ret, tmp);
-        });
-        callback(ret);
+      // get room list
+      socket.on(SOCKETS.ROOM_LIST, () => {
+        const ret = formatRoomList(this.roomTable);
+        this.io.to(`${socket.id}`).emit(SOCKETS.ROOM_LIST, ret);
+      });
+
+      // player asks for next piece
+      socket.on(SOCKETS.NEXT_PIECE, (roomId, callback) => {
+        const key = _.findIndex(this.roomTable, elm => elm.roomId === roomId.room);
+        const room = this.roomTable[key];
+        if (room) {
+          if (room.started !== true) callback({ error: 'Game haven\'t started!' });
+          else {
+            const playerKey = _.findIndex(room.players, elm => elm.id === socket.id);
+            const player = room.players[playerKey];
+            player.tile += 1;
+            // spawn new one
+            if (player.tile === room.tiles.length) room.tiles.push(generatePiece());
+            callback(room.tiles[player.tile]); // emit or callback recheck!!!
+          }
+        } else callback({ error: 'There is no avialable game' });
       });
 
       // /Part of Game

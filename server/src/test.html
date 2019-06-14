@@ -9,18 +9,19 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
 			const socketIO = io.connect('http://localhost:8080');
+			let room;
 
 			async function newRoom(id = 0) {
 				const fakeData = { mode: 'test', roomId: `aasdsa${id}`, hasPwd: true, pwd: 'secret', roomName: 'test room2', maxPlayers: 3 };
 				await socketIO.emit('newRoom', fakeData, (callback) => {
 					console.log(callback);
 				});
+				room = fakeData.roomId;
 			};
 
 			async function getRoomList() {
-				await socketIO.emit('getRoomList', {}, (data) => {
-					console.log(data);
-				});
+				await socketIO.emit('getRoomList');
+				socketIO.on('getRoomList', (data) => console.log(data));
 			};
 
 			async function startGame(id = 0) {
@@ -28,6 +29,18 @@
 					console.log(callback);
 				});
 			};
+
+			async function getNextPiece() {
+				await socketIO.emit('getNextPiece', { room }, (callback) => {
+					console.log('Receiving next piece: ');
+					console.log(callback);
+				});
+			}
+
+			socketIO.on('gameHasStarted', (data) => {
+				console.log('Game begins on lobby: ');
+				console.log(data);
+			});
 		</script>
 	</body>
 </html>
