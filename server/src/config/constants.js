@@ -8,6 +8,7 @@ const SOCKETS = {
   ROOM_LIST: 'getRoomList',
   GAME_START: 'startGame',
   NEXT_PIECE: 'getNextPiece',
+  JOIN_ROOM: 'joinRoom',
 };
 
 const REGEX = {
