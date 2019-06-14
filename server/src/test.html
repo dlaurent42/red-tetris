@@ -49,6 +49,16 @@
 				await socketIO.emit('playerIsScoring', { roomId: id, numberOfRows: row }, callback => console.log(callback));
 			}
 
+			// Game end !
+			async function endGame(id = room) {
+				await socketIO.emit('finishGame', { roomId: id }, callback => console.log(callback));
+			}
+			socketIO.on('endOfGame', (data) => {
+				console.log('End of game socket : ');
+				console.log(data);
+			});
+
+			// /
 			socketIO.on('gameHasStarted', (data) => {
 				console.log('Game begins on lobby: ');
 				console.log(data);
