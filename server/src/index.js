@@ -63,6 +63,7 @@ class Server {
             { // Owner of lobby is a player also
               tile: 0,
               score: 0,
+              penalty: 0,
               winner: false,
               id: socket.id,
               type: 'player',
@@ -123,7 +124,7 @@ class Server {
       /*
         Action:   player joins room
                   and emits to whole lobby that player has joined
-        Input:    data => { roomId: 'id of room' }
+        Input:    data => { roomId: 'id of room', userRole: 'optional usr role' }
         Output:   returns callback => (error) || (room structure)
       */
       socket.on(SOCKETS.JOIN_ROOM, (data, callback) => {
@@ -140,6 +141,7 @@ class Server {
             room.players.push({
               tile: 0,
               score: 0,
+              penalty: 0,
               winner: false,
               id: socket.id,
               type: 'player', // pass playerType(player, spectator, somecrap etc) with data?
@@ -182,6 +184,32 @@ class Server {
             callback(room.tiles[player.tile]);
           }
         } else callback({ error: 'There is no avialable game' });
+      });
+
+      /* !!! EXPERIMENTAL FUNCTION - might now work as intended !!!
+        Action:     player is scoring a line. We have to
+                    add other players penalty line and player additional score
+        Input:      data => { roomId: (id of room), numberOfRows: (total scored point) }
+        Output:     callback(self player struct) && emit(SOCKETS.APPLY_PENALTY) to other players
+      */
+      socket.on(SOCKETS.PLAYER_SCORE, (data, callback) => {
+        const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
+        if (key === -1) return callback({ error: 'There is no such room' });
+        if (this.roomTable[key].started === false) return callback({ error: 'Game has not started yet' });
+
+        const playerKey = _.findIndex(this.roomTable[key].players, elm => elm.id === socket.id);
+        if (playerKey === -1) return callback({ error: 'It seems like your are not in this room' });
+        if (this.roomTable[key].players[playerKey].type !== 'player') return callback({ error: 'This function is only for players' });
+
+        this.roomTable[key].players.forEach((player, index) => {
+          if (player.id !== socket.id) {
+            this.roomTable[key].players[index] += data.numberOfRows;
+            // Emit to other players to add penalty block
+            this.io.to(`${player.id}`).emit(SOCKETS.APPLY_PENALTY, this.roomTable[key].players[index]);
+          }
+        });
+        this.roomTable[key].players[playerKey].score += data.numberOfRows;
+        return callback(this.roomTable[key].players[playerKey]);
       });
 
       /*
