@@ -102,9 +102,35 @@ class Server {
         this.io.to(`${socket.id}`).emit(SOCKETS.ROOM_LIST, ret);
       });
 
+      // player joins room
+      socket.on(SOCKETS.JOIN_ROOM, (data, callback) => {
+        const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
+        if (key === -1) callback({ error: 'There is no such room' });
+        else {
+          const room = this.roomTable[key];
+          if (room.players.length === room.maxPlayers) callback({ error: 'Room is already full' });
+          else if ((_.findIndex(room.players, elm => elm.id === socket.id)) !== -1) callback({ error: 'You are already in room' });
+          else if (room.hasPwd && room.pwd !== data.pwd) callback({ error: 'Wrong password' });
+          else if (room.started) callback({ error: 'Game is already started' });
+          else {
+            // add player to player list
+            room.players.push({
+              tile: 0,
+              winner: false,
+              id: socket.id,
+              type: 'player', // pass player type with data?
+            });
+            room.players.forEach((player) => { // recheck with FrontEnd(send new palyer list)
+              this.io.to(`${player.id}`).emit('playerJoined', room.players);
+            });
+            callback(room);
+          }
+        }
+      });
+
       // player asks for next piece
-      socket.on(SOCKETS.NEXT_PIECE, (roomId, callback) => {
-        const key = _.findIndex(this.roomTable, elm => elm.roomId === roomId.room);
+      socket.on(SOCKETS.NEXT_PIECE, (data, callback) => {
+        const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         const room = this.roomTable[key];
         if (room) {
           if (room.started !== true) callback({ error: 'Game haven\'t started!' });
@@ -114,7 +140,7 @@ class Server {
             player.tile += 1;
             // spawn new one
             if (player.tile === room.tiles.length) room.tiles.push(generatePiece());
-            callback(room.tiles[player.tile]); // emit or callback recheck!!!
+            callback(room.tiles[player.tile]);
           }
         } else callback({ error: 'There is no avialable game' });
       });
