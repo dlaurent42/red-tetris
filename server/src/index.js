@@ -35,7 +35,6 @@ class Server {
           } else this.playerTable[id].push(socket.id);
         }
       });
-
       // Remove all sockets Id when user logs out
       socket.on('logoutUser', (uid) => {
         if (!_.isEmpty(this.playerTable[parseInt(uid, 10)])) {
@@ -46,7 +45,13 @@ class Server {
       });
 
       // Part of Game
-      // newRoom creation
+
+      /*
+        EXPERIMENTAL function!
+        Action:   to create a new room and update lobby list to players
+        Input:    data => { pwd, mode, hasPwd, roomId, roomName, maxPlayers }
+        Output:   callback -> new room structure Object
+      */
       socket.on(SOCKETS.NEW_ROOM, (data, callback) => {
         /*
           Has to be improved. Validation etc.
@@ -56,6 +61,7 @@ class Server {
           players: [
             { // Owner of lobby is a player also
               tile: 0,
+              score: 0,
               winner: false,
               id: socket.id,
               type: 'player',
@@ -79,7 +85,13 @@ class Server {
         console.log(this.roomTable); // for debugging
       });
 
-      // startGame logic
+      /*
+        Action:   Room owner sends signal to start game and
+                    emits(SOCKETS.GAME_BEGIN) to all players of lobby that
+                    games has stated
+        Input:    none
+        Output:   callback -> room structure Object
+      */
       socket.on(SOCKETS.GAME_START, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.owner === socket.id);
         if (key === -1) callback({ error: 'You don\'t have any lobby to start game on' });
@@ -90,19 +102,29 @@ class Server {
           this.roomTable[key].tiles.push(generatePiece());
           // Emit to all player in this lobby to force game start
           this.roomTable[key].players.forEach((player) => {
-            this.io.to(`${player.id}`).emit('gameHasStarted', this.roomTable[key]);
+            this.io.to(`${player.id}`).emit(SOCKETS.GAME_BEGIN, this.roomTable[key]);
           });
           callback(this.roomTable[key]);
         }
       });
 
-      // get room list
-      socket.on(SOCKETS.ROOM_LIST, () => {
+      /* getRoomList
+        Action:   player call to get full room list
+        Input:    none
+        Output:   callback of roomlist Object
+      */
+      socket.on(SOCKETS.ROOM_LIST, (data, callback) => {
         const ret = formatRoomList(this.roomTable);
-        this.io.to(`${socket.id}`).emit(SOCKETS.ROOM_LIST, ret);
+        // this.io.to(`${socket.id}`).emit(SOCKETS.ROOM_LIST, ret);
+        callback(ret);
       });
 
-      // player joins room
+      /*
+        Action:   player joins room
+                  and emits to whole lobby that player has joined
+        Input:    data => { roomId: 'id of room' }
+        Output:   returns callback => (error) || (room structure)
+      */
       socket.on(SOCKETS.JOIN_ROOM, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         if (key === -1) callback({ error: 'There is no such room' });
@@ -116,9 +138,10 @@ class Server {
             // add player to player list
             room.players.push({
               tile: 0,
+              score: 0,
               winner: false,
               id: socket.id,
-              type: 'player', // pass player type with data?
+              type: 'player', // pass playerType(player, spectator, somecrap etc) with data?
             });
             room.players.forEach((player) => { // recheck with FrontEnd(send new palyer list)
               this.io.to(`${player.id}`).emit('playerJoined', room.players);
@@ -128,7 +151,11 @@ class Server {
         }
       });
 
-      // player asks for next piece
+      /*
+          Action:   player asks for next piece
+          Input:    data => { roomId: 'id of room' }
+          Output:   callback => (error) || (tile Object)
+      */
       socket.on(SOCKETS.NEXT_PIECE, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         const room = this.roomTable[key];
@@ -145,8 +172,21 @@ class Server {
         } else callback({ error: 'There is no avialable game' });
       });
 
+      /*
+        Action:     player just finished game and it should
+                    finish for other players too
+        Input:      data => { roomId: 'id of room' }
+        Output:     callback -> (player that ended game) && emit to other room players.
+      */
+      socket.on(SOCKETS.FINISH_GAME, (data, callback) => {
+        
+      });
+
+      // EMIT_SCORING: 'playerIsScoring', -- player lines scored
       // /Part of Game
-      // [PRESET EVENT] remove socket Id from playerTable(later game table)
+      /*
+        TODO: implement on player leave and room deletion etc.
+      */
       socket.on('disconnect', () => {
         // Delete user rooms on his disconnect
         // TODO: Implament kick out of lobby for other players.
