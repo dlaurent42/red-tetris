@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, find, countBy, mapValues, minBy, groupBy } from 'lodash';
 import useInterval from '../../hooks/useInterval';
-import { KEYS, GAME_SETTINGS } from '../../config/constants';
+import { SOCKETS, KEYS, GAME_SETTINGS } from '../../config/constants';
 
 const game = (props) => {
 
@@ -11,52 +11,148 @@ const game = (props) => {
   const [blockedRows, setBlockedRows] = useState(0);
   const [delay, setDelay] = useState(1000);
 
-  // Tile moves
-  const rotate = () => {};
-  const dropDown = () => {};
-  const moveDown = () => {};
-  const moveLeft = () => {};
-  const moveRight = () => {};
+  // Check collisions
+  const isCollision = (movingTile, otherTiles) => {
+    let collision = false;
+    movingTile.positions.some((pos) => {
+      // Check if moving Tile is out-of-map
+      if (pos.x < 0 || pos.x >= GAME_SETTINGS.GRID_WIDTH) collision = true;
+      else if (pos.y >= GAME_SETTINGS.GRID_HEIGHT) collision = true;
 
-  // Game update handler
-  const updateGame = () => {
+      // Check collisions between moving tile and other tiles
+      otherTiles.some((tile) => {
+        if (find(tile.positions, { x: pos.x })
+        || find(tile.positions, { y: pos.y })) collision = true;
+        return collision;
+      });
+      return collision;
+    });
+    return collision;
+  };
+
+  // Check scoring
+  const handleScoring = (pieces) => {
+
+    // Get scoring rows as array
+    const scoringRows = Object
+      .entries(countBy(pieces.map(el => el.positions).flat(), 'y'))
+      .map(entry => ((entry[1] >= GAME_SETTINGS.GRID_WIDTH) ? parseInt(entry[0], 10) : []))
+      .flat();
+
+    // Warn server about scoring
+    if (scoringRows.length) {
+      props.socket.emit(SOCKETS.EMIT_SCORING, { roomId: props.roomId, score: scoringRows.length });
+    }
+
+    // Remove rows corresponding to scoringRows
+    let updatedPieces = pieces;
+    scoringRows.forEach((y) => {
+      updatedPieces = updatedPieces.map(tile => ({
+        ...tile,
+        innerPos: tile.innerPos.filter((el, idx) => (tile.positions[idx].y !== y)),
+        positions: tile.positions.filter(el => el.y !== y),
+      }));
+    });
+
+    //  Drop down pieces
+    return {
+      finalTiles: updatedPieces.map(tile => ({
+        ...tile,
+        positions: tile.positions.filter(pos => ({
+          x: pos.x,
+          y: (pos.y < Math.min(scoringRows)) ? pos.y + scoringRows.length : pos.y,
+        })),
+      })),
+      hasScored: (scoringRows.length > 0),
+    };
+  };
+
+  // Tile moves
+  const rotate = () => {
     const movingTile = cloneDeep(tiles[0]);
-    const updatedTiles = cloneDeep(tiles.slice(1));
-    // Check collisions between movingTile and updated tiles
-    //  -> if collision: movingTile.hasLanded = true
-    //        -> if row(s) complete:
-    //              - remove it from tiles
-    //              - unshift tilesStack to top of tiles
-    //              - emit specter
-    //              - emit socket to tell player has scored
-    //              - emit socket to ask for new tile for tilesStack
-    //        -> else if movingTile.y == 0
-    //              - game over
-    //        -> else
-    //              - emit specter
-    //              - emit socket to ask for new tile for tilesStack
-    //  -> if no collision, move it down
+    if (movingTile.size === 2) return;
+    if (movingTile.size === 3) {
+      movingTile.positions = movingTile.positions.map((pos, idx) => ({
+        x: (movingTile.innerPos[idx].y - 1 < 0)
+          ? pos.X + (movingTile.size - 1 - movingTile.innerPos[idx].x)
+          : pos.X + (movingTile.innerPos[idx].y - 1 - movingTile.innerPos[idx].x),
+        y: movingTile.innerPos[idx].x - movingTile.innerPos[idx].y,
+      }));
+      movingTile.innerPos = movingTile.innerPos.map(pos => ({
+        x: (pos.y - 1 < 0) ? movingTile.size - 1 : pos.y - 1,
+        y: pos.x,
+      }));
+    } else if (movingTile.size === 4) {
+      movingTile.positions = movingTile.positions.map((pos, idx) => ({
+        x: pos.X + [3, 2, 1, 0][movingTile.innerPos[idx].y] - movingTile.innerPos.x,
+        y: movingTile.innerPos[idx].x - movingTile.innerPos[idx].y,
+      }));
+      movingTile.innerPos = movingTile.innerPos.map(pos => ({
+        x: [3, 2, 1, 0][pos.y],
+        y: pos.x,
+      }));
+    }
+    if (!isCollision(movingTile, tiles.slice(1))) setTiles([movingTile, ...tiles.slice(1)]);
+  };
+  const dropDown = () => {
+    const movingTile = cloneDeep(tiles[0]);
+    const otherTiles = cloneDeep(tiles.slice(1));
+    while (!isCollision(movingTile, tiles.slice(1))) {
+      movingTile.positions = movingTile.positions.map(pos => ({ x: pos.x, y: pos.y + 1 }));
+    }
+    movingTile.hasLanded = true;
+    const { finalTiles, hasScored } = handleScoring([movingTile, ...otherTiles]);
+    if (hasScored === false) setTiles(finalTiles);
+    else {
+      setTiles([props.tilesStack[0], movingTile, ...otherTiles]);
+      props.socket.emit(
+        SOCKETS.EMIT_GET_NEW_TILE,
+        { roomId: props.roomId },
+        data => props.setTilesStack([
+          ...props.tilesStack.slice(1),
+          {
+            ...data.newTile,
+            color: GAME_SETTINGS.COLORS[Math.floor(Math.random() * GAME_SETTINGS.COLORS.length)],
+          },
+        ]),
+      );
+    }
+    props.socket.emit(
+      SOCKETS.EMIT_SPECTER,
+      {
+        roomId: props.roomId,
+        specter: mapValues(groupBy(finalTiles.map(el => el.positions).flat(), 'x'), val => minBy(val, 'y').y),
+      },
+    );
+  };
+
+  const moveDown = () => {
+    const movingTile = cloneDeep(tiles[0]);
+    if (!movingTile) return;
+    movingTile.positions = movingTile.positions.map(pos => ({ x: pos.x, y: pos.y + 1 }));
+    if (!isCollision(movingTile, tiles.slice(1))) setTiles([movingTile, ...tiles.slice(1)]);
+    else dropDown();
+  };
+  const moveLeft = () => {
+    const movingTile = cloneDeep(tiles[0]);
+    movingTile.positions = movingTile.positions.map(pos => ({ x: pos.x - 1, y: pos.y }));
+    if (!isCollision(movingTile, tiles.slice(1))) setTiles([movingTile, ...tiles.slice(1)]);
+  };
+  const moveRight = () => {
+    const movingTile = cloneDeep(tiles[0]);
+    movingTile.positions = movingTile.positions.map(pos => ({ x: pos.x + 1, y: pos.y }));
+    if (!isCollision(movingTile, tiles.slice(1))) setTiles([movingTile, ...tiles.slice(1)]);
   };
 
   // Key strokes handler
   const onKeyStroke = (key) => {
     switch (key.keyCode) {
-      case KEYS.ARROW_UP:
-        console.log('ARROW_UP');
-        break;
-      case KEYS.ARROW_DOWN:
-        console.log('ARROW_DOWN');
-        break;
-      case KEYS.ARROW_LEFT:
-        console.log('ARROW_LEFT');
-        break;
-      case KEYS.ARROW_RIGHT:
-        console.log('ARROW_RIGHT');
-        break;
-      case KEYS.SPACEBAR:
-        console.log('SPACEBAR');
-        break;
-      default:
+      case KEYS.ARROW_UP: return rotate();
+      case KEYS.ARROW_DOWN: return moveDown();
+      case KEYS.ARROW_LEFT: return moveLeft();
+      case KEYS.ARROW_RIGHT: return moveRight();
+      case KEYS.SPACEBAR: return dropDown();
+      default: return null;
     }
   };
 
@@ -67,7 +163,17 @@ const game = (props) => {
   });
 
   // Update game each [delay] ms
-  useInterval(() => updateGame(), delay);
+  useInterval(() => moveDown(), delay);
+
+  // Listen to enemy scoring
+  useEffect(() => {
+    props.socket.on(SOCKETS.ON_ENNEMY_SCORED, (data) => {
+      setBlockedRows(blockedRows + data.score - 1);
+      // addRows at the bottom
+      // if (conflict) => move moving tile to top until no more conflict
+      // else do nothing
+    });
+  });
 
   // Make game faster each 10 seconds
   useInterval(() => {
@@ -77,13 +183,37 @@ const game = (props) => {
     }
   }, 10 * 1000);
 
-  return <div />;
+  // Check wheter a tile exists at x,y position
+  const getTile = (x, y) => {
+    let tile = false;
+    tiles.some((el) => {
+      if (find(el, { x, y })) tile = el;
+      return tile;
+    });
+    return tile;
+  };
+
+  const grid = Array(GAME_SETTINGS.GRID_HEIGHT).fill(Array(GAME_SETTINGS.GRID_WIDTH).fill(0));
+  return (
+    <div className="grid">
+      {grid.map((row, y) => (
+        <div className="grid-row" key={`row_${row[0] + y}`}>
+          {row.map((col, x) => {
+            const tile = getTile(x, y);
+            if (tile) return <div key={`row_${row[0] + y}col_${row[0] + x}`} className={['grid-cell', tile.color].join(' ')} />;
+            return <div key={`row_${row[0] + y}col_${y + x}`} className="grid-cell" />;
+          })}
+        </div>
+      ))}
+    </div>
+  );
 };
 
-/*
-socket={props.socket}
-tilesStack={tilesStack}
-setTilesStack={setTilesStack}
-*/
+game.propTypes = {
+  roomId: PropTypes.string.isRequired,
+  socket: PropTypes.objectOf(PropTypes.any).isRequired,
+  tilesStack: PropTypes.arrayOf(PropTypes.any).isRequired,
+  setTilesStack: PropTypes.func.isRequired,
+};
 
 export default game;

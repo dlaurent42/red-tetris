@@ -123,10 +123,14 @@ export const SOCKETS = {
   ON_PLAYER_ENTERS_GAME: 'playerEntersGame',
   ON_PLAYER_LEFT_GAME: 'playerLeftGame',
   ON_ROOMS_UPDATE: 'updateRoomsList',
+  ON_ENNEMY_SCORED: 'enemyScored',
   EMIT_FETCH_ROOM: 'getRoomInfo',
   EMIT_FETCH_ROOMS: 'getRoomsList',
   EMIT_NEW_ROOM: 'newRoom',
   EMIT_JOIN_ROOM: 'joinRoom',
+  EMIT_GET_NEW_TILE: 'getNewTile',
+  EMIT_SCORING: 'playerIsScoring',
+  SPECTER: 'specter',
 };
 
 export const ROOM_ROLES = {
@@ -146,4 +150,10 @@ export const KEYS = {
 export const GAME_SETTINGS = {
   GRID_WIDTH: 10,
   GRID_HEIGHT: 20,
+  COLORS: [
+    'red',
+    'blue',
+    'green',
+    'yellow',
+  ],
 };

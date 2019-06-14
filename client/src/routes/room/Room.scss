@@ -1,5 +1,6 @@
 @import '../../config/styles.scss';
 
+
 .room-container {
   @include abs-full-screen;
   display: flex;
@@ -7,9 +8,98 @@
   justify-content: space-between;
 
   & .room-paper {
-    display: block;
+    @include abs-full-screen;
+    display: flex;
     flex: 1;
     flex-direction: column;
+    flex-flow: column wrap;
     justify-content: center;
+    & .flex-container {
+      display: flex;
+      flex-direction: column;
+      flex-flow: column wrap;
+      justify-content: center;
+      width: 900px;
+      height: 900px;
+      position: absolute;
+      top: 50vh;
+      left: 50vw;
+      transform: translate(-50%, -50%);
+      & .grid {
+        width: 450px;
+        height: 900px;
+        & .grid-row {
+          padding: 0;
+          margin: 0;
+          list-style: none;
+          display: flex;
+          justify-content: space-around;
+          line-height: 10px;
+          & .grid-cell {
+            background-color: rgba($secondary-color, .05);
+            margin: 1px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5em;
+            text-align: center;
+            flex: 1 0 auto;
+            height: auto;
+            border-radius: 5px;
+            &.blue { background-color: #4285F4; }
+            &.green { background-color: #0F9D58; }
+            &.yellow { background-color: #F4B400; }
+            &.red { background-color: #DB4437; }
+            &:before {
+              content:'';
+              float:left;
+              padding-top:100%;
+            }
+          }
+        }
+      }
+
+      & .specter-container {
+        width: 300px;
+        height: 600px;
+        & .specter {
+          margin: 60px 30px 20px 30px;
+          & .grid-row {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+            line-height: 10px;
+            & .grid-cell {
+              background-color: rgba($secondary-color, .05);
+              margin: 1px;
+              color: white;
+              font-weight: bold;
+              font-size: 1.5em;
+              text-align: center;
+              flex: 1 0 auto;
+              height: auto;
+              border-radius: 3px;
+              &.grid-cell-filled { background-color: #4285F4; }
+              &:before {
+                content:'';
+                float:left;
+                padding-top:100%;
+              }
+            }
+          }
+        }
+      }
+
+      & .tiles-stack {
+        display: flex;
+        width: 300px;
+        height: 300px;
+        background-color: greenyellow;
+      }
+    }
   }
 }
+
+
+

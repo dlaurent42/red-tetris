@@ -66,15 +66,20 @@ const room = (props) => {
     <div className="room-container">
       <Header />
       <Paper className="room-paper">
-        <Game
-          socket={props.socket}
-          tilesStack={tilesStack}
-          setTilesStack={setTilesStack}
-        />
-        <Specter />
-        <Pile
-          tilesStack={tilesStack}
-        />
+        <div className="flex-container">
+          <Game
+            socket={props.socket}
+            roomId={params.roomId}
+            tilesStack={tilesStack}
+            setTilesStack={setTilesStack}
+          />
+          <Pile
+            tilesStack={tilesStack}
+          />
+          <Specter
+            socket={props.socket}
+          />
+        </div>
       </Paper>
       <Footer />
     </div>
