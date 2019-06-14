@@ -4,9 +4,10 @@ import path from 'path';
 import express from 'express'; // Just for testing
 import socketIO from 'socket.io';
 
-import { SERVER, SOCKETS } from './config/constants';
-import generatePiece from './helpers/generator';
+import formatRoom from './helpers/room';
 import formatRoomList from './helpers/rooms';
+import generatePiece from './helpers/generator';
+import { SERVER, SOCKETS } from './config/constants';
 
 class Server {
   constructor() {
@@ -152,6 +153,17 @@ class Server {
       });
 
       /*
+        Action:   player wants info about room
+        Input:    data => { roomId: 'id of room' }
+        Output:   calback -> room structure Object
+      */
+      socket.on(SOCKETS.ROOM_INFO, (data, callback) => {
+        const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
+        if (key === -1) callback({ error: 'There is no such room' });
+        else callback(formatRoom(this.roomTable[key]));
+      });
+
+      /*
           Action:   player asks for next piece
           Input:    data => { roomId: 'id of room' }
           Output:   callback => (error) || (tile Object)
@@ -179,7 +191,7 @@ class Server {
         Output:     callback -> (player that ended game) && emit to other room players.
       */
       socket.on(SOCKETS.FINISH_GAME, (data, callback) => {
-        
+
       });
 
       // EMIT_SCORING: 'playerIsScoring', -- player lines scored
