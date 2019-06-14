@@ -30,11 +30,15 @@
 				});
 			};
 
-			async function getNextPiece() {
-				await socketIO.emit('getNextPiece', { room }, (callback) => {
+			async function getNextPiece(id = room) {
+				await socketIO.emit('getNextPiece', { roomId: id }, (callback) => {
 					console.log('Receiving next piece: ');
 					console.log(callback);
 				});
+			}
+
+			async function joinRoom(id, pwd = 'secret') {
+				await socketIO.emit('joinRoom', { roomId: id, pwd: pwd }, (callback) => console.log(callback));
 			}
 
 			socketIO.on('gameHasStarted', (data) => {
