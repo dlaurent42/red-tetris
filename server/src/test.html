@@ -45,6 +45,10 @@
 				await socketIO.emit('getRoomInfo', { roomId: id }, (callback) => console.log(callback));
 			}
 
+			async function scorePoint(id = room, row = 1) {
+				await socketIO.emit('playerIsScoring', { roomId: id, numberOfRows: row }, callback => console.log(callback));
+			}
+
 			socketIO.on('gameHasStarted', (data) => {
 				console.log('Game begins on lobby: ');
 				console.log(data);
