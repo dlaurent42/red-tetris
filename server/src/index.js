@@ -138,6 +138,11 @@ class Server {
         return callback(room);
       });
 
+      /* Experimental function -> possible logic issues
+        Action:   player asks for tournamentList
+        Input:    {}
+        Output:   { tournaments: ... }
+      */
       socket.on(SOCKETS.TOURNAMENTS.LIST, (data, callback) => {
         callback({ tournaments: formatRoomList(this.roomTable) });
       });
