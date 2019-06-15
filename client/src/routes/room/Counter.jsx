@@ -9,8 +9,7 @@ const counter = (props) => {
   const updateCounter = () => {
     if (props.game.hasStarted && !props.game.counterRun) {
       setCount((count === 1 || count === 'Start !') ? 'Start !' : count - 1);
-      const obj = { ...props.game, counterRun: true };
-      if (count === 'Start !') props.setGame(obj);
+      if (count === 'Start !') props.setGame({ ...props.game, counterRun: true });
     }
   };
   useInterval(() => updateCounter(), 1000);

@@ -141,17 +141,16 @@ export const SOCKETS = {
   /* -------------------   Room   ------------------- */
   ROOM_INFOS: 'roomInfos',
   // Value :   roomInfos
-  // Type  :   emit
+  // Type  :   emit with callback
   /* Data  :   {
     roomId,
     roomName,
     roomMode,
+    maxPlayers,
     roomPassword,
     roomHasPassword,
     gameHasStarted,
-    username of current user,
-    userRole of current user,
-    users: [ { username, score, status(ready, not ready), role }] corresponds to other users
+    users: [ { username, userId (if connected), score, status(ready, not ready), role }]
   } */
   ROOM_UPDATE: 'roomUpdate',
   // Value :   roomUpdate
@@ -161,6 +160,13 @@ export const SOCKETS = {
   // Value :   roomCreation
   // Type  :   emit
   // Data  :   data sent by roomInfos with users = empty array
+  ROOM_USER_UPDATE: 'roomUserUpdate',
+  // Value :   roomUserUpdate
+  // Type  :   emit / on
+  /* Data  : {
+    user: {username, userId (if connected), score, status (ready, not ready), role},
+    roomId,
+  } */
   ROOM_USER_JOINED: 'roomUserJoined',
   // Value :   roomUserJoined
   // Type  :   emit

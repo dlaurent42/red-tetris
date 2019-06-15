@@ -17,13 +17,16 @@ const room = (props) => {
 
   // Define user
   const parameters = window.location.hash.split('/').slice(1)[0].split(/\[(.+?)\]/);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    username: parameters[1],
+    score: 0,
+    status: false,
+    role: parameters[7],
+  });
   const [params, setParams] = useState({
     roomName: parameters[0],
     roomId: parameters[3],
     roomPassword: parameters[5],
-    username: parameters[1],
-    userRole: parameters[7],
     users: [],
   });
   const [game, setGame] = useState({ hasStarted: false, counterRun: false, gameOver: false });
@@ -44,17 +47,17 @@ const room = (props) => {
       }
 
       // Check number of players if role is not spectator
-      if (params.userRole === ROOM_ROLES.SPECTATOR
-      || data.nbPlayer >= data.maxPlayers
-      || data.gameHasStarted) {
-        setParams({ ...params, userRole: ROOM_ROLES.SPECTATOR });
-        props.socket.emit(SOCKETS.ROOM_USER_JOINED, { ...params, userRole: ROOM_ROLES.SPECTATOR });
-      } else props.socket.emit(SOCKETS.ROOM_USER_JOINED, { ...params });
-
-      // Check user data
-      if (props.user.uid) setUser({ ...props.user, isReady: false });
-      else setUser({ username: parameters[1], isReady: false });
-
+      const updatedUser = {
+        username: (props.user.uid) ? props.user.username : parameters[1],
+        score: 0,
+        status: false,
+        role: (user.role === ROOM_ROLES.SPECTATOR
+        || data.nbPlayer >= data.maxPlayers
+        || data.gameHasStarted) ? ROOM_ROLES.SPECTATOR : user.role,
+      };
+      setUser(updatedUser);
+      setParams({ ...data });
+      props.socket.emit(SOCKETS.ROOM_USER_JOINED, { roomId: data.roomId, updatedUser });
     });
 
   }, []);
@@ -90,9 +93,9 @@ const room = (props) => {
           />
           <div className="flex-subcontainer">
             <Infos
-              user={user}
-              setUser={setUser}
               socket={props.socket}
+              userInfos={user}
+              setUserInfos={setUser}
               roomInfos={params}
               setRoomInfos={setParams}
               gameInfos={game}
