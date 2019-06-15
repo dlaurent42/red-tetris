@@ -30,20 +30,22 @@ const tournaments = (props) => {
 
   // ComponentDidMount: fetch rooms list
   useEffect(() => {
-    props.socket.emit(SOCKETS.EMIT_FETCH_ROOMS);
+    // To be kept
+    // props.socket.emit(SOCKETS.TOURNAMENTS_LIST, {}, data => setTournamentsList(data));
+    // To be deleted
     const fakeData = [];
     for (let index = 0; index < 30; index += 1) {
       const a = rdmNbr(2) + 1;
       const b = rdmNbr(3) + 1;
-      const hasPwd = Math.random() >= 0.5;
+      const roomHasPassword = Math.random() >= 0.5;
       fakeData.push({
-        hasPwd,
-        pwd: (hasPwd) ? rdmStr() : '',
+        roomHasPassword,
+        roomPassword: (roomHasPassword) ? rdmStr() : '',
         roomId: rdmStr(),
         roomName: fakeRoomNames[rdmNbr(fakeRoomNames.length)],
         nbPlayers: Math.min(a, b),
         maxPlayers: Math.max(a, b),
-        mode: GAME_MODES[rdmNbr(GAME_MODES.length)],
+        roomMode: GAME_MODES[rdmNbr(GAME_MODES.length)],
       });
     }
     setTournamentsList(fakeData);
@@ -51,7 +53,7 @@ const tournaments = (props) => {
 
   // Add event listener on rooms updates
   useEffect(() => {
-    props.socket.on(SOCKETS.ON_ROOMS_UPDATE, (data) => {
+    props.socket.on(SOCKETS.TOURNAMENTS_UPDATE, (data) => {
       setTournamentsList(data);
     });
   }, [tournamentsList]);

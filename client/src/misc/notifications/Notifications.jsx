@@ -16,29 +16,36 @@ const notifications = (props) => {
 
   useEffect(() => {
     props.socket.on(
-      SOCKETS.ON_FRIEND_CONNECTION,
+      SOCKETS.NOTIFY_FRIEND_CONNECTION,
       data => enqueueSnackbar(`${data.username} is connected.`, { action, ...NOTIFICATIONS.FRIEND_CONNECTION }),
     );
   });
 
   useEffect(() => {
     props.socket.on(
-      SOCKETS.ON_PLAYER_LEFT_GAME,
+      SOCKETS.NOTIFY_PLAYER_LEFT_GAME,
       data => enqueueSnackbar(`${data.username} has left the room.`, { action, ...NOTIFICATIONS.PLAYER_LEFT }),
     );
   });
 
   useEffect(() => {
     props.socket.on(
-      SOCKETS.ON_PLAYER_ENTERS_GAME,
+      SOCKETS.NOTIFY_PLAYER_ENTERS_GAME,
       data => enqueueSnackbar(`${data.username} has joined the room.`, { action, ...NOTIFICATIONS.PLAYER_ENTERS }),
     );
   });
 
   useEffect(() => {
     props.socket.on(
-      SOCKETS.ON_NEW_ROOM,
+      SOCKETS.NOTIFY_ROOM_CREATED,
       data => enqueueSnackbar(`${data.roomName} room created.`, { action, ...NOTIFICATIONS.ROOM_CREATED }),
+    );
+  });
+
+  useEffect(() => {
+    props.socket.on(
+      SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS,
+      data => enqueueSnackbar(`Forbidden access to ${data.roomName} room.`, { action, ...NOTIFICATIONS.FORBIDDEN_ACCESS }),
     );
   });
 

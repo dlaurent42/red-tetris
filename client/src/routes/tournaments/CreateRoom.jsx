@@ -29,15 +29,15 @@ const createRoom = (props) => {
 
   const [form, setForm] = useState({
     roomName: '',
+    roomPassword: '',
     maxPlayers: 1,
-    mode: GAME_MODES[0],
-    pwd: '',
+    roomMode: GAME_MODES[0],
   });
   const [formErrors, setFormErrors] = useState({
     roomName: false,
+    roomPassword: false,
     maxPlayers: false,
-    mode: false,
-    pwd: false,
+    roomMode: false,
   });
 
   const handleFormChange = field => event => setForm({ ...form, [field]: event.target.value });
@@ -45,19 +45,18 @@ const createRoom = (props) => {
     setFormErrors({
       roomName: !(REGEX.ROOM_NAME.test(form.roomName)),
       maxPlayers: form.maxPlayers !== 1 && form.maxPlayers !== 2,
-      mode: !GAME_MODES.includes(form.mode),
-      pwd: form.pwd.length > 0 && !REGEX.ROOM_PWD.test(form.pwd),
+      roomMode: !GAME_MODES.includes(form.roomMode),
+      roomPassword: form.roomPassword.length > 0 && !REGEX.ROOM_PWD.test(form.roomPassword),
     });
     if (Object.values(formErrors).includes(true)) return;
     const roomId = makeid(64);
-    props.socket.emit(SOCKETS.EMIT_NEW_ROOM, {
-      payload: {
-        ...form,
-        hasPwd: form.pwd.lenght > 0,
-        roomId,
-      },
+    props.socket.emit(SOCKETS.ROOM_CREATION, {
+      ...form,
+      roomHasPassword: form.roomPassword.lenght > 0,
+      roomId,
+      users: [],
     });
-    props.history.push(`/${form.roomName}[${props.user.username || DEFAULT.USERNAME}][${roomId}][${form.pwd}][${ROOM_ROLES.CREATOR}]`);
+    props.history.push(`/${form.roomName}[${props.user.username || DEFAULT.USERNAME}][${roomId}][${form.roomPassword}][${ROOM_ROLES.CREATOR}]`);
   };
 
   return (
@@ -88,11 +87,11 @@ const createRoom = (props) => {
             <TextField
               className="create-room-input"
               margin="dense"
-              error={formErrors.pwd}
+              error={formErrors.roomPassword}
               id="standard-room-pwd"
               label="Password (opt.)"
-              value={form.pwd}
-              onChange={handleFormChange('password')}
+              value={form.roomPassword}
+              onChange={handleFormChange('roomPassword')}
               type="password"
             />
           </Grid>
@@ -116,8 +115,8 @@ const createRoom = (props) => {
           <InputLabel htmlFor="mode-select">Mode</InputLabel>
           <Select
             required
-            onChange={handleFormChange('mode')}
-            value={form.mode}
+            onChange={handleFormChange('roomMode')}
+            value={form.roomMode}
             inputProps={{
               name: 'mode',
               id: 'mode-select',

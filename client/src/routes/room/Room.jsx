@@ -35,16 +35,19 @@ const room = (props) => {
   useEffect(() => {
 
     // Check if room exists, create it if not
-    props.socket.emit(SOCKETS.EMIT_FETCH_ROOM, { ...params }, (data) => {
+    props.socket.emit(SOCKETS.ROOM_INFOS, { ...params }, (data) => {
 
       // Check password
-      if (data.hasPwd && data.pwd !== params.password) props.history.push('/tournaments');
+      if (data.roomHasPassword && data.roomPassword !== params.password) {
+        props.socket.emit(SOCKETS.ROOM_FORBIDDEN_ACCESS, { ...data });
+        props.history.push('/tournaments');
+      }
 
       // Check number of players if role is not spectator
       if (params.userRole !== ROOM_ROLES.SPECTATOR && data.nbPlayer >= data.maxPlayers) {
         setParams({ ...params, userRole: ROOM_ROLES.SPECTATOR });
-        props.socket.emit(SOCKETS.EMIT_JOIN_ROOM, { ...params, userRole: ROOM_ROLES.SPECTATOR });
-      } props.socket.emit(SOCKETS.EMIT_JOIN_ROOM, { ...params });
+        props.socket.emit(SOCKETS.ROOM_NEW_USER, { ...params, userRole: ROOM_ROLES.SPECTATOR });
+      } props.socket.emit(SOCKETS.ROOM_NEW_USER, { ...params });
 
       // Check user data
       if (props.user.uid) setUser({ ...props.user, isReady: false });

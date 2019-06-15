@@ -115,26 +115,86 @@ export const NOTIFICATIONS = {
     variant: 'success',
     autoHideDuration: 2000,
   },
+  FORBIDDEN_ACCESS: {
+    variant: 'error',
+    autoHideDuration: 2000,
+  },
 };
 
 export const SOCKETS = {
-  ON_FRIEND_CONNECTION: 'friendConnection',
-  ON_NEW_ROOM: 'newRoom',
-  ON_PLAYER_ENTERS_GAME: 'playerEntersGame',
-  ON_PLAYER_LEFT_GAME: 'playerLeftGame',
-  ON_ROOMS_UPDATE: 'updateRoomsList',
-  ON_ENNEMY_SCORED: 'enemyScored',
-  EMIT_FETCH_ROOM: 'getRoomInfo',
-  EMIT_FETCH_ROOMS: 'getRoomsList',
-  EMIT_NEW_ROOM: 'newRoom',
-  EMIT_JOIN_ROOM: 'joinRoom',
-  EMIT_GET_NEW_TILE: 'getNewTile',
-  EMIT_SCORING: 'playerIsScoring',
-  SPECTER: 'specter',
+
+  /* ----------------   Tournaments   --------------- */
+  TOURNAMENTS_LIST: 'tournamentsList',
+  // Value :   tournamentsList
+  // Type  :   emit with fallback function
+  // Send  :   {}
+  // Expect:   [{roomId, roomName, nbPlayers, maxPlayers, roomHasPassword, roomPassword, roomMode}]
+  TOURNAMENTS_UPDATE: 'tournamentsUpdate',
+  // Value :   tournamentsUpdate
+  // Type  :   on
+  // Expect:   [{roomId, roomName, nbPlayers, maxPlayers, roomHasPassword, roomPassword, roomMode}]
+
+  /* -------------------   Room   ------------------- */
+  ROOM_INFOS: 'roomInfos',
+  // Value :   roomInfos
+  // Type  :   emit
+  /* Send  :   {
+    roomId,
+    roomName,
+    roomMode,
+    roomPassword,
+    roomHasPassword,
+    username of current user,
+    userRole of current user,
+    users: [ { username, score, status(ready, not ready), role }] corresponds to other users
+  } */
+  ROOM_UPDATE: 'roomUpdate',
+  // Value :   roomUpdate
+  // Type  :   on
+  // Expect:   data sent by roomInfos
+  ROOM_CREATION: 'roomCreation',
+  // Value :   roomCreation
+  // Type  :   emit
+  // Send  :   data sent by roomInfos with users = empty array
+  ROOM_NEW_USER: 'roomNewUser',
+  // Value :   roomNewUser
+  // Type  :   emit
+  // Send  :   data sent by roomInfos
+  ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
+  // Value :   roomForbiddenAccess
+  // -----------------------
+  // Type  :   emit
+  // Send  :   data sent by roomInfos
+  NOTIFY_ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
+  // -----------------------
+  // Type  :   on
+  // Send  :   data sent by roomInfos
+  // Whhhhhaaaat ? I send you an emit, then I redirect user and you send me emit (for notifications)
+
+  /* -------------------   Game   ------------------- */
+  GAME_SPECTER_UPDATE: 'gameSpecterUpdate',
   GAME_STARTS: 'gameStarts',
   GAME_OVER: 'gameOver',
-  ROOM_UPDATE: 'roomUpdate',
-  PLAYER_STATUS_UPDATE: 'playerStatusUpdate', // Ready - not ready
+  GAME_SCORED: 'gameScored',
+  GAME_TILES_STACK: 'gameTilesStack',
+
+  /* ---------------   Notifications   -------------- */
+  // Value :   roomCreated
+  // Type  :   on
+  // Expect:   roomName
+  NOTIFY_ROOM_CREATED: 'roomCreated',
+  // Value :   playerLeftGame
+  // Type  :   on
+  // Expect:   username
+  NOTIFY_PLAYER_LEFT_GAME: 'playerLeftGame',
+  // Value :   playerEntersGame
+  // Type  :   on
+  // Expect:   username
+  NOTIFY_PLAYER_ENTERS_GAME: 'playerEntersGame',
+  // Value :   friendConnection
+  // Type  :   on
+  // Expect:   username
+  NOTIFY_FRIEND_CONNECTION: 'friendConnection',
 };
 
 export const ROOM_ROLES = {

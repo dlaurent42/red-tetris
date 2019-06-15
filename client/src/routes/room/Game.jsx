@@ -41,7 +41,7 @@ const game = (props) => {
 
     // Warn server about scoring
     if (scoringRows.length) {
-      props.socket.emit(SOCKETS.EMIT_SCORING, { roomId: props.roomId, score: scoringRows.length });
+      props.socket.emit(SOCKETS.GAME_SCORED, { roomId: props.roomId, score: scoringRows.length });
     }
 
     // Remove rows corresponding to scoringRows
@@ -107,7 +107,7 @@ const game = (props) => {
     } else {
       setTiles([props.tilesStack[0], ...finalTiles]);
       props.socket.emit(
-        SOCKETS.EMIT_GET_NEW_TILE,
+        SOCKETS.GAME_TILES_STACK,
         { roomId: props.roomId },
         data => props.setTilesStack([
           ...props.tilesStack.slice(1),
@@ -118,7 +118,7 @@ const game = (props) => {
         ]),
       );
       props.socket.emit(
-        SOCKETS.EMIT_SPECTER,
+        SOCKETS.GAME_SPECTER_UPDATE,
         {
           roomId: props.roomId,
           specter: mapValues(groupBy(finalTiles.map(el => el.positions).flat(), 'x'), val => minBy(val, 'y').y),
@@ -169,7 +169,7 @@ const game = (props) => {
 
   // Listen to enemy scoring
   useEffect(() => {
-    props.socket.on(SOCKETS.ON_ENNEMY_SCORED, (data) => {
+    props.socket.on(SOCKETS.GAME_SCORED, (data) => {
       if (props.game.gameOver) {
         setBlockedRows(blockedRows + data.score - 1);
         // addRows at the bottom

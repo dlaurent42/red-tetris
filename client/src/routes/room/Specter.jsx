@@ -7,7 +7,7 @@ const specter = (props) => {
   const [specterArray, setSpecterArray] = useState([]);
 
   useEffect(() => {
-    props.socket.on(SOCKETS.SPECTER, data => setSpecterArray(data.specter));
+    props.socket.on(SOCKETS.GAME_SPECTER_UPDATE, data => setSpecterArray(data.specter));
   });
 
   const grid = Array(GAME_SETTINGS.GRID_HEIGHT).fill(Array(GAME_SETTINGS.GRID_WIDTH).fill(0));

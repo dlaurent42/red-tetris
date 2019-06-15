@@ -17,9 +17,9 @@ const joinRoom = (props) => {
 
   const handleValidation = (status) => {
     if (status === 'player'
-      && ((props.roomData.hasPwd && roomPassword !== props.roomData.pwd)
+      && ((props.roomData.roomHasPassword && roomPassword !== props.roomData.roomPassword)
       || props.roomData.nbPlayers >= props.roomData.maxPlayers)) return;
-    props.history.push(`/${props.roomData.roomName}[${props.user.username || DEFAULT.USERNAME}][${props.roomData.roomId}][${props.roomData.pwd}][${status}]`);
+    props.history.push(`/${props.roomData.roomName}[${props.user.username || DEFAULT.USERNAME}][${props.roomData.roomId}][${props.roomData.roomPassword}][${status}]`);
   };
 
   return (
@@ -31,8 +31,8 @@ const joinRoom = (props) => {
     >
       <DialogTitle id="join-room">{`Join ${props.roomData.roomName}`}</DialogTitle>
       <DialogContent>
-        {(props.roomData.hasPwd && props.roomData.nbPlayers < props.roomData.maxPlayers)
-          ? <DialogContentText>{`Room password: ${props.roomData.pwd}`}</DialogContentText> : null}
+        {(props.roomData.roomHasPassword && props.roomData.nbPlayers < props.roomData.maxPlayers)
+          ? <DialogContentText>{`Room password: ${props.roomData.roomPassword}`}</DialogContentText> : null}
         <DialogContentText>
           The goal of Tetris is to score as many points as possible&nbsp;
           by clearing horizontal lines of Blocks.&nbsp;
@@ -40,7 +40,7 @@ const joinRoom = (props) => {
           Tetriminos inside the Matrix (playing field).&nbsp;
           Lines are cleared when they are filled with Blocks and have no empty spaces.
         </DialogContentText>
-        {(props.roomData.hasPwd && props.roomData.nbPlayers < props.roomData.maxPlayers)
+        {(props.roomData.roomHasPassword && props.roomData.nbPlayers < props.roomData.maxPlayers)
           ? (
             <TextField
               autoFocus
@@ -68,7 +68,8 @@ const joinRoom = (props) => {
               variant="contained"
               autoFocus
               color="primary"
-              disabled={props.roomData.hasPwd && roomPassword !== props.roomData.pwd}
+              disabled={
+                props.roomData.roomHasPassword && roomPassword !== props.roomData.roomPassword}
               onClick={() => handleValidation('player')}
             >
               Player
