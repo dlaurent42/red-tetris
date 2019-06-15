@@ -31,7 +31,11 @@ const tournaments = (props) => {
   // ComponentDidMount: fetch rooms list
   useEffect(() => {
     // To be kept
-    // props.socket.emit(SOCKETS.TOURNAMENTS_LIST, {}, data => setTournamentsList(data));
+    // props.socket.emit(
+    //   SOCKETS.TOURNAMENTS_LIST,
+    //   {},
+    //   data => setTournamentsList(data.tournaments),
+    // );
     // To be deleted
     const fakeData = [];
     for (let index = 0; index < 30; index += 1) {

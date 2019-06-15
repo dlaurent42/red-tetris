@@ -49,7 +49,7 @@ const game = (props) => {
     scoringRows.forEach((y) => {
       updatedPieces = updatedPieces.map(tile => ({
         ...tile,
-        innerPos: tile.innerPos.filter((el, idx) => (tile.positions[idx].y !== y)),
+        innerPositions: tile.innerPositions.filter((el, idx) => (tile.positions[idx].y !== y)),
         positions: tile.positions.filter(el => el.y !== y),
       }));
     });
@@ -70,21 +70,21 @@ const game = (props) => {
     if (!movingTile || movingTile.size === 2 || props.game.gameOver) return;
     if (movingTile.size === 3) {
       movingTile.positions = movingTile.positions.map((pos, idx) => ({
-        x: (movingTile.innerPos[idx].y - 1 < 0)
-          ? pos.X + (movingTile.size - 1 - movingTile.innerPos[idx].x)
-          : pos.X + (movingTile.innerPos[idx].y - 1 - movingTile.innerPos[idx].x),
-        y: movingTile.innerPos[idx].x - movingTile.innerPos[idx].y,
+        x: (movingTile.innerPositions[idx].y - 1 < 0)
+          ? pos.X + (movingTile.size - 1 - movingTile.innerPositions[idx].x)
+          : pos.X + (movingTile.innerPositions[idx].y - 1 - movingTile.innerPositions[idx].x),
+        y: movingTile.innerPositions[idx].x - movingTile.innerPositions[idx].y,
       }));
-      movingTile.innerPos = movingTile.innerPos.map(pos => ({
+      movingTile.innerPositions = movingTile.innerPositions.map(pos => ({
         x: (pos.y - 1 < 0) ? movingTile.size - 1 : pos.y - 1,
         y: pos.x,
       }));
     } else if (movingTile.size === 4) {
       movingTile.positions = movingTile.positions.map((pos, idx) => ({
-        x: pos.X + [3, 2, 1, 0][movingTile.innerPos[idx].y] - movingTile.innerPos.x,
-        y: movingTile.innerPos[idx].x - movingTile.innerPos[idx].y,
+        x: pos.X + [3, 2, 1, 0][movingTile.innerPositions[idx].y] - movingTile.innerPositions.x,
+        y: movingTile.innerPositions[idx].x - movingTile.innerPositions[idx].y,
       }));
-      movingTile.innerPos = movingTile.innerPos.map(pos => ({
+      movingTile.innerPositions = movingTile.innerPositions.map(pos => ({
         x: [3, 2, 1, 0][pos.y],
         y: pos.x,
       }));
@@ -107,12 +107,12 @@ const game = (props) => {
     } else {
       setTiles([props.tilesStack[0], ...finalTiles]);
       props.socket.emit(
-        SOCKETS.GAME_TILES_STACK,
+        SOCKETS.GAME_NEW_TILE,
         { roomId: props.roomId },
         data => props.setTilesStack([
           ...props.tilesStack.slice(1),
           {
-            ...data.newTile,
+            ...data.tile,
             color: GAME_SETTINGS.COLORS[Math.floor(Math.random() * GAME_SETTINGS.COLORS.length)],
           },
         ]),
@@ -169,14 +169,16 @@ const game = (props) => {
 
   // Listen to enemy scoring
   useEffect(() => {
-    props.socket.on(SOCKETS.GAME_SCORED, (data) => {
-      if (props.game.gameOver) {
-        setBlockedRows(blockedRows + data.score - 1);
-        // addRows at the bottom
-        // if (conflict) => move moving tile to top until no more conflict
-        // else do nothing
-      }
-    });
+    if (props.game.hasStarted && !props.game.gameOver) {
+      props.socket.on(SOCKETS.GAME_SCORED, (data) => {
+        if (props.game.gameOver) {
+          setBlockedRows(blockedRows + data.score - 1);
+          // addRows at the bottom
+          // if (conflict) => move moving tile to top until no more conflict
+          // else do nothing
+        }
+      });
+    }
   }, []);
 
   // Make game faster each 10 seconds
@@ -204,7 +206,12 @@ const game = (props) => {
         clearTimeout(handler);
       };
     });
-  });
+  }, []);
+
+  // Listen to game over event
+  useEffect(() => {
+    props.socket.on(SOCKETS.GAME_OVER, () => props.setGame({ ...props.game, gameOver: true }));
+  }, []);
 
   // Check wheter a tile exists at x,y position
   const getTile = (x, y) => {

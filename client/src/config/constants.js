@@ -128,17 +128,21 @@ export const SOCKETS = {
   // Value :   tournamentsList
   // Type  :   emit with fallback function
   // Send  :   {}
-  // Expect:   [{roomId, roomName, nbPlayers, maxPlayers, roomHasPassword, roomPassword, roomMode}]
+  // Data  : {
+  //  tournaments: [
+  //    {roomId, roomName, nbPlayers, maxPlayers, roomHasPassword, roomPassword, roomMode},
+  //    {roomId, roomName, nbPlayers, maxPlayers, roomHasPassword, roomPassword, roomMode},
+  //  ]}
   TOURNAMENTS_UPDATE: 'tournamentsUpdate',
   // Value :   tournamentsUpdate
   // Type  :   on
-  // Expect:   [{roomId, roomName, nbPlayers, maxPlayers, roomHasPassword, roomPassword, roomMode}]
+  // Data  :   see above
 
   /* -------------------   Room   ------------------- */
   ROOM_INFOS: 'roomInfos',
   // Value :   roomInfos
   // Type  :   emit
-  /* Send  :   {
+  /* Data  :   {
     roomId,
     roomName,
     roomMode,
@@ -151,50 +155,66 @@ export const SOCKETS = {
   ROOM_UPDATE: 'roomUpdate',
   // Value :   roomUpdate
   // Type  :   on
-  // Expect:   data sent by roomInfos
+  // Data  :   data sent by roomInfos
   ROOM_CREATION: 'roomCreation',
   // Value :   roomCreation
   // Type  :   emit
-  // Send  :   data sent by roomInfos with users = empty array
+  // Data  :   data sent by roomInfos with users = empty array
   ROOM_NEW_USER: 'roomNewUser',
   // Value :   roomNewUser
   // Type  :   emit
-  // Send  :   data sent by roomInfos
+  // Data  :   data sent by roomInfos
   ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
   // Value :   roomForbiddenAccess
   // -----------------------
   // Type  :   emit
-  // Send  :   data sent by roomInfos
+  // Data  :   data sent by roomInfos
   NOTIFY_ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
   // -----------------------
   // Type  :   on
-  // Send  :   data sent by roomInfos
+  // Data  :   data sent by roomInfos
   // Whhhhhaaaat ? I send you an emit, then I redirect user and you send me emit (for notifications)
 
   /* -------------------   Game   ------------------- */
   GAME_SPECTER_UPDATE: 'gameSpecterUpdate',
+  // Value :   gameSpecterUpdate
+  // Type  :   emit + on
+  // Data  :   { roomId, specter }
   GAME_STARTS: 'gameStarts',
+  // Value :   gameStarts
+  // Type  :   on
+  // Data  :   { tiles (x3): [{ positions: [], innerPositions: [] }, {}, {}] }
   GAME_OVER: 'gameOver',
+  // Value :   gameOver
+  // Type  :   emit + on
+  // Data  :   { roomId }
   GAME_SCORED: 'gameScored',
-  GAME_TILES_STACK: 'gameTilesStack',
+  // Value :   gameScored
+  // Type  :   emit + on
+  // Data  :   { roomId, score = number of rows scored }
+  GAME_NEW_TILE: 'gameNewTile',
+  // Value :   gameNewTile
+  // Type  :   emit with fallback function
+  // Data s:   { roomId }
+  // Data r:   { tile: { positions: [], innerPositions: [] } }
 
   /* ---------------   Notifications   -------------- */
+  NOTIFY_ROOM_CREATED: 'roomCreated',
   // Value :   roomCreated
   // Type  :   on
-  // Expect:   roomName
-  NOTIFY_ROOM_CREATED: 'roomCreated',
+  // Data  :   { roomName }
+  NOTIFY_PLAYER_LEFT_GAME: 'playerLeftGame',
   // Value :   playerLeftGame
   // Type  :   on
-  // Expect:   username
-  NOTIFY_PLAYER_LEFT_GAME: 'playerLeftGame',
+  // Data  :   { username }
+  NOTIFY_PLAYER_ENTERS_GAME: 'playerEntersGame',
   // Value :   playerEntersGame
   // Type  :   on
-  // Expect:   username
-  NOTIFY_PLAYER_ENTERS_GAME: 'playerEntersGame',
+  // Data  :   { username }
+  NOTIFY_FRIEND_CONNECTION: 'friendConnection',
   // Value :   friendConnection
   // Type  :   on
-  // Expect:   username
-  NOTIFY_FRIEND_CONNECTION: 'friendConnection',
+  // Data  :   { username }
 };
 
 export const ROOM_ROLES = {
