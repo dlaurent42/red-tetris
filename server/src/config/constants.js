@@ -8,7 +8,6 @@ const SOCKETS = {
   ROOM_LIST: 'getRoomList',
   GAME_START: 'startGame',
   GAME_BEGIN: 'gameHasStarted',
-  NEXT_PIECE: 'getNextPiece',
   JOIN_ROOM: 'joinRoom',
   FINISH_GAME: 'finishGame',
   ROOM_INFO: 'getRoomInfo',
@@ -19,6 +18,7 @@ const SOCKETS = {
   // Game logic related
   GAME: {
     NEXT_PIECE: 'gameNewTile',
+    PLAYER_SCORE: 'gameScored',
   },
   // All notifications are emit'ed from server to client
   NOTIFICATIONS: {

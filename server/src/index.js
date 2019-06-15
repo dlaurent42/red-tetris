@@ -167,26 +167,30 @@ class Server {
       /* !!! EXPERIMENTAL FUNCTION - might now work as intended !!!
         Action:     player is scoring a line. We have to
                     add other players penalty line and player additional score
-        Input:      data => { roomId: (id of room), numberOfRows: (total scored point) }
+        Input:      data => { roomId: (id of room), score: (total scored point) }
         Output:     callback(self player struct) && emit(SOCKETS.APPLY_PENALTY) to other players
       */
-      socket.on(SOCKETS.PLAYER_SCORE, (data, callback) => {
+      socket.on(SOCKETS.GAME.PLAYER_SCORE, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         if (key === -1) return callback({ error: 'There is no such room' });
         if (this.roomTable[key].started === false) return callback({ error: 'Game has not started yet' });
 
         const playerKey = _.findIndex(this.roomTable[key].players, elm => elm.id === socket.id);
         if (playerKey === -1) return callback({ error: 'It seems like your are not in this room' });
-        if (this.roomTable[key].players[playerKey].type !== 'player') return callback({ error: 'This function is only for players' });
+        if (this.roomTable[key].players[playerKey].type === 'spectator') return callback({ error: 'This function is only for players' });
 
         this.roomTable[key].players.forEach((player, index) => {
           if (player.id !== socket.id) {
-            this.roomTable[key].players[index] += data.numberOfRows;
+            this.roomTable[key].players[index].penalty += data.score;
             // Emit to other players to add penalty block
-            this.io.to(`${player.id}`).emit(SOCKETS.APPLY_PENALTY, this.roomTable[key].players[index]);
+            this.io.to(`${player.id}`).emit(SOCKETS.GAME.PLAYER_SCORE,
+              {
+                roomId: this.roomTable,
+                score: data.score,
+              });
           }
         });
-        this.roomTable[key].players[playerKey].score += data.numberOfRows;
+        this.roomTable[key].players[playerKey].score += data.score;
         return callback(this.roomTable[key].players[playerKey]);
       });
 
