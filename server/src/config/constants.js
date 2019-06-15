@@ -15,6 +15,10 @@ const SOCKETS = {
   PLAYER_SCORE: 'playerIsScoring',
   APPLY_PENALTY: 'applyPenalty',
   END_OF_GAME: 'endOfGame',
+  PLAYER_READY: 'playerReady',
+  NOTIFICATIONS: {
+    ROOM_CREATED: 'roomCreated',
+  },
 };
 
 const REGEX = {

@@ -60,7 +60,7 @@ class Server {
         */
         const newRoom = {
           tiles: [],
-          players: [formatPlayer(socket.id, 'player')],
+          players: [formatPlayer(socket.id, 'player')], // owner is a player too
           started: false,
           pwd: data.pwd,
           mode: data.mode,
@@ -73,8 +73,9 @@ class Server {
         if (this.roomTable.every(el => el.roomId !== newRoom.roomId)) {
           this.roomTable.push(newRoom);
           callback(newRoom);
-          // update everyones room list
-          socket.broadcast.emit(SOCKETS.ROOM_LIST, formatRoomList(this.roomTable));
+          // Notification new room created to all except creator
+          socket.broadcast.emit(SOCKETS.NOTIFICATIONS.ROOM_CREATED,
+            { roomName: newRoom.roomName });
         } else callback({ error: 'Room with this roomId already exists!' });
         console.log(this.roomTable); // for debugging
       });
@@ -90,6 +91,7 @@ class Server {
         const key = _.findIndex(this.roomTable, elm => elm.owner === socket.id);
         if (key === -1) return callback({ error: 'You don\'t have any lobby to start game on' });
         if (this.roomTable[key].started) return callback({ error: 'Game is already started' });
+        // check if all players ready
         if ((_.findIndex(this.roomTable[key].players, elm => elm.ready === false)) !== -1) return callback({ error: 'Not all players are ready' });
         this.roomTable[key].started = true;
         // Generate and spawn first tile
@@ -106,11 +108,7 @@ class Server {
         Input:    none
         Output:   callback of roomlist Object
       */
-      socket.on(SOCKETS.ROOM_LIST, (data, callback) => {
-        const ret = formatRoomList(this.roomTable);
-        // this.io.to(`${socket.id}`).emit(SOCKETS.ROOM_LIST, ret);
-        callback(ret);
-      });
+      socket.on(SOCKETS.ROOM_LIST, (data, callback) => callback(formatRoomList(this.roomTable)));
 
       /*
         Action:   player joins room
