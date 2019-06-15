@@ -22,6 +22,10 @@ const infos = (props) => {
     console.log('invitation sent');
   };
 
+  const startGame = () => {
+
+  };
+
   // Listen to room updates
   useEffect(() => {
     props.socket.on(
@@ -39,7 +43,24 @@ const infos = (props) => {
   }, []);
 
   // Handle number of spectators
-  const spectatorsCounter = countBy(props.roomInfos.users, { role: ROOM_ROLES.SPECTATOR }).true;
+  const spectatorsCounter = countBy(
+    props.roomInfos.users,
+    { role: ROOM_ROLES.SPECTATOR },
+  ).true || 0;
+
+  // Handle number of players ready
+  const playersReadyCounter = (countBy(
+    props.roomInfos.users,
+    { role: ROOM_ROLES.PLAYER, status: true },
+  ).true || 0) + (countBy(
+    props.roomInfos.users,
+    { role: ROOM_ROLES.CREATOR, status: true },
+  ).true || 0);
+
+  // Handle filtered users
+  const filteredUsers = props.roomInfos.users.filter(u => (
+    u.role !== ROOM_ROLES.SPECTATOR && u.id !== props.socket.id
+  ));
 
   // Handle display of current user
   let currentUser;
@@ -51,24 +72,24 @@ const infos = (props) => {
 
   // Handle display of other users
   const otherUser = Array.from(Array(props.roomInfos.maxPlayers).keys())
-    .fill(<Button onClick={inviteFriend} disable={props.userInfos.userId > 0}>{(props.userInfos.userId) ? 'invite friend' : 'wait for player'}</Button>)
+    .fill(<Button onClick={inviteFriend} disable={props.userInfos.userId > 0}>{(props.userInfos.userId) ? 'invite friend' : 'waiting for player'}</Button>)
     .map((el) => {
-      if (!props.roomInfos.users[el]) return <Button key={`user_${el}`} onClick={inviteFriend}>{(props.userInfos.userId) ? 'invite friend' : 'wait for player'}</Button>;
+      if (!filteredUsers[el]) return <Button key={`user_${el}`} onClick={inviteFriend}>{(props.userInfos.userId) ? 'invite friend' : 'wait for player'}</Button>;
       if (props.gameInfos.hasStarted) {
         return (
           <div key={`user_${el}`} className="room-infos-other-user-ctn">
-            <div className="room-infos-other-user-usm">{props.roomInfos.users[el].username}</div>
-            <div className="room-infos-other-user-scr">{props.roomInfos.users[el].score}</div>
+            <div className="room-infos-other-user-usm">{filteredUsers[el].username}</div>
+            <div className="room-infos-other-user-scr">{filteredUsers[el].score}</div>
           </div>
         );
       }
       return (
         <div key={`user_${el}`} className="room-infos-other-user-ctn">
-          <div className="room-infos-other-user-usm">{props.roomInfos.users[el].username}</div>
+          <div className="room-infos-other-user-usm">{filteredUsers[el].username}</div>
           <div
-            className={['room-infos-other-user-sts', (props.roomInfos.users[el].status) ? 'ready' : 'waiting'].join(' ')}
+            className={['room-infos-other-user-sts', (filteredUsers[el].status) ? 'ready' : 'waiting'].join(' ')}
           >
-            {(props.roomInfos.users[el].status) ? 'ready' : 'waiting'}
+            {(filteredUsers[el].status) ? 'ready' : 'waiting'}
           </div>
         </div>
       );
@@ -93,6 +114,17 @@ const infos = (props) => {
       <div className="room-infos-other-users">
         {otherUser}
       </div>
+      {
+        (props.userInfos.role === ROOM_ROLES.CREATOR)
+          ? (
+            <Button
+              disabled={playersReadyCounter < props.roomInfos.maxPlayers}
+              onClick={startGame}
+            >
+              Start
+            </Button>
+          ) : null
+      }
     </div>
   );
 };
@@ -127,16 +159,6 @@ gameInfos: {
   counterRun,
   gameOver,
 }
-
-room
-
-if ! game  has started:
-  player... [ready] / [not ready]
-  enemy... [waiting] [ready]
-
-if game has started:
-  player: score
-  enemy: score (even if he has left the room)
 
 */
 
