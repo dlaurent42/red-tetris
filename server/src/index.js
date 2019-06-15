@@ -137,6 +137,13 @@ class Server {
       });
 
       /*
+        Action:   player sends forbidden signal
+        Input:    data => { roomInfos }
+        Output:   returns notification Forbidden with => data
+      */
+      socket.on(SOCKETS.ROOM.FORBIDDEN, data => socket.emit(SOCKETS.NOTIFICATIONS.FORBIDDEN, data));
+
+      /*
         Action:   player wants info about room
         Input:    data => { roomId: 'id of room' }
         Output:   calback -> room structure Object

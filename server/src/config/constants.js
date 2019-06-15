@@ -10,6 +10,11 @@ const SOCKETS = {
   ROOM_INFO: 'getRoomInfo',
   APPLY_PENALTY: 'applyPenalty',
   PLAYER_READY: 'playerReady',
+  // Room system
+  ROOM: {
+    UPDATE: 'roomUpdate',
+    FORBIDDEN: 'roomForbiddenAccess',
+  },
   // Game logic related
   GAME: {
     BEGIN: 'startGame', // for lobby leader to start
@@ -23,6 +28,7 @@ const SOCKETS = {
     ROOM_CREATED: 'roomCreated',
     PLAYER_ENTERED: 'playerEntersGame',
     PLAYER_LEFT: 'playerLeftGame',
+    FORBIDDEN: 'roomForbiddenAccess',
     // one constant is missing: friendConnection | no API server yet!
   },
 };
