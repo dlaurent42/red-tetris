@@ -79,7 +79,7 @@ class Server {
         console.log(this.roomTable); // for debugging
       });
 
-      /* TODO: check if all players ready
+      /*
         Action:   Room owner sends signal to start game and
                     emits(SOCKETS.GAME_BEGIN) to all players of lobby that
                     games has stated
@@ -88,18 +88,17 @@ class Server {
       */
       socket.on(SOCKETS.GAME_START, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.owner === socket.id);
-        if (key === -1) callback({ error: 'You don\'t have any lobby to start game on' });
-        else if (this.roomTable[key].started) callback({ error: 'Game is already started' });
-        else {
-          this.roomTable[key].started = true;
-          // Generate and spawn first tile
-          this.roomTable[key].tiles.push(generatePiece());
-          // Emit to all player in this lobby to force game start
-          this.roomTable[key].players.forEach((player) => {
-            this.io.to(`${player.id}`).emit(SOCKETS.GAME_BEGIN, this.roomTable[key]);
-          });
-          callback(this.roomTable[key]);
-        }
+        if (key === -1) return callback({ error: 'You don\'t have any lobby to start game on' });
+        if (this.roomTable[key].started) return callback({ error: 'Game is already started' });
+        if ((_.findIndex(this.roomTable[key].players, elm => elm.ready === false)) !== -1) return callback({ error: 'Not all players are ready' });
+        this.roomTable[key].started = true;
+        // Generate and spawn first tile
+        this.roomTable[key].tiles.push(generatePiece());
+        // Emit to all player in this lobby to force game start
+        this.roomTable[key].players.forEach((player) => {
+          this.io.to(`${player.id}`).emit(SOCKETS.GAME_BEGIN, this.roomTable[key]);
+        });
+        return callback(this.roomTable[key]);
       });
 
       /* getRoomList
@@ -192,6 +191,20 @@ class Server {
           }
         });
         this.roomTable[key].players[playerKey].score += data.numberOfRows;
+        return callback(this.roomTable[key].players[playerKey]);
+      });
+
+      /*
+        Action:     sets player state ready in that particular lobby
+        Input:      data => { roomId: (id of room) }
+        Output:     callback(self player obj) with player info
+      */
+      socket.on(SOCKETS.PLAYER_READY, (data, callback) => {
+        const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
+        if (key === -1) return callback({ error: 'There is no such room' });
+        const playerKey = _.findIndex(this.roomTable[key].players, elm => elm.id === socket.id);
+        if (playerKey === -1) return callback({ error: 'Apparantely you are not in this lobby' });
+        this.roomTable[key].players[playerKey].ready = true;
         return callback(this.roomTable[key].players[playerKey]);
       });
 
