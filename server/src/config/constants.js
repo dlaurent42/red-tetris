@@ -16,9 +16,11 @@ const SOCKETS = {
   APPLY_PENALTY: 'applyPenalty',
   END_OF_GAME: 'endOfGame',
   PLAYER_READY: 'playerReady',
+  // All notifications are emit'ed from server to client
   NOTIFICATIONS: {
     ROOM_CREATED: 'roomCreated',
     PLAYER_ENTERED: 'playerEntersGame',
+    PLAYER_LEFT: 'playerLeftGame',
   },
 };
 

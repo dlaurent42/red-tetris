@@ -235,13 +235,41 @@ class Server {
 
       // /Part of Game
       /*
-        TODO: implement on player leave and room deletion etc.
+        !!! Everything in disconnect is EXPERIMENTAL !!!
       */
       socket.on('disconnect', () => {
-        // Delete user rooms on his disconnect
+        // If player were lobby leader.
+        const lobbyKey = _.findIndex(this.roomTable, el => el.owner === socket.id);
+        if (lobbyKey !== -1) { // Player has lobby as a leader
+          // set other players to winner
+          this.roomTable[lobbyKey].players.forEach((player, index) => {
+            if (player.id !== socket.id) this.roomTable[lobbyKey].players[index].winner = true;
+            // username = socket.id for NOW
+            this.io.to(`${player.id}`).emit(SOCKETS.NOTIFICATIONS.PLAYER_LEFT, { username: socket.id });
+            this.io.to(`${player.id}`).emit(SOCKETS.END_OF_GAME, { ...this.roomTable[lobbyKey].players[index], gameState: 'over' });
+          });
+        } else {
+          let usr = {};
+          let room = {};
+          this.roomTable.some((elm) => {
+            elm.players.some((player) => {
+              if (player.id === socket.id) {
+                usr = player;
+                room = elm;
+                return true;
+              }
+              return false;
+            });
+            return false;
+          });
+          if (!_.isEmpty(usr)) { // when casual player left -> notification
+            room.players.forEach(player => this.io.to(`${player.id}`).emit(SOCKETS.NOTIFICATIONS.PLAYER_LEFT, { username: player.id }));
+          }
+        }
+
         // TODO: Implament kick out of lobby for other players.
         _.remove(this.roomTable, el => el.owner === socket.id);
-        // /game
+        // /game --- !!! Everything below is unused for NOW !!!
         const key = _.findKey(this.playerTable, socketIds => (
           socketIds.indexOf(socket.id) > -1
         ));
