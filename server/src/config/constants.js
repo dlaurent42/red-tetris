@@ -13,6 +13,7 @@ const SOCKETS = {
   // Room system
   ROOM: {
     UPDATE: 'roomUpdate',
+    USER_LEFT: 'roomUserLeft',
     FORBIDDEN: 'roomForbiddenAccess',
   },
   // Game logic related

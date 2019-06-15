@@ -143,6 +143,20 @@ class Server {
       */
       socket.on(SOCKETS.ROOM.FORBIDDEN, data => socket.emit(SOCKETS.NOTIFICATIONS.FORBIDDEN, data));
 
+      socket.on(SOCKETS.ROOM.USER_LEFT, (data) => {
+        const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
+        if (key !== -1) {
+          const playerKey = _.findIndex(this.roomTable[key].players,
+            player => player.id === socket.id);
+          if (playerKey !== -1) this.roomTable[key].players.splice(playerKey, 1);
+          // Notify all room player that player left
+          this.roomTable[key].players.forEach((player) => {
+            // username = socket.id for NOW
+            this.io.to(`${player.id}`).emit(SOCKETS.NOTIFICATIONS.PLAYER_LEFT, { username: socket.id });
+          });
+        }
+      });
+
       /*
         Action:   player wants info about room
         Input:    data => { roomId: 'id of room' }
