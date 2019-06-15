@@ -127,13 +127,13 @@ class Server {
           tiles: [],
           players: [formatPlayer(socket.id, 'player')], // owner is a player too
           started: false,
-          pwd: data.pwd,
-          mode: data.mode,
+          pwd: data.pwd ? data.pwd : null,
+          mode: data.mode ? data.mode : 'classic',
           owner: socket.id,
-          hasPwd: data.hasPwd,
-          roomId: data.roomId,
-          roomName: data.roomName,
-          maxPlayers: data.maxPlayers,
+          hasPwd: !!data.pwd,
+          roomId: data.roomId ? data.roomId : makeId(12),
+          roomName: data.roomName ? data.roomName : 'untitled room',
+          maxPlayers: data.maxPlayers ? data.maxPlayers : 2,
         };
         if (this.roomTable.every(el => el.roomId !== newRoom.roomId)) {
           this.roomTable.push(newRoom);
