@@ -4,6 +4,7 @@ import path from 'path';
 import express from 'express'; // Just for testing
 import socketIO from 'socket.io';
 
+import makeId from './helpers/makeid';
 import formatRoom from './helpers/room';
 import formatPlayer from './helpers/player';
 import formatRoomList from './helpers/rooms';
@@ -49,7 +50,71 @@ class Server {
       // Part of Game
 
       /*
-        EXPERIMENTAL function!
+        Action:   gets objet of info about room if there is no such -> creats new one
+        Input:    data => { ... }
+        Output:   callback() - not sure if needed
+      */
+      socket.on(SOCKETS.ROOM.INFOS, (data, callback) => {
+        if (data.roomId || data.roomName) { // has roomId or room Name
+          const key = _.findIndex(this.roomTable,
+            elm => (elm.roomId === data.roomId || elm.roomName === data.roomName));
+          if (key === -1) { // room is not existing | have to create new one
+            const newRoom = {
+              tiles: [],
+              players: [formatPlayer(socket.id, 'player')], // owner is a player too
+              started: false,
+              pwd: null,
+              mode: data.mode,
+              owner: socket.id,
+              hasPwd: false,
+              roomId: data.roomId,
+              roomName: data.roomName,
+              maxPlayers: 2,
+            };
+            this.roomTable.push(newRoom);
+            // Notification new room created to all except creator
+            socket.broadcast.emit(SOCKETS.NOTIFICATIONS.ROOM_CREATED,
+              { roomName: newRoom.roomName });
+            // broadcasts new room to everybody except creator
+            socket.broadcast.emit(SOCKETS.ROOM.UPDATE, newRoom);
+            return callback(newRoom);
+          }
+          if (this.roomTable[key].hasPwd && this.roomTable[key].pwd !== data.roomPwd) return callback({ error: 'Password is incorect' });
+          if (this.roomTable[key].started) return callback({ error: 'Game has already started' });
+
+          this.roomTable[key].players.forEach((player) => {
+            this.io.to(`${player.id}`).emit(SOCKETS.NOTIFICATIONS.PLAYER_ENTERED, { username: socket.id });
+          });
+          // add player to player list
+          this.roomTable[key].players.push(formatPlayer(socket.id, 'player'));
+          return callback(this.roomTable[key]);
+        }
+        // doesn't have roomId or roomName | create entirely new thing
+        const newRoom = {
+          tiles: [],
+          players: [formatPlayer(socket.id, 'player')], // owner is a player too
+          started: false,
+          pwd: null,
+          mode: data.mode ? data.mode : 'casual',
+          owner: socket.id,
+          hasPwd: data.hasPwd ? data.hasPwd : false,
+          roomId: makeId(12), // recheck lenght of ID
+          roomName: data.roomName ? data.roomName : 'untitled room',
+          maxPlayers: data.maxPlayers ? data.maxPlayers : 2,
+        };
+        if (this.roomTable.every(el => el.roomId !== newRoom.roomId)) {
+          this.roomTable.push(newRoom);
+          // Notification new room created to all except creator
+          socket.broadcast.emit(SOCKETS.NOTIFICATIONS.ROOM_CREATED,
+            { roomName: newRoom.roomName });
+          // broadcasts new room to everybody except creator
+          socket.broadcast.emit(SOCKETS.ROOM.UPDATE, newRoom);
+          return callback(newRoom);
+        }
+        return callback({ error: 'Room with this roomId already exists!' });
+      });
+
+      /*
         Action:   to create a new room and update lobby list to players
         Input:    data => { pwd, mode, hasPwd, roomId, roomName, maxPlayers }
         Output:   callback -> new room structure Object
@@ -106,13 +171,6 @@ class Server {
         });
         return callback(this.roomTable[key]);
       });
-
-      /* ??????????????????????????????????????????????????
-        Action:   player call to get full room list
-        Input:    none
-        Output:   callback of roomlist Object
-      */
-      socket.on(SOCKETS.ROOM.INFOS, (data, callback) => callback(formatRoomList(this.roomTable)));
 
       /*
         Action:   player joins room
