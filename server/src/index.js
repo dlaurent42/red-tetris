@@ -5,6 +5,7 @@ import express from 'express'; // Just for testing
 import socketIO from 'socket.io';
 
 import formatRoom from './helpers/room';
+import formatPlayer from './helpers/player';
 import formatRoomList from './helpers/rooms';
 import generatePiece from './helpers/generator';
 import { SERVER, SOCKETS } from './config/constants';
@@ -59,16 +60,7 @@ class Server {
         */
         const newRoom = {
           tiles: [],
-          players: [
-            { // Owner of lobby is a player also
-              tile: 0,
-              score: 0,
-              penalty: 0,
-              winner: false,
-              id: socket.id,
-              type: 'player',
-            },
-          ],
+          players: [formatPlayer(socket.id, 'player')],
           started: false,
           pwd: data.pwd,
           mode: data.mode,
@@ -87,7 +79,7 @@ class Server {
         console.log(this.roomTable); // for debugging
       });
 
-      /*
+      /* TODO: check if all players ready
         Action:   Room owner sends signal to start game and
                     emits(SOCKETS.GAME_BEGIN) to all players of lobby that
                     games has stated
@@ -129,29 +121,20 @@ class Server {
       */
       socket.on(SOCKETS.JOIN_ROOM, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
-        if (key === -1) callback({ error: 'There is no such room' });
-        else {
-          const room = this.roomTable[key];
-          if (room.players.length === room.maxPlayers) callback({ error: 'Room is already full' });
-          else if ((_.findIndex(room.players, elm => elm.id === socket.id)) !== -1) callback({ error: 'You are already in room' });
-          else if (room.hasPwd && room.pwd !== data.pwd) callback({ error: 'Wrong password' });
-          else if (room.started) callback({ error: 'Game is already started' });
-          else {
-            // add player to player list
-            room.players.push({
-              tile: 0,
-              score: 0,
-              penalty: 0,
-              winner: false,
-              id: socket.id,
-              type: 'player', // pass playerType(player, spectator, somecrap etc) with data?
-            });
-            room.players.forEach((player) => { // recheck with FrontEnd(send new palyer list)
-              this.io.to(`${player.id}`).emit('playerJoined', room.players);
-            });
-            callback(room);
-          }
-        }
+        if (key === -1) return callback({ error: 'There is no such room' });
+
+        const room = this.roomTable[key];
+        if (room.players.length === room.maxPlayers) return callback({ error: 'Room is already full' });
+        if ((_.findIndex(room.players, elm => elm.id === socket.id)) !== -1) return callback({ error: 'You are already in room' });
+        if (room.hasPwd && room.pwd !== data.pwd) return callback({ error: 'Wrong password' });
+        if (room.started) return callback({ error: 'Game is already started' });
+
+        // add player to player list
+        room.players.push(formatPlayer(socket.id, 'player'));
+        room.players.forEach((player) => { // recheck with FrontEnd(send new palyer list)
+          this.io.to(`${player.id}`).emit('playerJoined', room.players);
+        });
+        return callback(room);
       });
 
       /*
