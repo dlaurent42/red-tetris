@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper';
 import Game from './Game';
 import Specter from './Specter';
 import Pile from './Pile';
+import Infos from './Infos';
+import Counter from './Counter';
 import Header from '../../misc/navigation/header/Header';
 import Footer from '../../misc/navigation/footer/Footer';
 import { ROOM_ROLES, SOCKETS } from '../../config/constants';
@@ -22,7 +24,9 @@ const room = (props) => {
     roomPassword: parameters[5],
     username: parameters[1],
     userRole: parameters[7],
+    users: [],
   });
+  const [game, setGame] = useState({ hasStarted: true, counterRun: false, gameOver: false });
 
   // Define tiles stack
   const [tilesStack, setTilesStack] = useState([]);
@@ -44,7 +48,7 @@ const room = (props) => {
 
       // Check user data
       if (props.user.uid) setUser({ ...props.user, isReady: false });
-      else setUser({ username: params.username, isReady: false });
+      else setUser({ username: parameters[1], isReady: false });
 
     });
 
@@ -65,20 +69,36 @@ const room = (props) => {
   return (
     <div className="room-container">
       <Header />
+      <Counter
+        game={game}
+        setGame={setGame}
+      />
       <Paper className="room-paper">
         <div className="flex-container">
           <Game
+            game={game}
+            setGame={setGame}
             socket={props.socket}
             roomId={params.roomId}
             tilesStack={tilesStack}
             setTilesStack={setTilesStack}
           />
-          <Pile
-            tilesStack={tilesStack}
-          />
-          <Specter
-            socket={props.socket}
-          />
+          <div className="flex-subcontainer">
+            <Infos
+              user={user}
+              setUser={setUser}
+              socket={props.socket}
+              roomInfos={params}
+              setRoomInfos={setParams}
+              gameInfos={game}
+            />
+            <Pile
+              tilesStack={tilesStack}
+            />
+            <Specter
+              socket={props.socket}
+            />
+          </div>
         </div>
       </Paper>
       <Footer />

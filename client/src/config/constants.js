@@ -131,6 +131,10 @@ export const SOCKETS = {
   EMIT_GET_NEW_TILE: 'getNewTile',
   EMIT_SCORING: 'playerIsScoring',
   SPECTER: 'specter',
+  GAME_STARTS: 'gameStarts',
+  GAME_OVER: 'gameOver',
+  ROOM_UPDATE: 'roomUpdate',
+  PLAYER_STATUS_UPDATE: 'playerStatusUpdate', // Ready - not ready
 };
 
 export const ROOM_ROLES = {
@@ -150,6 +154,7 @@ export const KEYS = {
 export const GAME_SETTINGS = {
   GRID_WIDTH: 10,
   GRID_HEIGHT: 20,
+  DELAY_BEFORE_STARTS: 3000,
   COLORS: [
     'red',
     'blue',
