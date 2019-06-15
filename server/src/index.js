@@ -87,18 +87,20 @@ class Server {
         Input:    none
         Output:   callback -> room structure Object
       */
-      socket.on(SOCKETS.GAME_START, (data, callback) => {
+      socket.on(SOCKETS.GAME.BEGIN, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.owner === socket.id);
         if (key === -1) return callback({ error: 'You don\'t have any lobby to start game on' });
         if (this.roomTable[key].started) return callback({ error: 'Game is already started' });
         // check if all players ready
         if ((_.findIndex(this.roomTable[key].players, elm => elm.ready === false)) !== -1) return callback({ error: 'Not all players are ready' });
         this.roomTable[key].started = true;
-        // Generate and spawn first tile
+        // Generate and spawn first tile | x3 as requested
+        this.roomTable[key].tiles.push(generatePiece());
+        this.roomTable[key].tiles.push(generatePiece());
         this.roomTable[key].tiles.push(generatePiece());
         // Emit to all player in this lobby to force game start
         this.roomTable[key].players.forEach((player) => {
-          this.io.to(`${player.id}`).emit(SOCKETS.GAME_BEGIN, this.roomTable[key]);
+          this.io.to(`${player.id}`).emit(SOCKETS.GAME.STARTS, { tiles: this.roomTable[key].tiles });
         });
         return callback(this.roomTable[key]);
       });

@@ -6,15 +6,15 @@ const SERVER = {
 const SOCKETS = {
   NEW_ROOM: 'newRoom',
   ROOM_LIST: 'getRoomList',
-  GAME_START: 'startGame',
-  GAME_BEGIN: 'gameHasStarted',
   JOIN_ROOM: 'joinRoom',
   ROOM_INFO: 'getRoomInfo',
   APPLY_PENALTY: 'applyPenalty',
   PLAYER_READY: 'playerReady',
   // Game logic related
   GAME: {
+    BEGIN: 'startGame', // for lobby leader to start
     FINISH: 'gameOver',
+    STARTS: 'gameStarts',
     NEXT_PIECE: 'gameNewTile',
     PLAYER_SCORE: 'gameScored',
   },
