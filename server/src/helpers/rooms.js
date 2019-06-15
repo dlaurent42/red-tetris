@@ -4,12 +4,13 @@ const formatRoomList = (roomTable) => {
   const ret = {};
   roomTable.forEach((room) => {
     const tmp = {
+      pwd: room.pwd,
       mode: room.mode,
       roomId: room.roomId,
       hasPwd: room.hasPwd,
       roomName: room.roomName,
       maxPlayers: room.maxPlayers,
-      players: room.players.length,
+      nbPlayers: room.players.length,
     };
     _.assign(ret, tmp);
   });
