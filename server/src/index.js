@@ -125,13 +125,12 @@ class Server {
         if ((_.findIndex(room.players, elm => elm.id === socket.id)) !== -1) return callback({ error: 'You are already in room' });
         if (room.hasPwd && room.pwd !== data.pwd) return callback({ error: 'Wrong password' });
         if (room.started) return callback({ error: 'Game is already started' });
-
-        // add player to player list
-        room.players.push(formatPlayer(socket.id, 'player'));
-        // recheck with FrontEnd(send new palyer list) | for now only socket.id
+        // Notify lobby players that new player entered
         room.players.forEach((player) => {
           this.io.to(`${player.id}`).emit(SOCKETS.NOTIFICATIONS.PLAYER_ENTERED, { username: socket.id });
         });
+        // add player to player list
+        room.players.push(formatPlayer(socket.id, 'player'));
         return callback(room);
       });
 
@@ -151,20 +150,18 @@ class Server {
           Input:    data => { roomId: 'id of room' }
           Output:   callback => (error) || (tile Object)
       */
-      socket.on(SOCKETS.NEXT_PIECE, (data, callback) => {
+      socket.on(SOCKETS.GAME.NEXT_PIECE, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         const room = this.roomTable[key];
-        if (room) {
-          if (room.started !== true) callback({ error: 'Game haven\'t started!' });
-          else {
-            const playerKey = _.findIndex(room.players, elm => elm.id === socket.id);
-            const player = room.players[playerKey];
-            player.tile += 1;
-            // spawn new one
-            if (player.tile === room.tiles.length) room.tiles.push(generatePiece());
-            callback(room.tiles[player.tile]);
-          }
-        } else callback({ error: 'There is no avialable game' });
+        if (!room) return callback({ error: 'There is no avialable game' });
+        if (room.started !== true) return callback({ error: 'Game haven\'t started!' });
+
+        const playerKey = _.findIndex(room.players, elm => elm.id === socket.id);
+        const player = room.players[playerKey];
+        player.tile += 1;
+        // spawn new one
+        if (player.tile === room.tiles.length) room.tiles.push(generatePiece());
+        return callback({ tile: room.tiles[player.tile] });
       });
 
       /* !!! EXPERIMENTAL FUNCTION - might now work as intended !!!
