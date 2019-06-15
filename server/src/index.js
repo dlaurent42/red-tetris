@@ -164,7 +164,7 @@ class Server {
         return callback({ tile: room.tiles[player.tile] });
       });
 
-      /* !!! EXPERIMENTAL FUNCTION - might now work as intended !!!
+      /*
         Action:     player is scoring a line. We have to
                     add other players penalty line and player additional score
         Input:      data => { roomId: (id of room), score: (total scored point) }
@@ -215,7 +215,7 @@ class Server {
         Input:      data => { roomId: 'id of room' }
         Output:     callback -> (player that ended game) && emit to other room players && close room
       */
-      socket.on(SOCKETS.FINISH_GAME, (data, callback) => {
+      socket.on(SOCKETS.GAME.FINISH, (data, callback) => {
         let self = {};
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         if (key === -1) return callback({ error: 'There is no such room' });
@@ -226,7 +226,12 @@ class Server {
           if (player.id !== socket.id) this.roomTable[key].players[index].winner = true;
           else self = player;
           // emit announcing that game ended and sending it's own player struct const
-          this.io.to(`${player.id}`).emit(SOCKETS.END_OF_GAME, { ...this.roomTable[key].players[index], gameState: 'over' });
+          this.io.to(`${player.id}`).emit(SOCKETS.GAME.FINISH,
+            {
+              ...this.roomTable[key].players[index],
+              gameState: 'over',
+              roomId: this.roomTable[key].roomId,
+            });
           // TODO: send info to API to add scores and stats for player
         });
         // Remove game structure

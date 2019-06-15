@@ -9,14 +9,12 @@ const SOCKETS = {
   GAME_START: 'startGame',
   GAME_BEGIN: 'gameHasStarted',
   JOIN_ROOM: 'joinRoom',
-  FINISH_GAME: 'finishGame',
   ROOM_INFO: 'getRoomInfo',
-  PLAYER_SCORE: 'playerIsScoring',
   APPLY_PENALTY: 'applyPenalty',
-  END_OF_GAME: 'endOfGame',
   PLAYER_READY: 'playerReady',
   // Game logic related
   GAME: {
+    FINISH: 'gameOver',
     NEXT_PIECE: 'gameNewTile',
     PLAYER_SCORE: 'gameScored',
   },
