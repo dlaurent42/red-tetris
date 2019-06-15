@@ -26,7 +26,7 @@ const room = (props) => {
     userRole: parameters[7],
     users: [],
   });
-  const [game, setGame] = useState({ hasStarted: true, counterRun: false, gameOver: false });
+  const [game, setGame] = useState({ hasStarted: false, counterRun: false, gameOver: false });
 
   // Define tiles stack
   const [tilesStack, setTilesStack] = useState([]);
@@ -44,7 +44,9 @@ const room = (props) => {
       }
 
       // Check number of players if role is not spectator
-      if (params.userRole !== ROOM_ROLES.SPECTATOR && data.nbPlayer >= data.maxPlayers) {
+      if (params.userRole === ROOM_ROLES.SPECTATOR
+      || data.nbPlayer >= data.maxPlayers
+      || data.gameHasStarted) {
         setParams({ ...params, userRole: ROOM_ROLES.SPECTATOR });
         props.socket.emit(SOCKETS.ROOM_USER_JOINED, { ...params, userRole: ROOM_ROLES.SPECTATOR });
       } else props.socket.emit(SOCKETS.ROOM_USER_JOINED, { ...params });

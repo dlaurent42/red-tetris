@@ -148,6 +148,7 @@ export const SOCKETS = {
     roomMode,
     roomPassword,
     roomHasPassword,
+    gameHasStarted,
     username of current user,
     userRole of current user,
     users: [ { username, score, status(ready, not ready), role }] corresponds to other users
