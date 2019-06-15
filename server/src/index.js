@@ -54,7 +54,7 @@ class Server {
         Input:    data => { pwd, mode, hasPwd, roomId, roomName, maxPlayers }
         Output:   callback -> new room structure Object
       */
-      socket.on(SOCKETS.NEW_ROOM, (data, callback) => {
+      socket.on(SOCKETS.ROOM.CREATE, (data, callback) => {
         /*
           Has to be improved. Validation etc.
         */
@@ -76,6 +76,8 @@ class Server {
           // Notification new room created to all except creator
           socket.broadcast.emit(SOCKETS.NOTIFICATIONS.ROOM_CREATED,
             { roomName: newRoom.roomName });
+          // broadcasts new room to everybody except creator
+          socket.broadcast.emit(SOCKETS.ROOM.UPDATE, newRoom);
         } else callback({ error: 'Room with this roomId already exists!' });
         console.log(this.roomTable); // for debugging
       });
@@ -105,12 +107,12 @@ class Server {
         return callback(this.roomTable[key]);
       });
 
-      /* getRoomList
+      /* ??????????????????????????????????????????????????
         Action:   player call to get full room list
         Input:    none
         Output:   callback of roomlist Object
       */
-      socket.on(SOCKETS.ROOM_LIST, (data, callback) => callback(formatRoomList(this.roomTable)));
+      socket.on(SOCKETS.ROOM.INFOS, (data, callback) => callback(formatRoomList(this.roomTable)));
 
       /*
         Action:   player joins room
@@ -134,6 +136,10 @@ class Server {
         // add player to player list
         room.players.push(formatPlayer(socket.id, 'player'));
         return callback(room);
+      });
+
+      socket.on(SOCKETS.TOURNAMENTS.LIST, (data, callback) => {
+        callback({ tournaments: formatRoomList(this.roomTable) });
       });
 
       /*
@@ -162,7 +168,7 @@ class Server {
         Input:    data => { roomId: 'id of room' }
         Output:   calback -> room structure Object
       */
-      socket.on(SOCKETS.ROOM_INFO, (data, callback) => {
+      socket.on(SOCKETS.ROOM.INFOS, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         if (key === -1) callback({ error: 'There is no such room' });
         else callback(formatRoom(this.roomTable[key]));
@@ -191,7 +197,7 @@ class Server {
         Action:     player is scoring a line. We have to
                     add other players penalty line and player additional score
         Input:      data => { roomId: (id of room), score: (total scored point) }
-        Output:     callback(self player struct) && emit(SOCKETS.APPLY_PENALTY) to other players
+        Output:     callback(self player struct) && emit() to other players
       */
       socket.on(SOCKETS.GAME.PLAYER_SCORE, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
@@ -222,7 +228,7 @@ class Server {
         Input:      data => { roomId: (id of room) }
         Output:     callback(self player obj) with player info
       */
-      socket.on(SOCKETS.PLAYER_READY, (data, callback) => {
+      socket.on(SOCKETS.PLAYER.READY, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         if (key === -1) return callback({ error: 'There is no such room' });
         const playerKey = _.findIndex(this.roomTable[key].players, elm => elm.id === socket.id);

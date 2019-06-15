@@ -4,16 +4,15 @@ const SERVER = {
 };
 
 const SOCKETS = {
-  NEW_ROOM: 'newRoom',
-  ROOM_LIST: 'getRoomList',
-  JOIN_ROOM: 'joinRoom',
-  ROOM_INFO: 'getRoomInfo',
-  APPLY_PENALTY: 'applyPenalty',
-  PLAYER_READY: 'playerReady',
+  TOURNAMENTS: {
+    LIST: 'tournamentsList',
+  },
   // Room system
   ROOM: {
+    INFOS: 'roomInfos',
     UPDATE: 'roomUpdate',
     JOIN: 'roomUserJoined',
+    CREATE: 'roomCreation',
     USER_LEFT: 'roomUserLeft',
     FORBIDDEN: 'roomForbiddenAccess',
   },
@@ -25,12 +24,16 @@ const SOCKETS = {
     NEXT_PIECE: 'gameNewTile',
     PLAYER_SCORE: 'gameScored',
   },
+  // Player emit's
+  PLAYER: {
+    READY: 'playerReady',
+  },
   // All notifications are emit'ed from server to client
   NOTIFICATIONS: {
     ROOM_CREATED: 'roomCreated',
-    PLAYER_ENTERED: 'playerEntersGame',
     PLAYER_LEFT: 'playerLeftGame',
     FORBIDDEN: 'roomForbiddenAccess',
+    PLAYER_ENTERED: 'playerEntersGame',
     // one constant is missing: friendConnection | no API server yet!
   },
 };
