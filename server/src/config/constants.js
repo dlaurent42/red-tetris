@@ -18,6 +18,7 @@ const SOCKETS = {
   PLAYER_READY: 'playerReady',
   NOTIFICATIONS: {
     ROOM_CREATED: 'roomCreated',
+    PLAYER_ENTERED: 'playerEntersGame',
   },
 };
 

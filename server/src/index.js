@@ -128,8 +128,9 @@ class Server {
 
         // add player to player list
         room.players.push(formatPlayer(socket.id, 'player'));
-        room.players.forEach((player) => { // recheck with FrontEnd(send new palyer list)
-          this.io.to(`${player.id}`).emit('playerJoined', room.players);
+        // recheck with FrontEnd(send new palyer list) | for now only socket.id
+        room.players.forEach((player) => {
+          this.io.to(`${player.id}`).emit(SOCKETS.NOTIFICATIONS.PLAYER_ENTERED, { username: socket.id });
         });
         return callback(room);
       });
