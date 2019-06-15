@@ -46,8 +46,8 @@ const room = (props) => {
       // Check number of players if role is not spectator
       if (params.userRole !== ROOM_ROLES.SPECTATOR && data.nbPlayer >= data.maxPlayers) {
         setParams({ ...params, userRole: ROOM_ROLES.SPECTATOR });
-        props.socket.emit(SOCKETS.ROOM_NEW_USER, { ...params, userRole: ROOM_ROLES.SPECTATOR });
-      } props.socket.emit(SOCKETS.ROOM_NEW_USER, { ...params });
+        props.socket.emit(SOCKETS.ROOM_USER_JOINED, { ...params, userRole: ROOM_ROLES.SPECTATOR });
+      } else props.socket.emit(SOCKETS.ROOM_USER_JOINED, { ...params });
 
       // Check user data
       if (props.user.uid) setUser({ ...props.user, isReady: false });

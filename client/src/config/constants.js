@@ -160,8 +160,12 @@ export const SOCKETS = {
   // Value :   roomCreation
   // Type  :   emit
   // Data  :   data sent by roomInfos with users = empty array
-  ROOM_NEW_USER: 'roomNewUser',
-  // Value :   roomNewUser
+  ROOM_USER_JOINED: 'roomUserJoined',
+  // Value :   roomUserJoined
+  // Type  :   emit
+  // Data  :   data sent by roomInfos
+  ROOM_USER_LEFT: 'roomUserLeft',
+  // Value :   roomUserLeft
   // Type  :   emit
   // Data  :   data sent by roomInfos
   ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
