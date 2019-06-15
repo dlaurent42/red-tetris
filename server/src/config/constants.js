@@ -13,6 +13,7 @@ const SOCKETS = {
   // Room system
   ROOM: {
     UPDATE: 'roomUpdate',
+    JOIN: 'roomUserJoined',
     USER_LEFT: 'roomUserLeft',
     FORBIDDEN: 'roomForbiddenAccess',
   },

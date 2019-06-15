@@ -118,7 +118,7 @@ class Server {
         Input:    data => { roomId: 'id of room', userRole: 'optional usr role' }
         Output:   returns callback => (error) || (room structure)
       */
-      socket.on(SOCKETS.JOIN_ROOM, (data, callback) => {
+      socket.on(SOCKETS.ROOM.JOIN, (data, callback) => {
         const key = _.findIndex(this.roomTable, elm => elm.roomId === data.roomId);
         if (key === -1) return callback({ error: 'There is no such room' });
 
