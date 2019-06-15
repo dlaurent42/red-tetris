@@ -20,8 +20,7 @@
 			};
 
 			async function getRoomList() {
-				await socketIO.emit('getRoomList');
-				socketIO.on('getRoomList', (data) => console.log(data));
+				await socketIO.emit('getRoomList', { }, (callback) => console.log(callback));
 			};
 
 			async function startGame(id = 0) {
@@ -31,7 +30,7 @@
 			};
 
 			async function getNextPiece(id = room) {
-				await socketIO.emit('getNextPiece', { roomId: id }, (callback) => {
+				await socketIO.emit('gameNewTile', { roomId: id }, (callback) => {
 					console.log('Receiving next piece: ');
 					console.log(callback);
 				});
@@ -45,19 +44,31 @@
 				await socketIO.emit('getRoomInfo', { roomId: id }, (callback) => console.log(callback));
 			}
 
+			//
 			async function scorePoint(id = room, row = 1) {
-				await socketIO.emit('playerIsScoring', { roomId: id, numberOfRows: row }, callback => console.log(callback));
+				await socketIO.emit('gameScored', { roomId: id, numberOfRows: row }, callback => console.log(callback));
+			}
+			socketIO.on('gameScored', (data) => console.log(`Player scored on room: ${data.roomId} with a score ${data.score}`));
+			//
+			async function setReady(id = room) {
+				await socketIO.emit('playerReady', { roomId: id }, callback => console.log(callback));
 			}
 
 			// Game end !
 			async function endGame(id = room) {
 				await socketIO.emit('finishGame', { roomId: id }, callback => console.log(callback));
 			}
-			socketIO.on('endOfGame', (data) => {
+			socketIO.on('gameOver', (data) => {
 				console.log('End of game socket : ');
 				console.log(data);
 			});
+			// /
+			socketIO.on('roomCreated', (data) => {
+				console.log(`NOTIFY: new room created: ${data.roomName}`);
+			});
 
+			socketIO.on('playerLeftGame', data => console.log(`NOTIFY: player of your room left: ${data.username}`));
+			socketIO.on('playerEntersGame', data => console.log(`NOTIFY: player entered lobby: ${data.username}`));
 			// /
 			socketIO.on('gameHasStarted', (data) => {
 				console.log('Game begins on lobby: ');
