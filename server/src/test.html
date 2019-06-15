@@ -13,7 +13,7 @@
 
 			async function newRoom(id = 0) {
 				const fakeData = { mode: 'test', roomId: `aasdsa${id}`, hasPwd: true, pwd: 'secret', roomName: 'test room2', maxPlayers: 3 };
-				await socketIO.emit('newRoom', fakeData, (callback) => {
+				await socketIO.emit('roomCreation', fakeData, (callback) => {
 					console.log(callback);
 				});
 				room = fakeData.roomId;
@@ -22,6 +22,10 @@
 			async function getRoomList() {
 				await socketIO.emit('getRoomList', { }, (callback) => console.log(callback));
 			};
+
+			async function roomInfos(id = room) {
+				await socketIO.emit('roomInfos', { roomId: id }, (callback) => console.log(callback));
+			}
 
 			async function startGame(id = 0) {
 				await socketIO.emit('startGame', { id }, (callback) => {
