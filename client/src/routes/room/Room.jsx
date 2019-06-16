@@ -38,6 +38,8 @@ const room = (props) => {
   useEffect(() => {
 
     // Check if room exists, create it if not
+    console.log('parameters', parameters);
+    console.log('params', params);
     props.socket.emit(SOCKETS.ROOM_INFOS, { ...params }, (data) => {
 
       // Check password
@@ -52,12 +54,14 @@ const room = (props) => {
         score: 0,
         status: false,
         role: (user.role === ROOM_ROLES.SPECTATOR
-        || data.nbPlayer >= data.maxPlayers
+        || data.nbPlayer + 1 > data.maxPlayers
         || data.gameHasStarted) ? ROOM_ROLES.SPECTATOR : user.role,
       };
+
+      // Update both user and room information
       setUser(updatedUser);
       setParams({ ...data });
-      props.socket.emit(SOCKETS.ROOM_USER_JOINED, { roomId: data.roomId, updatedUser });
+      props.socket.emit(SOCKETS.ROOM_USER_JOINED, { roomId: data.roomId, user: updatedUser });
     });
 
   }, []);
@@ -87,7 +91,7 @@ const room = (props) => {
             game={game}
             setGame={setGame}
             socket={props.socket}
-            roomId={params.roomId}
+            roomId={params.roomId || ''}
             tilesStack={tilesStack}
             setTilesStack={setTilesStack}
           />

@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { SOCKETS, GAME_SETTINGS } from '../../config/constants';
 
 const specter = (props) => {
-  console.log('[specter]');
   const [specterArray, setSpecterArray] = useState([]);
 
   useEffect(() => {
-    props.socket.on(SOCKETS.GAME_SPECTER_UPDATE, data => setSpecterArray(data.specter));
+    props.socket.on(SOCKETS.GAME_SPECTER_UPDATE, (data) => {
+      console.log('\n[GAME_SPECTER_UPDATE]');
+      console.log(data);
+      setSpecterArray(data.specter);
+    });
   });
 
   const grid = Array(GAME_SETTINGS.GRID_HEIGHT).fill(Array(GAME_SETTINGS.GRID_WIDTH).fill(0));

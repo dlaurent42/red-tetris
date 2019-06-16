@@ -101,23 +101,23 @@ export const GAME_MODES = [
 export const NOTIFICATIONS = {
   FRIEND_CONNECTION: {
     variant: 'success',
-    autoHideDuration: 2000,
+    autoHideDuration: 4000,
   },
   PLAYER_ENTERS: {
     variant: 'success',
-    autoHideDuration: 2000,
+    autoHideDuration: 4000,
   },
   PLAYER_LEFT: {
     variant: 'warning',
-    autoHideDuration: 3000,
+    autoHideDuration: 4000,
   },
   ROOM_CREATED: {
     variant: 'success',
-    autoHideDuration: 2000,
+    autoHideDuration: 4000,
   },
   FORBIDDEN_ACCESS: {
     variant: 'error',
-    autoHideDuration: 2000,
+    autoHideDuration: 4000,
   },
 };
 

@@ -171,6 +171,8 @@ const game = (props) => {
   useEffect(() => {
     if (props.game.hasStarted && !props.game.gameOver) {
       props.socket.on(SOCKETS.GAME_SCORED, (data) => {
+        console.log('\n[GAME_SCORED]');
+        console.log(data);
         if (props.game.gameOver) {
           setBlockedRows(blockedRows + data.score - 1);
           // addRows at the bottom
@@ -186,17 +188,25 @@ const game = (props) => {
   if (props.game.hasStarted && !props.game.gameOver) {
     useInterval(() => moveDown(), delay);
     useInterval(() => {
-      if (delay > 150) {
-        console.log(`Accelerate from ${Math.floor(delay)}ms to ${Math.floor(delay * 0.8)}ms`);
-        setDelay(delay * 0.8);
-      }
+      if (delay > 150) setDelay(delay * 0.8);
     }, 10 * 1000);
   }
+
+  // Listen to game new tile event
+  useEffect(() => {
+    props.socket.on(SOCKETS.GAME_NEW_TILE, (data) => {
+      console.log('\n[GAME_NEW_TILE]');
+      console.log(data);
+      props.setTilesStack([...props.tilesStack, data.tile]);
+    });
+  }, []);
 
   // Listen to game start event
   useEffect(() => {
     let handler;
     props.socket.on(SOCKETS.GAME_STARTS, (data) => {
+      console.log('\n[GAME_STARTS]');
+      console.log(data);
       props.setGame({ ...props.game, hasStarted: true });
       handler = setTimeout(() => {
         props.setTilesStack(data.tiles.splice(1));
@@ -210,7 +220,11 @@ const game = (props) => {
 
   // Listen to game over event
   useEffect(() => {
-    props.socket.on(SOCKETS.GAME_OVER, () => props.setGame({ ...props.game, gameOver: true }));
+    props.socket.on(SOCKETS.GAME_OVER, () => {
+      console.log('\n[GAME_OVER]');
+      props.setGame({ ...props.game, gameOver: true });
+    });
+    return () => props.socket.removeAllListeners();
   }, []);
 
   // Check wheter a tile exists at x,y position

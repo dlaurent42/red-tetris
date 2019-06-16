@@ -7,8 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import { ICONS, ROOM_ROLES, SOCKETS } from '../../config/constants';
 
 const infos = (props) => {
-  console.log('[infos');
-
   const setUserReady = () => {
     props.setUserInfos({ ...props.userInfos, status: true });
     props.socket.emit(SOCKETS.ROOM_USER_UPDATE, {
@@ -18,19 +16,22 @@ const infos = (props) => {
   };
 
   const inviteFriend = () => {
-    if (!props.userInfos.userId) return;
-    console.log('invitation sent');
+    // if (!props.userInfos.userId) return;
   };
 
   const startGame = () => {
-
+    props.socket.emit(SOCKETS.GAME_STARTS, { roomId: props.roomInfos.roomId });
   };
 
   // Listen to room updates
   useEffect(() => {
     props.socket.on(
       SOCKETS.ROOM_UPDATE,
-      data => props.setRoomInfos({ ...props.roomInfos, ...data }),
+      (data) => {
+        console.log('\nROOM_UPDATE');
+        console.log(data);
+        props.setRoomInfos({ ...props.roomInfos, ...data });
+      },
     );
   }, []);
 
@@ -38,7 +39,11 @@ const infos = (props) => {
   useEffect(() => {
     props.socket.on(
       SOCKETS.ROOM_USER_UPDATE,
-      data => props.setUserInfos({ ...props.userInfos, ...data }),
+      (data) => {
+        console.log('\nROOM_USER_UPDATE');
+        console.log(data);
+        props.setUserInfos({ ...props.userInfos, ...data });
+      },
     );
   }, []);
 
@@ -71,7 +76,8 @@ const infos = (props) => {
   } else currentUser = <div className="room-infos-score">{props.userInfos.score}</div>;
 
   // Handle display of other users
-  const otherUser = Array.from(Array(props.roomInfos.maxPlayers).keys())
+  const otherUser = Array
+    .from(Array((props.roomInfos.maxPlayers > 0) ? props.roomInfos.maxPlayers - 1 : 0).keys())
     .fill(<Button onClick={inviteFriend} disable={props.userInfos.userId > 0}>{(props.userInfos.userId) ? 'invite friend' : 'waiting for player'}</Button>)
     .map((el) => {
       if (!filteredUsers[el]) return <Button key={`user_${el}`} onClick={inviteFriend}>{(props.userInfos.userId) ? 'invite friend' : 'wait for player'}</Button>;

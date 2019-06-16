@@ -56,7 +56,7 @@ const createRoom = (props) => {
       roomId,
       users: [],
     });
-    props.history.push(`/${form.roomName}[${props.user.username || DEFAULT.USERNAME}][${roomId}][${form.roomPassword}][${ROOM_ROLES.CREATOR}]`);
+    props.history.push(`/${form.roomName}[${props.user.username || DEFAULT.USERNAME}][${roomId}][${(form.roomPassword) ? form.roomPassword : '-'}][${ROOM_ROLES.CREATOR}]`);
   };
 
   return (

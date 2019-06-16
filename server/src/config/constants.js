@@ -4,43 +4,56 @@ const SERVER = {
 };
 
 const SOCKETS = {
-  TOURNAMENTS: {
-    LIST: 'tournamentsList',
-  },
-  // Room system
-  ROOM: {
-    INFOS: 'roomInfos',
-    UPDATE: 'roomUpdate',
-    JOIN: 'roomUserJoined',
-    CREATE: 'roomCreation',
-    USER_LEFT: 'roomUserLeft',
-    FORBIDDEN: 'roomForbiddenAccess',
-  },
-  // Game logic related
-  GAME: {
-    BEGIN: 'startGame', // for lobby leader to start
-    FINISH: 'gameOver',
-    STARTS: 'gameStarts',
-    NEXT_PIECE: 'gameNewTile',
-    PLAYER_SCORE: 'gameScored',
-  },
-  // Player emit's
-  PLAYER: {
-    READY: 'playerReady',
-  },
-  // All notifications are emit'ed from server to client
-  NOTIFICATIONS: {
-    ROOM_CREATED: 'roomCreated',
-    PLAYER_LEFT: 'playerLeftGame',
-    FORBIDDEN: 'roomForbiddenAccess',
-    PLAYER_ENTERED: 'playerEntersGame',
-    // one constant is missing: friendConnection | no API server yet!
-  },
+
+  /* ----------------   Tournaments   --------------- */
+  TOURNAMENTS_LIST: 'tournamentsList',
+  TOURNAMENTS_UPDATE: 'tournamentsUpdate',
+
+  /* -------------------   Room   ------------------- */
+  ROOM_INFOS: 'roomInfos',
+  ROOM_UPDATE: 'roomUpdate',
+  ROOM_CREATION: 'roomCreation',
+  ROOM_USER_UPDATE: 'roomUserUpdate',
+  ROOM_USER_JOINED: 'roomUserJoined',
+  ROOM_USER_LEFT: 'roomUserLeft',
+  ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
+  NOTIFY_ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
+
+  /* -------------------   Game   ------------------- */
+  GAME_SPECTER_UPDATE: 'gameSpecterUpdate',
+  GAME_STARTS: 'gameStarts',
+  GAME_OVER: 'gameOver',
+  GAME_SCORED: 'gameScored',
+  GAME_NEW_TILE: 'gameNewTile',
+
+  /* ---------------   Notifications   -------------- */
+  NOTIFY_ROOM_CREATED: 'roomCreated',
+  NOTIFY_PLAYER_LEFT_GAME: 'playerLeftGame',
+  NOTIFY_PLAYER_ENTERS_GAME: 'playerEntersGame',
+  NOTIFY_FRIEND_CONNECTION: 'friendConnection',
 };
 
-const REGEX = {
-  ROOM_NAME: /^[a-zA-Z0-9]{6,12}$/,
-  ROOM_PWD: /^[a-zA-Z0-9]{6,12}$/,
+const ROOM_ROLES = {
+  CREATOR: 'creator',
+  PLAYER: 'player',
+  SPECTATOR: 'spectator',
 };
 
-export { SERVER, SOCKETS, REGEX };
+const GAME_MODES = [
+  'classic',
+  'survival',
+  'invisible',
+];
+
+const GAME_SETTINGS = {
+  GRID_WIDTH: 10,
+  GRID_HEIGHT: 20,
+};
+
+module.exports = {
+  SERVER,
+  SOCKETS,
+  ROOM_ROLES,
+  GAME_MODES,
+  GAME_SETTINGS,
+};

@@ -8,12 +8,8 @@ import Settings from './Settings';
 import Table from './Table';
 import JoinRoom from './JoinRoom';
 import CreateRoom from './CreateRoom';
-import { GAME_MODES, SOCKETS } from '../../config/constants';
+import { SOCKETS } from '../../config/constants';
 import './Tournaments.scss';
-
-const fakeRoomNames = ['Acrimony', 'Gridelin', 'Abattoir', 'Diorism', 'Turdine', 'Abattoir', 'Camsteary', 'Ganister', 'Luminous', 'ZaazAnole', 'Sapsago', 'Torsibility', 'Testaceous', 'Hypnosophy', 'Tampion', 'Isogeny', 'Abattoir', 'Luminous', 'Scientism', 'Magnanimous', 'Moriadon8', 'Costard', 'Abderian', 'Verrucose', 'Xenolalia', 'Skiagram', 'Pellucid', 'Ptyalagogue', 'Blauwbok', 'Adnomination', 'Luminous', 'Acrimony', 'Pejorism', 'Divaricate', 'Papyrography', 'Affranchise', 'Luminous', 'Abattoir', 'Luminous', 'Tattersall', 'Jackanapes', 'Schmutz', 'ComplainZygote', 'Ensorcell', 'HoiPolloi', 'Cacophony', 'Freewheeling', 'SpittinYoyo', 'Whodunit', 'Petcock', 'DamperGuffaw', 'Alfresco', 'Bugbear', 'PlotclassDaedal', 'JohnmuerJunket', 'Muffuletta', 'Joementum', 'Emo1Wigout', 'Godwottery', 'Pomposity', 'Toothsome', 'Ostinato', 'Currish', 'Toupeeba4000', 'Whatsis', 'Gubbins', 'Blinker', 'Tookusde0909', 'Whisternefet', 'Erinaceous', 'Sternutate', 'Tumultuous', 'Maelstrom', 'Ephemeral', 'Moniker', 'Shartnuts334', 'Zonkedle1128', 'Sthenereu12345', 'Quokkareap3r', 'Manorexic'];
-const rdmStr = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); // eslint-disable-line
-const rdmNbr = bound => Math.floor(Math.random() * bound);
 
 const tournaments = (props) => {
 
@@ -31,35 +27,19 @@ const tournaments = (props) => {
   // ComponentDidMount: fetch rooms list
   useEffect(() => {
     // To be kept
-    // props.socket.emit(
-    //   SOCKETS.TOURNAMENTS_LIST,
-    //   {},
-    //   data => setTournamentsList(data.tournaments),
-    // );
-    // To be deleted
-    const fakeData = [];
-    for (let index = 0; index < 30; index += 1) {
-      const a = rdmNbr(2) + 1;
-      const b = rdmNbr(3) + 1;
-      const roomHasPassword = Math.random() >= 0.5;
-      fakeData.push({
-        roomHasPassword,
-        roomPassword: (roomHasPassword) ? rdmStr() : '',
-        roomId: rdmStr(),
-        roomName: fakeRoomNames[rdmNbr(fakeRoomNames.length)],
-        nbPlayers: Math.min(a, b),
-        maxPlayers: Math.max(a, b),
-        roomMode: GAME_MODES[rdmNbr(GAME_MODES.length)],
-      });
-    }
-    setTournamentsList(fakeData);
+    props.socket.emit(
+      SOCKETS.TOURNAMENTS_LIST,
+      {},
+      data => setTournamentsList(data.tournaments),
+    );
   }, []);
 
   // Add event listener on rooms updates
   useEffect(() => {
     props.socket.on(SOCKETS.TOURNAMENTS_UPDATE, (data) => {
-      setTournamentsList(data);
+      setTournamentsList(data.tournaments);
     });
+    return () => props.socket.removeAllListeners();
   }, [tournamentsList]);
 
   return (

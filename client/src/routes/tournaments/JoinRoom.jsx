@@ -19,7 +19,7 @@ const joinRoom = (props) => {
     if (status === 'player'
       && ((props.roomData.roomHasPassword && roomPassword !== props.roomData.roomPassword)
       || props.roomData.nbPlayers >= props.roomData.maxPlayers)) return;
-    props.history.push(`/${props.roomData.roomName}[${props.user.username || DEFAULT.USERNAME}][${props.roomData.roomId}][${props.roomData.roomPassword}][${status}]`);
+    props.history.push(`/${props.roomData.roomName}[${props.user.username || DEFAULT.USERNAME}][${props.roomData.roomId}][${(props.roomData.roomPassword) ? props.roomData.roomPassword : '-'}][${status}]`);
   };
 
   return (

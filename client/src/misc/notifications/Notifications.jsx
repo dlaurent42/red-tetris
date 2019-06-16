@@ -17,35 +17,50 @@ const notifications = (props) => {
   useEffect(() => {
     props.socket.on(
       SOCKETS.NOTIFY_FRIEND_CONNECTION,
-      data => enqueueSnackbar(`${data.username} is connected.`, { action, ...NOTIFICATIONS.FRIEND_CONNECTION }),
+      (data) => {
+        console.log('SOCKETS.NOTIFY_FRIEND_CONNECTION');
+        enqueueSnackbar(`${data.username} is connected.`, { action, ...NOTIFICATIONS.FRIEND_CONNECTION });
+      },
     );
   });
 
   useEffect(() => {
     props.socket.on(
       SOCKETS.NOTIFY_PLAYER_LEFT_GAME,
-      data => enqueueSnackbar(`${data.username} has left the room.`, { action, ...NOTIFICATIONS.PLAYER_LEFT }),
+      (data) => {
+        console.log('SOCKETS.NOTIFY_PLAYER_LEFT_GAME');
+        enqueueSnackbar(`${data.username} has left the room.`, { action, ...NOTIFICATIONS.PLAYER_LEFT });
+      },
     );
   });
 
   useEffect(() => {
     props.socket.on(
       SOCKETS.NOTIFY_PLAYER_ENTERS_GAME,
-      data => enqueueSnackbar(`${data.username} has joined the room.`, { action, ...NOTIFICATIONS.PLAYER_ENTERS }),
+      (data) => {
+        console.log('SOCKETS.NOTIFY_PLAYER_ENTERS_GAME');
+        enqueueSnackbar(`${data.username} has joined the room.`, { action, ...NOTIFICATIONS.PLAYER_ENTERS });
+      },
     );
   });
 
   useEffect(() => {
     props.socket.on(
       SOCKETS.NOTIFY_ROOM_CREATED,
-      data => enqueueSnackbar(`${data.roomName} room created.`, { action, ...NOTIFICATIONS.ROOM_CREATED }),
+      (data) => {
+        console.log('SOCKETS.NOTIFY_ROOM_CREATED');
+        enqueueSnackbar(`${data.roomName} room created.`, { action, ...NOTIFICATIONS.ROOM_CREATED });
+      },
     );
   });
 
   useEffect(() => {
     props.socket.on(
       SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS,
-      data => enqueueSnackbar(`Forbidden access to ${data.roomName} room.`, { action, ...NOTIFICATIONS.FORBIDDEN_ACCESS }),
+      (data) => {
+        console.log('SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS');
+        enqueueSnackbar(`Forbidden access to ${data.roomName} room.`, { action, ...NOTIFICATIONS.FORBIDDEN_ACCESS });
+      },
     );
   });
 
