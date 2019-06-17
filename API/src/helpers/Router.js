@@ -1,21 +1,23 @@
+// import middleware from '../middlewares/middleware';
+
 class Router {
   constructor(app) {
-    this.app = app
+    this.app = app;
     this.routes = {
-      '': [middleware],
+      // '': [middleware],
       '/user': [
-        
+
       ],
-    }
+    };
   }
 
   setAllRoutes() {
     Object.keys(this.routes).forEach((route) => {
       this.routes[route].forEach((element) => {
-        if (route === '') this.app.use(element)
-        else this.app.use(route, element)
-      })
-    })
+        if (route === '') this.app.use(element);
+        else this.app.use(route, element);
+      });
+    });
   }
 }
 

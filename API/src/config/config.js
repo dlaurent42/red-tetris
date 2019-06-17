@@ -1,7 +1,9 @@
-const dotenv = require('dotenv')
-dotenv.load()
+import dotenv from 'dotenv';
 
-const environment = process.env.NODE_ENV || 'production'
+dotenv.config();
+
+const environment = process.env.NODE_ENV || 'production';
+console.log(`Server environment is ${environment}`);
 
 const SERVER = {
   HOST: '127.0.0.1',
@@ -16,10 +18,10 @@ const DATABASE = {
 };
 
 const MAIL = {
-  HOST: process.env.DATABASE_HOST || '127.0.0.1',
-  NAME: process.env.DATABASE_NAME || 'red-tetris',
-  USER: process.env.DATABASE_USER,
-  PASS: process.env.DATABASE_PASS,
-}
+  HOST: process.env.MAIL_HOST || '127.0.0.1',
+  NAME: process.env.MAIL_NAME || 'red-tetris',
+  USER: process.env.MAIL_USER,
+  PASS: process.env.MAIL_PASS,
+};
 
 export { SERVER, DATABASE, MAIL };
