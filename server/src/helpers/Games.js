@@ -1,183 +1,137 @@
-const { find } = require('lodash');
-const { ROOM_ROLES, GAME_MODES, SOCKETS } = require('../config/constants');
+const { find, countBy } = require('lodash');
+const { ROOM_ROLES } = require('../config/constants');
 const Player = require('./Player');
-
-const generateID = (length) => {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i += 1) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
-
-class Game {
-  constructor(props) {
-    this.id = props.roomId || generateID(64);
-    this.name = props.roomName;
-    this.maxPlayers = props.maxPlayers || 1;
-    this.hasPassword = props.roomHasPassword || false;
-    this.password = props.roomPassword || '';
-    this.mode = props.roomMode || GAME_MODES[0];
-    this.hasStarted = false;
-    this.players = [];
-  }
-
-  toObject() {
-    return {
-      roomId: this.id,
-      roomName: this.name,
-      nbPlayers: this.players.length,
-      maxPlayers: this.maxPlayers,
-      roomHasPassword: this.hasPassword,
-      roomPassword: this.password,
-      roomMode: this.mode,
-      gameHasStarted: this.hasStarted,
-      users: this.players,
-    };
-  }
-
-  update(data) {
-    this.id = data.roomId || this.id;
-    this.name = data.roomName || this.name;
-    this.maxPlayers = data.maxPlayers || this.maxPlayers;
-    this.hasPassword = data.roomHasPassword || this.hasPassword;
-    this.password = data.roomPassword || this.password;
-    this.mode = data.roomMode || this.mode;
-    this.hasStarted = data.gameHasStarted || this.hasStarted;
-    this.players = data.users || this.players;
-  }
-}
+const Game = require('./Game');
+const Piece = require('./Piece');
 
 class Games {
 
   constructor() {
-    this.games = [];
+    this.lobbies = [];
   }
 
-  getRoom({ roomId }) {
-    return find(this.rooms, { id: roomId });
+  // Method used to find a lobby based on its id
+  getLobby({ roomId }) {
+    return find(this.lobbies, { id: roomId });
   }
 
-  getPlayerAndRoom({ roomId }, socketId) {
-    const room = this.getRoom({ roomId });
-    if (!room) return { room, player: undefined };
-    return { room, player: find(room.players, { socketId }) };
+  // Method used to fetch all lobbies
+  getLobbies() {
+    return this.lobbies;
   }
 
-  addLobby(socket, data) {
-    const room = new Game(data);
-    this.games.push(room);
-    socket.emit(SOCKETS.NOTIFY_ROOM_CREATED, data.roomName);
-    socket.emit(SOCKETS.TOURNAMENTS_UPDATE, {
-      tournaments: this.rooms.map(el => el.toObject()),
-    });
-    socket.broadcast.emit(SOCKETS.TOURNAMENTS_UPDATE, {
-      tournaments: this.rooms.map(el => el.toObject()),
-    });
+  // Method used to fetch all lobbies as formatted object
+  getFormatedLobbies() {
+    return this.lobbies.map(lobby => lobby.toObject());
   }
 
-  setLobby(socket, data) {
-    const room = this.getRoom(data);
-    if (!room) return;
-
-    room.update(data);
-    console.log('... TOURNAMENTS_UPDATE and ROOM_UPDATE');
-    socket.emit(SOCKETS.TOURNAMENTS_UPDATE, {
-      tournaments: this.rooms.map(el => el.toObject()),
-    });
-    socket.broadcast.emit(SOCKETS.TOURNAMENTS_UPDATE, {
-      tournaments: this.rooms.map(el => el.toObject()),
-    });
-    room.players.forEach(player => (
-      this.io.to(player.socketId).emit(SOCKETS.ROOM_UPDATE, room.toObject())
-    ));
+  // Method used to verify wheter a lobby exists and to return it
+  getInfos(data) {
+    return this.getLobby(data) || (countBy(this.lobbies, { name: data.roomName }).true === 1)
+      ? find(this.lobbies, { name: data.roomName })
+      : undefined;
   }
 
-  deleteLobby(socket, { roomId }) {
-    this.rooms = this.rooms.filter(room => room.id !== roomId);
-    socket.broadcast.emit(SOCKETS.TOURNAMENTS_UPDATE, {
-      tournaments: this.rooms.map(el => el.toObject()),
-    });
+  // Method used to find a user in a lobby based on its socket id
+  getPlayerAndLobby({ roomId }, socketId) {
+    const lobby = this.getLobby({ roomId });
+    return { lobby, player: (!lobby) ? undefined : find(lobby.players, { socketId }) };
   }
 
-  setPlayer(socket, data) {
-    const { room, player } = this.getPlayer(data, socket.id);
-    if (!player) return;
-    player.update(data.user);
+  // Method used to create a new lobby
+  addLobby(data) {
+    // Create lobby
+    const lobby = new Game(data);
 
-    console.log('... TOURNAMENTS_UPDATE + ROOM_UPDATE');
-    socket.emit(SOCKETS.TOURNAMENTS_UPDATE, {
-      tournaments: this.rooms.map(el => el.toObject()),
-    });
-    socket.broadcast.emit(SOCKETS.TOURNAMENTS_UPDATE, {
-      tournaments: this.rooms.map(el => el.toObject()),
-    });
-    room.players.forEach(el => (
-      this.io.to(el.socketId).emit(SOCKETS.ROOM_UPDATE, room.toObject())
-    ));
-  }
-
-  addPlayer(socket, data) {
-    const room = this.getRoom(data);
-    if (!room) return;
-
-    const player = new Player({ ...data.user, socketId: socket.id });
-    room.players.push(player);
-
-    room.players.forEach((el) => {
-      if (el.socketId !== socket.id) {
-        this.io.to(el.socketId).emit(SOCKETS.NOTIFY_PLAYER_ENTERS_GAME, el);
-      }
-      this.io.to(el.socketId).emit(SOCKETS.ROOM_UPDATE, room.toObject());
-    });
-    if (player.role === ROOM_ROLES.SPECTATOR) return;
-    socket.broadcast.emit(SOCKETS.TOURNAMENTS_UPDATE, {
-      tournaments: this.rooms.map(el => el.toObject()),
-    });
-  }
-
-  deletePlayer(socket, data) {
-    const { room, player } = this.getPlayer(data, socket.id);
-    if (!player) return;
-
-    // Check current number of players in room
-    if (room.players.length === 1) {
-      this.deleteLobby(socket, data);
-      return;
+    // Verify that key is uniq
+    if (countBy(this.lobbies, { id: lobby.id }).true > 0) {
+      console.error('Duplicate ID in lobby creation');
+      return undefined;
     }
 
-    // Check if player status is creator
-    if (player.role === ROOM_ROLES.CREATOR) {
-      const newCreator = find(room.players, { role: ROOM_ROLES.PLAYER });
-      if (newCreator) newCreator.role = ROOM_ROLES.CREATOR;
-      else {
-        room.players.forEach((el) => {
-          if (el.socketId !== socket.id) {
-            this.io.to(el.socketId).emit(SOCKETS.GAME_OVER, {});
-          }
-        });
-      }
-    }
+    // Add the lobby to lobbies
+    this.lobbies.push(lobby);
+    return lobby;
+  }
 
-    // If deserter role was not spectator, notify users
-    if (player.role !== ROOM_ROLES.SPECTATOR) {
-      room.players.forEach((el) => {
-        if (el.socketId !== socket.id) {
-          this.io.to(el.socketId).emit(SOCKETS.NOTIFY_PLAYER_LEFT_GAME, player.username);
-        }
-      });
-    }
+  // Method used to generate a new tile and to send it to client
+  addLobbyTile(data) {
+    return { lobby: this.getLobby(data), tile: new Piece().piece };
+  }
+
+  // Method used to update a lobby
+  setLobby(data) {
+    const lobby = this.getLobby(data);
+    if (lobby) lobby.update(data);
+    return lobby;
+  }
+
+  // Method used to set a lobby as started and to generate initial tiles
+  setLobbyStart(data) {
+    const lobby = this.getLobby(data);
+    if (lobby) lobby.hasStarted = true;
+
+    const tiles = [new Piece().piece, new Piece().piece, new Piece().piece];
+    return { lobby, tiles };
+  }
+
+  // Method used to delete a lobby
+  deleteLobby({ roomId }) {
+    this.lobbies = this.lobbies.filter(lobby => lobby.id !== roomId);
+    return undefined;
+  }
+
+  // Method used to update player information
+  setPlayer(data, socketId) {
+    const { lobby, player } = this.getPlayerAndLobby(data, socketId);
+    if (player) player.update(data.user);
+    return { lobby, player };
+  }
+
+  // Method used to add a player to lobby
+  addPlayer(data, socketId) {
+    const lobby = this.getLobby(data);
+    const player = (lobby) ? new Player({ ...data.user, socketId }) : undefined;
+    if (player) lobby.players.push(player);
+    return { lobby, player };
+  }
+
+  // Method used to delete a player from lobby
+  deletePlayer(data, socketId) {
+    const { lobby, player } = this.getPlayerAndLobby(data, socketId);
+    if (!player) return null;
+
+    // Check if player is the last one in lobby
+    if (lobby.players.length === 1) return this.deleteLobby(data);
 
     // Delete user from list
-    room.players = room.players.filter(el => el.socketId !== socket.id);
+    const { role } = player;
+    lobby.players = lobby.players.filter(el => el.socketId !== socketId);
+
+    // Check if player status is creator
+    if (role === ROOM_ROLES.CREATOR) {
+      const newCreator = find(lobby.players, { role: ROOM_ROLES.PLAYER });
+      if (newCreator) newCreator.role = ROOM_ROLES.CREATOR;
+    }
+
+    return lobby;
   }
 
-  // Process
-  //    - check if player is creator -> find next arrived player and set him as leader
-  //    - delete user from list of players
-  //    - check game over
+  // Method used to delete a player from lobby
+  deletePlayerFromAnyLobby(socketId) {
+    let lobby = false;
+    let playerInfos;
+    this.lobbies.some((room) => {
+      if (find(room.players, { socketId })) {
+        const { player } = this.getPlayerAndLobby({ roomId: room.id }, socketId);
+        playerInfos = { ...player };
+        lobby = this.deletePlayer({ roomId: room.id }, socketId);
+      }
+      return lobby;
+    });
+    return { lobby, player: playerInfos };
+  }
+
 }
 
 module.exports = Games;

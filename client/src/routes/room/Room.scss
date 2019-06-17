@@ -73,7 +73,25 @@
       & .flex-subcontainer {   
         & .room-infos {
           width: 18.75rem;
-          background-color: tomato;
+          color: $secondary-color;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          & .room-infos-other-users {
+            & .room-infos-other-user-ctn {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              width: 100%;              
+            }
+          }
+          & .room-infos-current-user {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+          }
         }
         & .specter-container {
           width: 18.75rem;

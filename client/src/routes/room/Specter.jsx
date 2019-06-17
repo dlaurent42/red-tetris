@@ -7,8 +7,6 @@ const specter = (props) => {
 
   useEffect(() => {
     props.socket.on(SOCKETS.GAME_SPECTER_UPDATE, (data) => {
-      console.log('\n[GAME_SPECTER_UPDATE]');
-      console.log(data);
       setSpecterArray(data.specter);
     });
   });
@@ -20,8 +18,8 @@ const specter = (props) => {
         {grid.map((row, y) => (
           <div className="grid-row" key={`specter-row_${row[0] + y}`}>
             {row.map((col, x) => {
-              if (specterArray[x] > y) return <div key={`specter-row_${row[0] + y}col_${row[0] + x}`} className="grid-cell grid-cell-filled" />;
-              return <div key={`specter-row_${row[0] + y}col_${y + x}`} className="grid-cell" />;
+              if (!specterArray[x] || specterArray[x] > y) return <div key={`specter-row_${row[0] + y}col_${row[0] + x}`} className="grid-cell" />;
+              return <div key={`specter-row_${row[0] + y}col_${y + x}`} className="grid-cell grid-cell-filled" />;
             })}
           </div>
         ))}

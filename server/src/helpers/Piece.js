@@ -1,8 +1,13 @@
-
-const generatePiece = () => (
-  // Cube
+const getPiece = () => (
   [{
-    position: [
+    // Cube
+    positions: [
+      { x: 4, y: 0 },
+      { x: 5, y: 0 },
+      { x: 4, y: 1 },
+      { x: 5, y: 1 },
+    ],
+    innerPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
       { x: 0, y: 1 },
@@ -11,16 +16,28 @@ const generatePiece = () => (
     size: 2,
     // Pipe
   }, {
-    position: [
-      { x: 0, y: 0 },
-      { x: 1, y: 0 },
-      { x: 2, y: 0 },
+    positions: [
       { x: 3, y: 0 },
+      { x: 4, y: 0 },
+      { x: 5, y: 0 },
+      { x: 6, y: 0 },
+    ],
+    innerPositions: [
+      { x: 0, y: 1 },
+      { x: 1, y: 1 },
+      { x: 2, y: 1 },
+      { x: 3, y: 1 },
     ],
     size: 4,
     // Reversed L
   }, {
-    position: [
+    positions: [
+      { x: 5, y: 0 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+      { x: 5, y: 1 },
+    ],
+    innerPositions: [
       { x: 2, y: 0 },
       { x: 0, y: 1 },
       { x: 1, y: 1 },
@@ -29,7 +46,13 @@ const generatePiece = () => (
     size: 3,
   // L
   }, {
-    position: [
+    positions: [
+      { x: 3, y: 0 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+      { x: 5, y: 1 },
+    ],
+    innerPositions: [
       { x: 0, y: 0 },
       { x: 0, y: 1 },
       { x: 1, y: 1 },
@@ -38,7 +61,13 @@ const generatePiece = () => (
     size: 3,
   // S
   }, {
-    position: [
+    positions: [
+      { x: 4, y: 0 },
+      { x: 5, y: 0 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+    ],
+    innerPositions: [
       { x: 1, y: 0 },
       { x: 2, y: 0 },
       { x: 0, y: 1 },
@@ -47,16 +76,28 @@ const generatePiece = () => (
     size: 3,
   // T
   }, {
-    position: [
+    positions: [
+      { x: 5, y: 0 },
+      { x: 4, y: 1 },
+      { x: 5, y: 1 },
+      { x: 6, y: 1 },
+    ],
+    innerPositions: [
       { x: 1, y: 0 },
       { x: 0, y: 1 },
       { x: 1, y: 1 },
-      { x: 1, y: 1 },
+      { x: 2, y: 1 },
     ],
     size: 3,
   // Z
   }, {
-    position: [
+    positions: [
+      { x: 3, y: 0 },
+      { x: 4, y: 0 },
+      { x: 4, y: 1 },
+      { x: 5, y: 1 },
+    ],
+    innerPositions: [
       { x: 0, y: 0 },
       { x: 1, y: 0 },
       { x: 1, y: 1 },
@@ -69,7 +110,7 @@ const generatePiece = () => (
 
 class Piece {
   constructor() {
-    this.piece = generatePiece();
+    this.piece = getPiece();
   }
 }
 

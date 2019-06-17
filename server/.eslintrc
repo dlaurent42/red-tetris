@@ -14,7 +14,7 @@
   },
   "rules": {
     "padded-blocks": "off",
-    "no-console": "off",
+    "no-console": "warn",
     "no-param-reassign": [
       "error",
       {

@@ -13,6 +13,7 @@ const counter = (props) => {
     }
   };
   useInterval(() => updateCounter(), 1000);
+  console.log('render Counter');
   return (
     <div className="game-counter">
       {count}

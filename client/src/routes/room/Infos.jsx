@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { countBy } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { ICONS, ROOM_ROLES, SOCKETS } from '../../config/constants';
 
@@ -28,8 +29,7 @@ const infos = (props) => {
     props.socket.on(
       SOCKETS.ROOM_UPDATE,
       (data) => {
-        console.log('\nROOM_UPDATE');
-        console.log(data);
+        console.log('ROOM_UPDATE');
         props.setRoomInfos({ ...props.roomInfos, ...data });
       },
     );
@@ -40,8 +40,7 @@ const infos = (props) => {
     props.socket.on(
       SOCKETS.ROOM_USER_UPDATE,
       (data) => {
-        console.log('\nROOM_USER_UPDATE');
-        console.log(data);
+        console.log('ROOM_USER_UPDATE');
         props.setUserInfos({ ...props.userInfos, ...data });
       },
     );
@@ -64,7 +63,7 @@ const infos = (props) => {
 
   // Handle filtered users
   const filteredUsers = props.roomInfos.users.filter(u => (
-    u.role !== ROOM_ROLES.SPECTATOR && u.id !== props.socket.id
+    u.role !== ROOM_ROLES.SPECTATOR && u.socketId !== props.socket.id
   ));
 
   // Handle display of current user
@@ -76,35 +75,36 @@ const infos = (props) => {
   } else currentUser = <div className="room-infos-score">{props.userInfos.score}</div>;
 
   // Handle display of other users
-  const otherUser = Array
-    .from(Array((props.roomInfos.maxPlayers > 0) ? props.roomInfos.maxPlayers - 1 : 0).keys())
+  const otherUser = Array((props.roomInfos.maxPlayers > 0) ? props.roomInfos.maxPlayers - 1 : 0)
     .fill(<Button onClick={inviteFriend} disable={props.userInfos.userId > 0}>{(props.userInfos.userId) ? 'invite friend' : 'waiting for player'}</Button>)
-    .map((el) => {
-      if (!filteredUsers[el]) return <Button key={`user_${el}`} onClick={inviteFriend}>{(props.userInfos.userId) ? 'invite friend' : 'wait for player'}</Button>;
+    .map((el, idx) => {
+      if (!filteredUsers[idx]) return <Button key={Math.random() * 1500} onClick={inviteFriend}>{(props.userInfos.userId) ? 'invite friend' : 'wait for player'}</Button>;
       if (props.gameInfos.hasStarted) {
         return (
-          <div key={`user_${el}`} className="room-infos-other-user-ctn">
-            <div className="room-infos-other-user-usm">{filteredUsers[el].username}</div>
-            <div className="room-infos-other-user-scr">{filteredUsers[el].score}</div>
+          <div key={Math.random() * 1500} className="room-infos-other-user-ctn">
+            <div className="room-infos-other-user-usm">{filteredUsers[idx].username}</div>
+            <div className="room-infos-other-user-scr">{filteredUsers[idx].score}</div>
           </div>
         );
       }
       return (
-        <div key={`user_${el}`} className="room-infos-other-user-ctn">
-          <div className="room-infos-other-user-usm">{filteredUsers[el].username}</div>
+        <div key={Math.random() * 1500} className="room-infos-other-user-ctn">
+          <div className="room-infos-other-user-usm">{filteredUsers[idx].username}</div>
           <div
-            className={['room-infos-other-user-sts', (filteredUsers[el].status) ? 'ready' : 'waiting'].join(' ')}
+            className={['room-infos-other-user-sts', (filteredUsers[idx].status) ? 'ready' : 'waiting'].join(' ')}
           >
-            {(filteredUsers[el].status) ? 'ready' : 'waiting'}
+            {(filteredUsers[idx].status) ? 'ready' : 'waiting'}
           </div>
         </div>
       );
     });
+
   // Render
+  console.log('render Infos');
   return (
-    <div className="room-infos">
+    <Paper className="room-infos">
       <div className="room-infos-header">
-        <Typography>{props.roomInfos.roomName}</Typography>
+        <Typography gutterBottom variant="h4">{props.roomInfos.roomName}</Typography>
         {(spectatorsCounter)
           ? (
             <div className="room-infos-watcher">
@@ -121,7 +121,7 @@ const infos = (props) => {
         {otherUser}
       </div>
       {
-        (props.userInfos.role === ROOM_ROLES.CREATOR)
+        (props.userInfos.role === ROOM_ROLES.CREATOR && !props.gameInfos.hasStarted)
           ? (
             <Button
               disabled={playersReadyCounter < props.roomInfos.maxPlayers}
@@ -131,7 +131,8 @@ const infos = (props) => {
             </Button>
           ) : null
       }
-    </div>
+      {(props.gameInfos.gameOver) ? <div>Game over</div> : null}
+    </Paper>
   );
 };
 
@@ -143,29 +144,5 @@ infos.propTypes = {
   setRoomInfos: PropTypes.func.isRequired,
   gameInfos: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-
-/*
-
-user: {
-  username,
-  score,
-  status,
-  role,
-}
-
-roomInfos: {
-  roomName,
-  roomId,
-  roomPassword,
-  users: [ { username, score, status(ready, not ready), role }],
-}
-
-gameInfos: {
-  hasStarted,
-  counterRun,
-  gameOver,
-}
-
-*/
 
 export default infos;

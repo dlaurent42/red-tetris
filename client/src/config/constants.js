@@ -115,6 +115,10 @@ export const NOTIFICATIONS = {
     variant: 'success',
     autoHideDuration: 4000,
   },
+  ROOM_NOT_CREATED: {
+    variant: 'error',
+    autoHideDuration: 4000,
+  },
   FORBIDDEN_ACCESS: {
     variant: 'error',
     autoHideDuration: 4000,
@@ -212,6 +216,10 @@ export const SOCKETS = {
   /* ---------------   Notifications   -------------- */
   NOTIFY_ROOM_CREATED: 'roomCreated',
   // Value :   roomCreated
+  // Type  :   on
+  // Data  :   { roomName }
+  NOTIFY_ROOM_NOT_CREATED: 'roomNotCreated',
+  // Value :   roomNotCreated
   // Type  :   on
   // Data  :   { roomName }
   NOTIFY_PLAYER_LEFT_GAME: 'playerLeftGame',

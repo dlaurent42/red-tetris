@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Header from '../../misc/navigation/header/Header';
-import Card from '../../misc/UI/card/Card';
+import Card from '../../misc/UI/surface/Surface';
 import Footer from '../../misc/navigation/footer/Footer';
 import './Homepage.scss';
 

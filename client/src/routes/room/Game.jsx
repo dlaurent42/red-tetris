@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { cloneDeep, find, countBy, mapValues, minBy, groupBy } from 'lodash';
+import { cloneDeep, find, countBy, mapValues, min, minBy, groupBy } from 'lodash';
 import useInterval from '../../hooks/useInterval';
 import { SOCKETS, KEYS, GAME_SETTINGS } from '../../config/constants';
 
@@ -16,13 +16,20 @@ const game = (props) => {
     let collision = false;
     movingTile.positions.some((pos) => {
       // Check if moving Tile is out-of-map
-      if (pos.x < 0 || pos.x >= GAME_SETTINGS.GRID_WIDTH) collision = true;
-      else if (pos.y >= GAME_SETTINGS.GRID_HEIGHT) collision = true;
+      if (pos.x < 0 || pos.x >= GAME_SETTINGS.GRID_WIDTH) {
+        console.log('collision before of horizontal bounds');
+        collision = true;
+      } else if (pos.y >= GAME_SETTINGS.GRID_HEIGHT) {
+        console.log('collision with ground');
+        collision = true;
+      }
 
       // Check collisions between moving tile and other tiles
       otherTiles.some((tile) => {
-        if (find(tile.positions, { x: pos.x })
-        || find(tile.positions, { y: pos.y })) collision = true;
+        if (find(tile.positions, { x: pos.x, y: pos.y })) {
+          console.log('collision with piece');
+          collision = true;
+        }
         return collision;
       });
       return collision;
@@ -55,11 +62,11 @@ const game = (props) => {
     });
 
     //  Drop down pieces
-    return updatedPieces.map(tile => ({
-      ...tile,
-      positions: tile.positions.filter(pos => ({
+    return updatedPieces.map(piece => ({
+      ...piece,
+      positions: piece.positions.map(pos => ({
         x: pos.x,
-        y: (pos.y < Math.min(scoringRows)) ? pos.y + scoringRows.length : pos.y,
+        y: (pos.y < min(scoringRows)) ? pos.y + scoringRows.length : pos.y,
       })),
     }));
   };
@@ -67,25 +74,31 @@ const game = (props) => {
   // Tile moves
   const rotate = () => {
     const movingTile = cloneDeep(tiles[0]);
+
+    // If piece has size equal to 2, it is a square
     if (!movingTile || movingTile.size === 2 || props.game.gameOver) return;
-    if (movingTile.size === 3) {
+
+    // Pieces of size 4 are bars
+    if (movingTile.size === 4) {
       movingTile.positions = movingTile.positions.map((pos, idx) => ({
-        x: (movingTile.innerPositions[idx].y - 1 < 0)
-          ? pos.X + (movingTile.size - 1 - movingTile.innerPositions[idx].x)
-          : pos.X + (movingTile.innerPositions[idx].y - 1 - movingTile.innerPositions[idx].x),
-        y: movingTile.innerPositions[idx].x - movingTile.innerPositions[idx].y,
-      }));
-      movingTile.innerPositions = movingTile.innerPositions.map(pos => ({
-        x: (pos.y - 1 < 0) ? movingTile.size - 1 : pos.y - 1,
-        y: pos.x,
-      }));
-    } else if (movingTile.size === 4) {
-      movingTile.positions = movingTile.positions.map((pos, idx) => ({
-        x: pos.X + [3, 2, 1, 0][movingTile.innerPositions[idx].y] - movingTile.innerPositions.x,
-        y: movingTile.innerPositions[idx].x - movingTile.innerPositions[idx].y,
+        x: pos.x
+          + [3, 2, 1, 0][movingTile.innerPositions[idx].y]
+          - movingTile.innerPositions[idx].x,
+        y: pos.y + movingTile.innerPositions[idx].x - movingTile.innerPositions[idx].y,
       }));
       movingTile.innerPositions = movingTile.innerPositions.map(pos => ({
         x: [3, 2, 1, 0][pos.y],
+        y: pos.x,
+      }));
+
+    // Pieces of size 3 are all other types of piece
+    } else if (movingTile.size === 3) {
+      movingTile.positions = movingTile.positions.map((pos, idx) => ({
+        x: pos.x + [2, 1, 0][movingTile.innerPositions[idx].y] - movingTile.innerPositions[idx].x,
+        y: pos.y + movingTile.innerPositions[idx].x - movingTile.innerPositions[idx].y,
+      }));
+      movingTile.innerPositions = movingTile.innerPositions.map(pos => ({
+        x: [2, 1, 0][pos.y],
         y: pos.x,
       }));
     }
@@ -94,28 +107,45 @@ const game = (props) => {
 
   const dropDown = () => {
     if (props.game.gameOver) return;
+
+    // Distinguish moving tile from other tiles
     const movingTile = cloneDeep(tiles[0]);
     const otherTiles = cloneDeep(tiles.slice(1));
+
+    // Move until a collision happens
     while (!isCollision(movingTile, tiles.slice(1))) {
       movingTile.positions = movingTile.positions.map(pos => ({ x: pos.x, y: pos.y + 1 }));
     }
+
+    // Set moving tile hasLanded
     movingTile.hasLanded = true;
+    movingTile.positions = movingTile.positions.map(pos => ({ x: pos.x, y: pos.y - 1 }));
+
+    // Handle scoring
     const finalTiles = handleScoring([movingTile, ...otherTiles]);
+
+    // If a collision occurs between tiles and next moving tile, then it is end of the game
     if (isCollision(props.tilesStack[0], finalTiles)) {
+      setTiles([props.tilesStack[0], ...finalTiles]);
+      console.log('End of game (grid full)');
       props.setGame({ ...props.game, gameOver: true });
       props.socket.emit(SOCKETS.GAME_OVER, { roomId: props.roomId });
+
+    // Update tiles and ask a new tile to server
     } else {
-      setTiles([props.tilesStack[0], ...finalTiles]);
+      setTiles([props.tilesStack[0], ...finalTiles.filter(tile => tile.positions.length)]);
       props.socket.emit(
         SOCKETS.GAME_NEW_TILE,
         { roomId: props.roomId },
-        data => props.setTilesStack([
-          ...props.tilesStack.slice(1),
-          {
-            ...data.tile,
-            color: GAME_SETTINGS.COLORS[Math.floor(Math.random() * GAME_SETTINGS.COLORS.length)],
-          },
-        ]),
+        (data) => {
+          console.log('GAME_NEW_TILE (asked by client)');
+          props.setTilesStack([
+            ...props.tilesStack.slice(1), {
+              ...data.tile,
+              color: GAME_SETTINGS.COLORS[Math.floor(Math.random() * GAME_SETTINGS.COLORS.length)],
+            },
+          ]);
+        },
       );
       props.socket.emit(
         SOCKETS.GAME_SPECTER_UPDATE,
@@ -135,27 +165,25 @@ const game = (props) => {
     else dropDown();
   };
 
-  const moveLeft = () => {
+  const moveHorizontally = (direction) => {
     const movingTile = cloneDeep(tiles[0]);
     if (!movingTile || props.game.gameOver) return;
-    movingTile.positions = movingTile.positions.map(pos => ({ x: pos.x - 1, y: pos.y }));
-    if (!isCollision(movingTile, tiles.slice(1))) setTiles([movingTile, ...tiles.slice(1)]);
-  };
-
-  const moveRight = () => {
-    const movingTile = cloneDeep(tiles[0]);
-    if (!movingTile || props.game.gameOver) return;
-    movingTile.positions = movingTile.positions.map(pos => ({ x: pos.x + 1, y: pos.y }));
+    movingTile.positions = movingTile.positions.map(pos => ({
+      x: (direction === 'left') ? pos.x - 1 : pos.x + 1,
+      y: pos.y,
+    }));
     if (!isCollision(movingTile, tiles.slice(1))) setTiles([movingTile, ...tiles.slice(1)]);
   };
 
   // Key strokes handler
   const onKeyStroke = (key) => {
+    if (!props.game.hasStarted || props.game.gameOver || !tiles.length) return null;
+    console.log('keystroke');
     switch (key.keyCode) {
       case KEYS.ARROW_UP: return rotate();
       case KEYS.ARROW_DOWN: return moveDown();
-      case KEYS.ARROW_LEFT: return moveLeft();
-      case KEYS.ARROW_RIGHT: return moveRight();
+      case KEYS.ARROW_LEFT: return moveHorizontally('left');
+      case KEYS.ARROW_RIGHT: return moveHorizontally('right');
       case KEYS.SPACEBAR: return dropDown();
       default: return null;
     }
@@ -164,15 +192,13 @@ const game = (props) => {
   // Add key event listeners
   useEffect(() => {
     document.addEventListener('keydown', onKeyStroke);
-    return () => document.removeEventListener('keydown', onKeyStroke);
-  }, []);
+    return () => { document.removeEventListener('keydown', onKeyStroke); };
+  });
 
   // Listen to enemy scoring
   useEffect(() => {
     if (props.game.hasStarted && !props.game.gameOver) {
       props.socket.on(SOCKETS.GAME_SCORED, (data) => {
-        console.log('\n[GAME_SCORED]');
-        console.log(data);
         if (props.game.gameOver) {
           setBlockedRows(blockedRows + data.score - 1);
           // addRows at the bottom
@@ -185,18 +211,18 @@ const game = (props) => {
 
   // Make game faster each 10 seconds
   // Update game each [delay] ms
-  if (props.game.hasStarted && !props.game.gameOver) {
-    useInterval(() => moveDown(), delay);
-    useInterval(() => {
-      if (delay > 150) setDelay(delay * 0.8);
-    }, 10 * 1000);
-  }
+  useInterval(() => {
+    console.log(props.game.gameOver);
+    if (props.game.hasStarted && !props.game.gameOver) moveDown();
+  }, delay);
+  useInterval(() => {
+    if (delay > 150 && props.game.hasStarted && !props.game.gameOver) setDelay(delay * 0.8);
+  }, 10 * 1000);
 
   // Listen to game new tile event
   useEffect(() => {
     props.socket.on(SOCKETS.GAME_NEW_TILE, (data) => {
-      console.log('\n[GAME_NEW_TILE]');
-      console.log(data);
+      console.log('GAME_NEW_TILE (given by server)');
       props.setTilesStack([...props.tilesStack, data.tile]);
     });
   }, []);
@@ -205,23 +231,25 @@ const game = (props) => {
   useEffect(() => {
     let handler;
     props.socket.on(SOCKETS.GAME_STARTS, (data) => {
-      console.log('\n[GAME_STARTS]');
-      console.log(data);
+      console.log('GAME_STARTS');
       props.setGame({ ...props.game, hasStarted: true });
       handler = setTimeout(() => {
-        props.setTilesStack(data.tiles.splice(1));
-        setTiles(data.tiles[0]);
+        const tilesWithColor = data.tiles.map(tile => (
+          Object.assign(tile, {
+            color: GAME_SETTINGS.COLORS[Math.floor(Math.random() * GAME_SETTINGS.COLORS.length)],
+          })
+        ));
+        props.setTilesStack(tilesWithColor.splice(1));
+        setTiles([tilesWithColor[0]]);
       }, GAME_SETTINGS.DELAY_BEFORE_STARTS);
-      return () => {
-        clearTimeout(handler);
-      };
+      return () => clearTimeout(handler);
     });
   }, []);
 
   // Listen to game over event
   useEffect(() => {
     props.socket.on(SOCKETS.GAME_OVER, () => {
-      console.log('\n[GAME_OVER]');
+      console.log('GAME_OVER');
       props.setGame({ ...props.game, gameOver: true });
     });
     return () => props.socket.removeAllListeners();
@@ -230,14 +258,17 @@ const game = (props) => {
   // Check wheter a tile exists at x,y position
   const getTile = (x, y) => {
     let tile = false;
-    tiles.some((el) => {
-      if (find(el, { x, y })) tile = el;
-      return tile;
-    });
+    if (typeof tiles === 'object' && tiles.length && props.game.hasStarted) {
+      tiles.some((el) => {
+        if (find(el.positions, { x, y })) tile = el;
+        return tile;
+      });
+    }
     return tile;
   };
 
   const grid = Array(GAME_SETTINGS.GRID_HEIGHT).fill(Array(GAME_SETTINGS.GRID_WIDTH).fill(0));
+  console.log('render Game');
   return (
     <div className="grid">
       {grid.map((row, y) => (
@@ -245,7 +276,7 @@ const game = (props) => {
           {row.map((col, x) => {
             const tile = getTile(x, y);
             if (tile) return <div key={`row_${row[0] + y}col_${row[0] + x}`} className={['grid-cell', tile.color].join(' ')} />;
-            return <div key={`row_${row[0] + y}col_${y + x}`} className="grid-cell" />;
+            return <div key={`row_${row[0] + y}col_${row[0] + x}`} className="grid-cell" />;
           })}
         </div>
       ))}

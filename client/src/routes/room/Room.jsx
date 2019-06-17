@@ -38,8 +38,6 @@ const room = (props) => {
   useEffect(() => {
 
     // Check if room exists, create it if not
-    console.log('parameters', parameters);
-    console.log('params', params);
     props.socket.emit(SOCKETS.ROOM_INFOS, { ...params }, (data) => {
 
       // Check password
@@ -54,7 +52,7 @@ const room = (props) => {
         score: 0,
         status: false,
         role: (user.role === ROOM_ROLES.SPECTATOR
-        || data.nbPlayer + 1 > data.maxPlayers
+        || data.nbPlayers + 1 > data.maxPlayers
         || data.gameHasStarted) ? ROOM_ROLES.SPECTATOR : user.role,
       };
 
@@ -66,18 +64,14 @@ const room = (props) => {
 
   }, []);
 
-  // Check before unload
-  const onBeforeUnloadHandler = (e) => {
-    e.preventDefault();
-    console.log('before unload needs call api to update score and emit player left the game');
-    console.log('for redirection, do it in header');
-  };
-
   useEffect(() => {
-    window.addEventListener('beforeunload', onBeforeUnloadHandler);
-    return () => window.removeEventListener('beforeunload', onBeforeUnloadHandler);
+    const unlisten = props.history.listen(() => {
+      props.socket.emit(SOCKETS.ROOM_USER_LEFT, { roomId: params.roomId, user });
+    });
+    return () => unlisten();
   }, []);
 
+  console.log(`render Room gameOver=${game.gameOver}`);
   return (
     <div className="room-container">
       <Header />
@@ -107,9 +101,7 @@ const room = (props) => {
             <Pile
               tilesStack={tilesStack}
             />
-            <Specter
-              socket={props.socket}
-            />
+            {params.maxPlayer > 1 ? <Specter socket={props.socket} /> : null }
           </div>
         </div>
       </Paper>

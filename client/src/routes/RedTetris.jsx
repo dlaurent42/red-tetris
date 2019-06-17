@@ -32,8 +32,8 @@ const RedTetris = () => (
         horizontal: 'right',
       }}
     >
-      <Notifications />
       <HashRouter>
+        <Notifications />
         <Switch>
           <Route path="/" exact component={Homepage} />
 

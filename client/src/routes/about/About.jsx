@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../../misc/UI/card/Card';
+import Card from '../../misc/UI/surface/Surface';
 import Header from '../../misc/navigation/header/Header';
 import Footer from '../../misc/navigation/footer/Footer';
 import './About.scss';

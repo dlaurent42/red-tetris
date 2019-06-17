@@ -21,7 +21,7 @@
     "import/prefer-default-export": "off",
     "no-loop-func": "off",
     "no-unused-vars": "warn",
-    "no-console": "warn",
+    "no-console": "off",
     "no-unexpected-multiline": "warn",
     "object-curly-newline": "off",
     "padded-blocks": "off",
