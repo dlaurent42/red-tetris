@@ -1,6 +1,2 @@
-const SERVER = {
-  HOST: '127.0.0.1',
-  PORT: '8080',
-};
+// push here any constant string or number
 
-export { SERVER };

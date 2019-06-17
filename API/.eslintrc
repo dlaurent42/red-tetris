@@ -1,6 +1,6 @@
 {
   "extends": [
-    "airbnb-base",
+    "airbnb-base"
   ],
   "env": {
     "node": true,
@@ -12,7 +12,7 @@
   },
   "rules": {
     "padded-blocks": "off",
-    "no-console": "off",
+    "no-console": "warn",
     "no-param-reassign": [
       "error",
       {

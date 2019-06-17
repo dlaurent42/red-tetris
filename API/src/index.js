@@ -2,7 +2,7 @@ import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import { SERVER } from './config/constants';
+import { SERVER } from './config/config';
 
 class Server {
   constructor() {
@@ -18,5 +18,4 @@ class Server {
   }
 }
 
-const server = new Server();
-server.listen();
+new Server().listen();

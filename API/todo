@@ -1,0 +1,13 @@
+Packages to install
+  - express
+  - cors
+  - bodyparser
+  - morgan (https://github.com/expressjs/morgan#log-file-rotation)
+  - mongodb + moogoose
+  - dotenv
+  - eslint
+  - nodemon
+  - nodemailer (mails)
+  - validator
+  [ - json web token ]
+  [ - lodash ]
