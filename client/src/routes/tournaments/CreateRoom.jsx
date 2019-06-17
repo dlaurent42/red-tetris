@@ -48,7 +48,11 @@ const createRoom = (props) => {
       roomMode: !GAME_MODES.includes(form.roomMode),
       roomPassword: form.roomPassword.length > 0 && !REGEX.ROOM_PWD.test(form.roomPassword),
     });
-    if (Object.values(formErrors).includes(true)) return;
+    if ([(!(REGEX.ROOM_NAME.test(form.roomName))),
+      (form.maxPlayers !== 1 && form.maxPlayers !== 2),
+      (!GAME_MODES.includes(form.roomMode)),
+      (form.roomPassword.length > 0 && !REGEX.ROOM_PWD.test(form.roomPassword)),
+    ].includes(true)) return;
     const roomId = makeid(64);
     props.socket.emit(SOCKETS.ROOM_CREATION, {
       ...form,
