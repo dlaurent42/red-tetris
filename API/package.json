@@ -1,0 +1,39 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "RedTetris server handling sockets",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -r esm src/index.js",
+    "lint": "eslint \"**/*.js\"",
+    "test": "jest",
+    "dev": "NODE_ENV=development nodemon -r esm src/index.js",
+    "prod": "NODE_ENV=production nodemon -r esm src/index.js"
+  },
+  "engines": {
+    "node": ">=10.6.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv-keywords": "^3.4.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "jest": "^24.8.0",
+    "lodash": "^4.17.11",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1",
+    "path": "^0.12.7",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}
