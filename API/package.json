@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "API",
   "version": "1.0.0",
-  "description": "RedTetris server handling sockets",
+  "description": "RedTetris API server handling API requests",
   "main": "index.js",
   "scripts": {
     "start": "nodemon -r esm src/index.js",
@@ -17,17 +17,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ajv-keywords": "^3.4.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "jest": "^24.8.0",
-    "lodash": "^4.17.11",
+    "mongoose": "^5.6.0",
     "morgan": "^1.9.1",
+    "nodemailer": "^6.2.1",
     "nodemon": "^1.19.1",
-    "path": "^0.12.7",
-    "socket.io": "^2.2.0"
+    "validator": "^11.0.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
