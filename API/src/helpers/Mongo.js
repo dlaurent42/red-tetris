@@ -7,7 +7,7 @@ const { sleep } = require('../utils');
 class MongoDb {
   constructor() {
     this.db = mongoose.connection;
-    this.uri = `mongodb://${DATABASE.USR}:${DATABASE.PWD}@${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}`;
+    this.uri = `mongodb://${DATABASE.USER}:${DATABASE.PASS}@${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}`;
     this.db.on('connecting', () => { console.log(`Connecting to ${this.uri}`); });
     this.db.on('connected', () => { console.log(`Connected to ${this.uri}`); });
     this.db.once('open', () => { console.log('Connection opened'); });
