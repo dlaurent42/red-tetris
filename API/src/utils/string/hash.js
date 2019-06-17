@@ -1,9 +1,9 @@
-const crypto = require('crypto')
+import crypto from 'crypto';
 
 const sha512 = (password, salt) => {
-  const hash = crypto.createHmac('sha512', salt)
-  hash.update(password)
-  return hash.digest('hex')
-}
+  const hash = crypto.createHmac('sha512', salt);
+  hash.update(password);
+  return hash.digest('hex');
+};
 
-module.exports = sha512
+export default sha512;

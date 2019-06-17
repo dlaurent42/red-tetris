@@ -1,3 +1,3 @@
-const hasLowercase = str => /[a-z]/.test(str)
+const hasLowercase = str => /[a-z]/.test(str);
 
-module.exports = hasLowercase
+export default hasLowercase;

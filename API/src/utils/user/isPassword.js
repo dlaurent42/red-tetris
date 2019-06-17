@@ -1,20 +1,21 @@
-const validator = require('validator')
-const isEmpty = require('../../utils/obj/isEmpty')
-const { BOUNDARY_VALUES } = require('../../config/constants')
-const hasDigit = require('../string/hasDigit')
-const hasSpecial = require('../string/hasSpecial')
-const hasLowercase = require('../string/hasLowercase')
-const hasUppercase = require('../string/hasUppercase')
+import validator from 'validator';
+
+import isEmpty from '../obj/isEmpty';
+import { BOUNDARY_VALUES } from '../../config/constants';
+import hasDigit from '../string/hasDigit';
+import hasSpecial from '../string/hasSpecial';
+import hasLowercase from '../string/hasLowercase';
+import hasUppercase from '../string/hasUppercase';
 
 const isPassword = (password, cpassword) => {
-  if (isEmpty(password)) return false
-  if (!validator.isLength(password, { min: BOUNDARY_VALUES.PASS_MIN_LEN })) return false
+  if (isEmpty(password)) return false;
+  if (!validator.isLength(password, { min: BOUNDARY_VALUES.PASS_MIN_LEN })) return false;
   if (!(hasDigit(password)
     && hasSpecial(password)
     && hasLowercase(password)
-    && hasUppercase(password))) return false
-  if (!isEmpty(cpassword) && cpassword !== password) return false
-  return true
-}
+    && hasUppercase(password))) return false;
+  if (!isEmpty(cpassword) && cpassword !== password) return false;
+  return true;
+};
 
-module.exports = isPassword
+export default isPassword;

@@ -1,26 +1,24 @@
 // Miscellaneous
-const sleep = require('./miscellaneous/sleep')
-const timeoutPromise = require('./miscellaneous/timeoutPromise')
-const whatTimeIsIt = require('./miscellaneous/whatTimeIsIt')
+import sleep from './miscellaneous/sleep';
+import whatTimeIsIt from './miscellaneous/whatTimeIsIt';
+import timeoutPromise from './miscellaneous/timeoutPromise';
 
 // Obj
-const isEmpty = require('./obj/isEmpty')
-const dynamicSort = require('./obj/dynamicSort')
+import isEmpty from './obj/isEmpty';
+import dynamicSort from './obj/dynamicSort';
 
 // String
-const hash = require('./string/hash')
-const template = require('./string/interpolation')
-const random = require('./string/random')
-const recursiveRegex = require('./string/recursiveRegex')
+import hash from './string/hash';
+import random from './string/random';
+import template from './string/interpolation';
+import recursiveRegex from './string/recursiveRegex';
 
 // User
-// const userIsFirstname = require('./user/isFirstname')
-// const userIsLastname = require('./user/isLastname')
-const userIsPassword = require('./user/isPassword')
-const userIsUsername = require('./user/isUsername')
-const userIsEmail = require('./user/isEmail')
+import userIsPassword from './user/isPassword';
+import userIsUsername from './user/isUsername';
+import userIsEmail from './user/isEmail';
 
-module.exports = {
+export {
   dynamicSort,
   hash,
   isEmpty,
@@ -35,4 +33,4 @@ module.exports = {
   userIsPassword,
   userIsUsername,
   userIsEmail,
-}
+};
