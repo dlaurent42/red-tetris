@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 
 import { random, hash } from '../utils';
+import { ERRORS } from '../config/constants';
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -36,10 +37,12 @@ userSchema.pre('save', function fun(next) {
   this.password = hash(this.password, this.salt);
   console.log(`Hashed password: ${this.password}`);
 
-  // Check if email is unique (don't like this method | ask for better one)
-  mongoose.model('User', userSchema).find({ email: this.email }, (err, docs) => {
+  // Check if email/username is unique (don't like this method | ask for better one)
+  mongoose.model('User', userSchema).find({
+    $or: [{ email: this.email }, { username: this.username }],
+  }, (err, docs) => {
     if (!docs.length) next();
-    else next(new Error('User with this email already exists'));
+    else next(new Error(ERRORS.UNIQUE_LOGIN));
   });
 });
 

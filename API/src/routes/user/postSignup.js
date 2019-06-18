@@ -17,13 +17,13 @@ const dataCheck = user => (
 );
 
 router.post('/signup', (req, res) => {
-  if (isEmpty(req.body.user)) return res.status(400).json({ err: ERRORS.DATA_MISSING });
-
-  if (!dataCheck(req.body.user)) return res.status(200).json({ err: ERRORS.DATA_VALIDATION });
+  if (isEmpty(req.body.user)) res.status(400).json({ err: ERRORS.DATA_MISSING });
+  if (!dataCheck(req.body.user)) res.status(200).json({ err: ERRORS.DATA_VALIDATION });
 
   const user = new User(req.body.user);
-  return user.save()
-    .then(doc => res.json({ success: 'true', user: doc })) // implament email send on register
+  user.save()
+    .then(doc => res.json({ success: 'true', user: doc }))
+    .then(() => console.log(`Send a letter to ${user.email}`))
     .catch((err) => {
       console.log(err);
       return res.status(200).json({ err: err.message });
