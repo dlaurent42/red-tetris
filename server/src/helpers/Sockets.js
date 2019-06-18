@@ -154,7 +154,8 @@ class Sockets {
       });
 
       socket.on(SOCKETS.GAME_SCORED, (payload) => {
-        const lobby = this.lobbies.getLobby(payload);
+        // Payload must contain { id, score }
+        const lobby = this.lobbies.setPlayerScoring(payload, socket.id);
         if (!lobby) return;
 
         // Update players game

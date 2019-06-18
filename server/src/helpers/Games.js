@@ -1,4 +1,9 @@
-const { find, findIndex, countBy } = require('lodash');
+const {
+  get,
+  find,
+  findIndex,
+  countBy,
+} = require('lodash');
 const { ROOM_ROLES } = require('../config/constants');
 const Player = require('./Player');
 const Game = require('./Game');
@@ -17,7 +22,9 @@ class Games {
 
   // Method used to fetch all lobbies
   getLobbies() {
-    return this.lobbies.filter(lobby => !lobby.hasEnded);
+    return this.lobbies.filter(lobby => (
+      !lobby.hasEnded && get(countBy(lobby.players, { role: ROOM_ROLES.SPECTATOR }).false, 0)
+    ));
   }
 
   // Method used to fetch all lobbies as formatted object
@@ -113,6 +120,24 @@ class Games {
     const { lobby, player } = this.getPlayerAndLobby(data, socketId);
     if (player) Object.assign(player, data.user);
     return { lobby, player };
+  }
+
+  // Method used to update score of a user and number of blocked rows of other players
+  setPlayerScoring(data, socketId) {
+    const lobby = this.getLobby(data);
+    if (!lobby) return lobby;
+    Object.assign(lobby, {
+      ...lobby,
+      players: lobby.players.map(player => (
+        (player.role === ROOM_ROLES.SPECTATOR)
+          ? player
+          : Object.assign(player, {
+            score: player.score + (player.socketId === socketId) ? data.score : 0,
+            blockedRows: player.blockedRows + (player.socketId !== socketId) ? data.score : 0,
+          })
+      )),
+    });
+    return lobby;
   }
 
   // Method used to add a player to lobby
