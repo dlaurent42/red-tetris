@@ -11,4 +11,12 @@ const BOUNDARY_VALUES = {
   PASS_MIN_LEN: 8,
 };
 
-export { BOUNDARY_VALUES };
+const ERRORS = {
+  DATA_VALIDATION: 'Input are not valid',
+  DATA_MISSING: 'Form is missing some data',
+};
+
+export {
+  BOUNDARY_VALUES,
+  ERRORS,
+};
