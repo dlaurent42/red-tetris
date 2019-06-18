@@ -23,21 +23,11 @@ router.post('/signup', (req, res) => {
 
   const user = new User(req.body.user);
   return user.save()
-    .then((doc) => {
-      return res.json({ success: 'true', user: doc });
-    })
+    .then(doc => res.json({ success: 'true', user: doc })) // implament email send on register
     .catch((err) => {
       console.log(err);
       return res.status(200).json({ err: err.message });
     });
-
-  // return user.save((err) => {
-  //   if (err) {
-  //     console.log(err);
-  //     return res.status(200).json({ err: err.message });
-  //   }
-  //   return res.json({ success: 'true' });
-  // });
 });
 
 export default router;

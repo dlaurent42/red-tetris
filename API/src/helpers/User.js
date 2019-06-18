@@ -31,12 +31,16 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.pre('save', (next) => {
-  // this.salt = random(255);
-  console.log(this.salt);
-  // this.password = hash(password, salt);
+userSchema.pre('save', function fun(next) {
+  this.salt = random(255);
+  this.password = hash(this.password, this.salt);
   console.log(`Hashed password: ${this.password}`);
-  next();
+
+  // Check if email is unique (don't like this method | ask for better one)
+  mongoose.model('User', userSchema).find({ email: this.email }, (err, docs) => {
+    if (!docs.length) next();
+    else next(new Error('User with this email already exists'));
+  });
 });
 
 export default mongoose.model('User', userSchema);
