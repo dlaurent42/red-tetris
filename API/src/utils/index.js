@@ -28,8 +28,6 @@ export {
   template,
   timeoutPromise,
   whatTimeIsIt,
-  // userIsFirstname,
-  // userIsLastname,
   userIsPassword,
   userIsUsername,
   userIsEmail,
