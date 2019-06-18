@@ -11,6 +11,7 @@ class Sockets {
   }
 
   handlePlayerLeft(lobby, player, socket) {
+
     // Check if player deletion worked
     if (lobby === null) return;
 
@@ -20,9 +21,11 @@ class Sockets {
     // Check if lobby has been deleted
     if (lobby === undefined) return;
 
-    // Check if game is over (one player left)
-    if (countBy(lobby.players, { role: ROOM_ROLES.SPECTATOR }).false === 1) {
+    // Verify if game is over (only one player left and maxPlayers != solo)
+    if (countBy(lobby.players, { role: ROOM_ROLES.SPECTATOR }).false === 1
+    && lobby.hasStarted && lobby.maxPlayers > 1) {
       lobby.players.forEach(el => this.io.to(el.socketId).emit(SOCKETS.GAME_OVER, {}));
+      Object.assign(lobby, { hasEnded: true });
     }
 
     // Update client's info
@@ -59,11 +62,11 @@ class Sockets {
 
           // If lobby is correctly created, update client's info
           if (lobby === undefined) {
-            socket.emit(SOCKETS.NOTIFY_ROOM_NOT_CREATED, { roomName: payload.roomName });
+            socket.emit(SOCKETS.NOTIFY_ROOM_NOT_CREATED, { name: payload.name });
             return;
           }
           this.broadcastTournamentsList(socket);
-          socket.emit(SOCKETS.NOTIFY_ROOM_CREATED, { roomName: lobby.name });
+          socket.emit(SOCKETS.NOTIFY_ROOM_CREATED, { name: lobby.name });
         }
 
         // Callback
@@ -90,11 +93,11 @@ class Sockets {
         // If lobby is correctly created, update client's info
         if (!lobby) return;
         this.broadcastTournamentsList(socket);
-        socket.emit(SOCKETS.NOTIFY_ROOM_CREATED, { roomName: lobby.name });
+        socket.emit(SOCKETS.NOTIFY_ROOM_CREATED, { name: lobby.name });
       });
 
       socket.on(SOCKETS.ROOM_FORBIDDEN_ACCESS, (payload) => {
-        socket.emit(SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS, { payload });
+        socket.emit(SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS, payload);
       });
 
       socket.on(SOCKETS.ROOM_USER_UPDATE, (payload) => {
@@ -136,11 +139,17 @@ class Sockets {
       });
 
       socket.on(SOCKETS.GAME_SPECTER_UPDATE, (payload) => {
-        const lobby = this.lobbies.getLobby(payload);
-        if (!lobby) return;
-        lobby.players.forEach((player) => {
-          if (player.socketId === socket.id) return;
-          this.io.to(player.socketId).emit(SOCKETS.GAME_SPECTER_UPDATE, (payload));
+        // Update user
+        const { lobby, player } = this.lobbies.setPlayer({
+          id: payload.id,
+          user: { specter: payload.specter },
+        }, socket.id);
+
+        // If player is correctly created, update client's info
+        if (!player) return;
+        lobby.players.forEach((el) => {
+          if (el.socketId === socket.id) return;
+          this.io.to(el.socketId).emit(SOCKETS.ROOM_UPDATE, lobby.toObject());
         });
       });
 
@@ -157,24 +166,38 @@ class Sockets {
       });
 
       socket.on(SOCKETS.GAME_STARTS, (payload) => {
-        const { lobby, tiles } = this.lobbies.setLobbyStart(payload);
+        const { lobby, startTile } = this.lobbies.setLobbyStart(payload);
         if (!lobby) return;
-        lobby.players.forEach(el => this.io.to(el.socketId).emit(SOCKETS.GAME_STARTS, { tiles }));
+        lobby.players.forEach(player => (
+          this.io.to(player.socketId).emit(SOCKETS.GAME_STARTS, {
+            lobby,
+            tilesStack: player.tilesStack,
+            startTile,
+          })
+        ));
       });
 
-      socket.on(SOCKETS.GAME_NEW_TILE, (payload, callback) => {
-        const { lobby, tile } = this.lobbies.addLobbyTile(payload);
+      socket.on(SOCKETS.GAME_OVER, (payload) => {
+        const lobby = this.lobbies.setLobbyEnd(payload);
+        if (!lobby) return;
+        lobby.players.forEach(el => this.io.to(el.socketId).emit(SOCKETS.GAME_OVER, lobby));
+      });
+
+      socket.on(SOCKETS.GAME_NEW_TILE, (payload) => {
+        const lobby = this.lobbies.addLobbyTile(payload, socket.id);
 
         // Check if tile has been successfully created
-        if (!lobby || !tile) return callback({ tile });
+        if (!lobby) return;
 
         // Update users' info
         lobby.players.forEach((player) => {
-          if (player.socketId !== socket.id && player.role !== ROOM_ROLES.SPECTATOR) {
-            this.io.to(player.socketId).emit(SOCKETS.GAME_NEW_TILE, { tile });
+          if (player.role !== ROOM_ROLES.SPECTATOR) {
+            this.io.to(player.socketId).emit(
+              SOCKETS.GAME_NEW_TILE,
+              { tilesStack: player.tilesStack },
+            );
           }
         });
-        return callback({ tile });
       });
 
       socket.on('disconnect', () => {

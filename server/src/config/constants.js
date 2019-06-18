@@ -51,9 +51,17 @@ const GAME_SETTINGS = {
   GRID_HEIGHT: 20,
 };
 
+const COLORS = [
+  'red',
+  'blue',
+  'green',
+  'yellow',
+];
+
 module.exports = {
   SERVER,
   SOCKETS,
+  COLORS,
   ROOM_ROLES,
   GAME_MODES,
   GAME_SETTINGS,

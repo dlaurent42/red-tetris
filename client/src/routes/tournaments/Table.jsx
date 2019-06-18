@@ -15,8 +15,8 @@ const table = (props) => {
   useEffect(() => {
     setFilteredList(props.list.filter((el) => {
       if (props.filters.showFullRooms === false && el.nbPlayers >= el.maxPlayers) return false;
-      if (props.filters.showRoomsWithPwd === false && el.roomHasPassword) return false;
-      if (props.filters.searchValue !== '' && el.roomName.includes(props.filters.searchValue) === false) return false;
+      if (props.filters.showRoomsWithPwd === false && el.hasPassword) return false;
+      if (props.filters.searchValue !== '' && el.name.includes(props.filters.searchValue) === false) return false;
       return true;
     }));
   }, [props.list, props.filters]);
@@ -36,7 +36,7 @@ const table = (props) => {
         <TableBody className="tournaments-table-body">
           {filteredList.map(tournament => (
             <TableRow
-              key={`${tournament.roomId}_${tournament.roomName}`}
+              key={`${tournament.id}_${tournament.name}`}
               className="tournaments-table-row"
               onClick={() => {
                 props.setJoinRoomData({ ...tournament });
@@ -44,11 +44,11 @@ const table = (props) => {
               }}
             >
               <TableCell align="center">
-                <FontAwesomeIcon icon={ICONS.LOCK} className={['tournaments-lock', (tournament.roomHasPassword) ? 'lock' : 'unlock'].join(' ')} />
+                <FontAwesomeIcon icon={ICONS.LOCK} className={['tournaments-lock', (tournament.hasPassword) ? 'lock' : 'unlock'].join(' ')} />
               </TableCell>
-              <TableCell align="center">{tournament.roomId}</TableCell>
-              <TableCell align="center">{tournament.roomName}</TableCell>
-              <TableCell align="center">{tournament.roomMode}</TableCell>
+              <TableCell align="center">{tournament.id}</TableCell>
+              <TableCell align="center">{tournament.name}</TableCell>
+              <TableCell align="center">{tournament.mode}</TableCell>
               <TableCell align="center">{`${tournament.nbPlayers}/${tournament.maxPlayers}`}</TableCell>
             </TableRow>
           ))}

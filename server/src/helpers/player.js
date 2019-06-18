@@ -5,16 +5,20 @@ class Player {
     this.socketId = props.socketId;
     this.username = props.username;
     this.score = 0;
-    this.status = false;
+    this.isReady = false;
+    this.specter = {};
     this.role = props.role || ROOM_ROLES.SPECTATOR;
+    this.tilesStack = [];
   }
 
   update(data) {
     if (!data) return;
     this.username = data.username || this.username;
     this.score = data.score || this.score;
-    this.status = data.status || this.status;
+    this.isReady = data.isReady || this.isReady;
     this.role = data.role || this.role;
+    this.specter = data.specter || this.specter;
+    this.tilesStack = data.tilesStack || this.tilesStack;
   }
 }
 

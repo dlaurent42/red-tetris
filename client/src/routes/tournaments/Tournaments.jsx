@@ -26,7 +26,6 @@ const tournaments = (props) => {
 
   // ComponentDidMount: fetch rooms list
   useEffect(() => {
-    // To be kept
     props.socket.emit(
       SOCKETS.TOURNAMENTS_LIST,
       {},
@@ -61,7 +60,7 @@ const tournaments = (props) => {
       <Footer />
 
       <JoinRoom
-        roomData={joinRoomData}
+        data={joinRoomData}
         displayJoinRoomDialogBox={displayJoinRoomDialogBox}
         setDisplayJoinRoomDialogBox={setDisplayJoinRoomDialogBox}
       />

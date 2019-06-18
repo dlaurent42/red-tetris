@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,48 +15,32 @@ const notifications = (props) => {
     </React.Fragment>
   );
 
-  props.socket.on(
-    SOCKETS.NOTIFY_FRIEND_CONNECTION,
-    data => (
+  useEffect(() => {
+    props.socket.on(SOCKETS.NOTIFY_FRIEND_CONNECTION, data => (
       enqueueSnackbar(`${data.username} is connected.`, { action, ...NOTIFICATIONS.FRIEND_CONNECTION })
-    ),
-  );
+    ));
 
-  props.socket.on(
-    SOCKETS.NOTIFY_PLAYER_LEFT_GAME,
-    data => (
+    props.socket.on(SOCKETS.NOTIFY_PLAYER_LEFT_GAME, data => (
       enqueueSnackbar(`${data.username} has left the room.`, { action, ...NOTIFICATIONS.PLAYER_LEFT })
-    ),
-  );
+    ));
 
-  props.socket.on(
-    SOCKETS.NOTIFY_PLAYER_ENTERS_GAME,
-    data => (
+    props.socket.on(SOCKETS.NOTIFY_PLAYER_ENTERS_GAME, data => (
       enqueueSnackbar(`${data.username} has joined the room.`, { action, ...NOTIFICATIONS.PLAYER_ENTERS })
-    ),
-  );
+    ));
 
-  props.socket.on(
-    SOCKETS.NOTIFY_ROOM_CREATED,
-    data => (
-      enqueueSnackbar(`${data.roomName} room created.`, { action, ...NOTIFICATIONS.ROOM_CREATED })
-    ),
-  );
+    props.socket.on(SOCKETS.NOTIFY_ROOM_CREATED, data => (
+      enqueueSnackbar(`${data.name} room created.`, { action, ...NOTIFICATIONS.ROOM_CREATED })
+    ));
 
-  props.socket.on(
-    SOCKETS.NOTIFY_ROOM_NOT_CREATED,
-    (data) => {
+    props.socket.on(SOCKETS.NOTIFY_ROOM_NOT_CREATED, (data) => {
       props.history.push('/tournaments');
-      enqueueSnackbar(`${data.roomName} room not created.`, { action, ...NOTIFICATIONS.ROOM_NOT_CREATED });
-    },
-  );
+      enqueueSnackbar(`${data.name} room not created.`, { action, ...NOTIFICATIONS.ROOM_NOT_CREATED });
+    });
 
-  props.socket.on(
-    SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS,
-    data => (
-      enqueueSnackbar(`Forbidden access to ${data.roomName} room.`, { action, ...NOTIFICATIONS.FORBIDDEN_ACCESS })
-    ),
-  );
+    props.socket.on(SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS, data => (
+      enqueueSnackbar(`Forbidden access to ${data.name} room.`, { action, ...NOTIFICATIONS.FORBIDDEN_ACCESS })
+    ));
+  }, []);
 
   return <React.Fragment />;
 };

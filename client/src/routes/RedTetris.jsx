@@ -43,10 +43,8 @@ const RedTetris = () => (
           {/* game */}
           <Route path="/leaderboard" component={Leaderboard} />
           <Route path="/tournaments" component={Tournaments} />
-          {/* if room NOT joined through interface */}
           <Route path="/:room[:username]" component={Room} />
-          {/* if room joined through interface */}
-          <Route path="/:room[:username][:key][:password][:role]" component={Room} />
+          <Route path="/:room[]" component={Room} />
 
           {/* forms */}
           <Route path="/login" component={Login} />

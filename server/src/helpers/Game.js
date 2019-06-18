@@ -13,40 +13,43 @@ const generateID = (length) => {
 
 class Game {
   constructor(props) {
-    this.id = props.roomId || generateID(64);
-    this.name = (props.roomName && props.roomName.trim() !== '') ? props.roomName : 'no-named-lobby';
+    this.id = props.id || generateID(64);
+    this.name = props.name;
     this.maxPlayers = props.maxPlayers || 1;
-    this.hasPassword = props.roomHasPassword || false;
-    this.password = props.roomPassword || '';
-    this.mode = props.roomMode || GAME_MODES[0];
+    this.hasPassword = props.hasPassword || false;
+    this.password = props.password || '';
+    this.mode = props.mode || GAME_MODES[0];
     this.hasStarted = false;
+    this.hasEnded = false;
     this.players = [];
   }
 
   toObject() {
     return {
-      roomId: this.id,
-      roomName: this.name,
-      nbPlayers: countBy(this.players, { role: ROOM_ROLES.SPECTATOR }).false,
+      id: this.id,
+      name: this.name,
+      nbPlayers: countBy(this.players, { role: ROOM_ROLES.SPECTATOR }).false || 0,
       maxPlayers: this.maxPlayers,
-      roomHasPassword: this.hasPassword,
-      roomPassword: this.password,
-      roomMode: this.mode,
-      gameHasStarted: this.hasStarted,
-      users: this.players,
+      hasPassword: this.hasPassword,
+      password: this.password,
+      mode: this.mode,
+      hasStarted: this.hasStarted,
+      hasEnded: this.hasEnded,
+      players: this.players,
     };
   }
 
   update(data) {
     if (!data) return;
-    this.id = data.roomId || this.id;
-    this.name = data.roomName || this.name;
+    this.id = data.id || this.id;
+    this.name = data.name || this.name;
     this.maxPlayers = data.maxPlayers || this.maxPlayers;
-    this.hasPassword = data.roomHasPassword || this.hasPassword;
-    this.password = data.roomPassword || this.password;
-    this.mode = data.roomMode || this.mode;
-    this.hasStarted = data.gameHasStarted || this.hasStarted;
-    this.players = data.users || this.players;
+    this.hasPassword = data.hasPassword || this.hasPassword;
+    this.password = data.password || this.password;
+    this.mode = data.mode || this.mode;
+    this.hasStarted = data.hasStarted || this.hasStarted;
+    this.hasEnded = data.hasEnded || this.hasEnded;
+    this.players = data.players || this.players;
   }
 }
 

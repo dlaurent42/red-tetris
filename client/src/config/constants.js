@@ -90,6 +90,8 @@ export const ICONS = {
   EYE: 'eye',
   EYE_SLASH: 'eye-slash',
   SEARCH: 'search',
+  CROWN: 'crown',
+  GAMEPAD: 'gamepad',
 };
 
 export const GAME_MODES = [

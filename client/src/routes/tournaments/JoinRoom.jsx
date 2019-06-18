@@ -9,17 +9,32 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
-import { DEFAULT } from '../../config/constants';
 
 const joinRoom = (props) => {
 
-  const [roomPassword, setRoomPassword] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleValidation = (status) => {
-    if (status === 'player'
-      && ((props.roomData.roomHasPassword && roomPassword !== props.roomData.roomPassword)
-      || props.roomData.nbPlayers >= props.roomData.maxPlayers)) return;
-    props.history.push(`/${props.roomData.roomName}[${props.user.username || DEFAULT.USERNAME}][${props.roomData.roomId}][${(props.roomData.roomPassword) ? props.roomData.roomPassword : '-'}][${status}]`);
+  const handleValidation = (role) => {
+    if (role === 'player'
+      && ((props.data.hasPassword && password !== props.data.password)
+      || props.data.nbPlayers >= props.data.maxPlayers)) return;
+    props.history.push({
+      pathname: `/${props.data.name}[${props.user.username}]`,
+      state: {
+        room: {
+          id: props.data.id,
+          name: props.data.name,
+          hasPassword: props.data.hasPassword,
+          password: props.data.password,
+        },
+        user: {
+          role,
+          id: props.user.uid,
+          username: props.user.username,
+          avatar: props.user.avatar,
+        },
+      },
+    });
   };
 
   return (
@@ -29,10 +44,10 @@ const joinRoom = (props) => {
       aria-labelledby="join-room"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="join-room">{`Join ${props.roomData.roomName}`}</DialogTitle>
+      <DialogTitle id="join-room">{`Join ${props.data.name}`}</DialogTitle>
       <DialogContent>
-        {(props.roomData.roomHasPassword && props.roomData.nbPlayers < props.roomData.maxPlayers)
-          ? <DialogContentText>{`Room password: ${props.roomData.roomPassword}`}</DialogContentText> : null}
+        {(props.data.hasPassword && props.data.nbPlayers < props.data.maxPlayers)
+          ? <DialogContentText>{`Room password: ${props.data.password}`}</DialogContentText> : null}
         <DialogContentText>
           The goal of Tetris is to score as many points as possible&nbsp;
           by clearing horizontal lines of Blocks.&nbsp;
@@ -40,7 +55,7 @@ const joinRoom = (props) => {
           Tetriminos inside the Matrix (playing field).&nbsp;
           Lines are cleared when they are filled with Blocks and have no empty spaces.
         </DialogContentText>
-        {(props.roomData.roomHasPassword && props.roomData.nbPlayers < props.roomData.maxPlayers)
+        {(props.data.hasPassword && props.data.nbPlayers < props.data.maxPlayers)
           ? (
             <TextField
               autoFocus
@@ -48,8 +63,8 @@ const joinRoom = (props) => {
               id="standard-username"
               label="room password"
               className="room-password"
-              value={roomPassword}
-              onChange={e => setRoomPassword(e.target.value)}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               fullWidth
             />
           ) : null}
@@ -62,14 +77,14 @@ const joinRoom = (props) => {
         >
           Spectator
         </Button>
-        {(props.roomData.nbPlayers < props.roomData.maxPlayers)
+        {(props.data.nbPlayers < props.data.maxPlayers)
           ? (
             <Button
               variant="contained"
               autoFocus
               color="primary"
               disabled={
-                props.roomData.roomHasPassword && roomPassword !== props.roomData.roomPassword}
+                props.data.hasPassword && password !== props.data.password}
               onClick={() => handleValidation('player')}
             >
               Player
@@ -82,7 +97,7 @@ const joinRoom = (props) => {
 
 joinRoom.propTypes = {
   user: PropTypes.objectOf(PropTypes.any).isRequired,
-  roomData: PropTypes.objectOf(PropTypes.any).isRequired,
+  data: PropTypes.objectOf(PropTypes.any).isRequired,
   displayJoinRoomDialogBox: PropTypes.bool.isRequired,
   setDisplayJoinRoomDialogBox: PropTypes.func.isRequired,
 };

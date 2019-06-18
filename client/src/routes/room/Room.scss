@@ -1,27 +1,146 @@
 @import '../../config/styles.scss';
 
-
 .room-container {
+
   @include abs-full-screen;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  & .game-counter {
-    position: absolute;
-    top: 50vh;
-    left: 50vw;
-    transform: translate(-50%, -50%);
-    color: tomato;
-    font: $roboto;
-    font-variant-caps: all-petite-caps;
-    font-size: 6rem;
-    z-index: 99;
-    font-weight: 900;
-    letter-spacing: 5px;
-    padding: 5px 20px;
+
+  & .room-entering-lobby {
+    color: $secondary-color;
+
+    & .room-entering-lobby-ctn {
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
+      margin: auto;
+      padding: 15px;
+
+      & .room-entering-lobby-title {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        & p:first-child {
+          letter-spacing: 2px;
+          margin-bottom: 0 !important;
+        }
+        & p:last-child {
+          opacity: .5;
+          font-size: 15px;
+          padding: 2px 2px;
+          background-color: rgba($secondary-color, .1);
+        }
+      }
+
+      & .room-entering-lobby-slots {
+        font-size: 1.1rem;
+        color: $secondary-color;
+        & .room-entering-lobby-player-slot,
+        & .room-entering-lobby-empty-slot {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          padding: 5px;
+          margin: 10px 0;
+          border-radius: 5px;
+          align-items: center;
+          background-color: rgba($secondary-color, .0);
+          transition: .5s;
+          &:hover {
+            background-color: rgba($secondary-color, .05);
+            transition: .5s;
+          }
+        }
+
+        & .room-entering-lobby-player-slot {
+          letter-spacing: 3px;
+          & .current-player-not-ready,
+          & .current-player-ready,
+          & .other-player-not-ready,
+          & .other-player-ready {
+            font: $roboto;
+            letter-spacing: 2px;
+            padding: 5px 10px;
+            margin: 0 5px;
+            opacity: .75;
+            transition: .5s;
+            border: 1px solid #282c34;
+            border-radius: 5px;
+            transition: .5s;
+            background: transparent;
+            outline:none;
+          }
+          & .current-player-not-ready:hover,
+          & .current-player-ready:hover {
+            opacity: 1;
+            cursor:pointer;
+          }
+          & .other-player-not-ready,
+          & .other-player-ready {
+            border: 1px solid transparent;
+          }
+          & .current-player-ready {
+            color: #0F9D58;
+            border: 1px solid transparent;
+          }
+        }
+
+        & .room-entering-lobby-empty-slot {
+          color: rgba($secondary-color, .3);
+          border: 1px solid rgba($secondary-color, .3);
+
+          & .room-entering-lobby-empty-slot-join,
+          & .room-entering-lobby-empty-slot-wait,
+          & .room-entering-lobby-empty-slot-invite {
+            background: transparent;
+            width: 100%;
+            text-align: center;
+            letter-spacing: 2px;
+            border:none;
+          }
+
+          & .room-entering-lobby-empty-slot-invite:hover,
+          & .room-entering-lobby-empty-slot-join:hover {
+            cursor:pointer;
+            outline:none;
+          }
+        }
+      }
+
+      & .room-entering-lobby-start {
+        width: 100%;
+        font: $roboto;
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+        padding: 5px 10px;
+        margin: 0 5px;
+        opacity: .85;
+        transition: .5s;
+        border: 1px solid rgba(#282c34, .5);
+        border-radius: 5px;
+        transition: .5s;
+        align-items: center;
+        margin: 15px auto;
+        outline:none;
+        &.not-ready-to-start:hover {
+          cursor:not-allowed;
+        }
+        &.ready-to-start:hover {
+          & {
+            color: rgba($secondary-color, 1);
+            opacity: 1;
+            transition: .5s;
+            border: 1px solid rgba(#282c34, 1);
+            cursor:pointer;
+          }
+        }
+      }
+    }
   }
-  & .room-paper {
+
+  & .room-lobby {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -32,12 +151,19 @@
       flex-direction: column;
       flex-flow: column wrap;
       justify-content: center;
+      align-items: center;
       width: 50rem;
       height: 56.25rem;
       position: absolute;
       top: 50vh;
       left: 50vw;
       transform: translate(-50%, -50%);
+      & .no-player-left {
+        font-size: xx-large;
+        font-family: "roboto";
+        letter-spacing: 3px;
+        color: #282c34;
+      }
       & .grid {
         width: 25.125rem;
         & .grid-row {
@@ -70,42 +196,39 @@
         }
       }
 
-      & .flex-subcontainer {   
-        & .room-infos {
+      & .flex-container-right {
+        width: 25.125rem;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        & .room-statistics {
           width: 18.75rem;
-          color: $secondary-color;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          & .room-infos-other-users {
-            & .room-infos-other-user-ctn {
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              align-items: center;
-              width: 100%;              
-            }
-          }
-          & .room-infos-current-user {
+
+          & .room-statistic-player {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+            padding: 10px 15px;
+            color: rgba($secondary-color, .5);
           }
         }
-        & .specter-container {
-          width: 18.75rem;
-          & .specter {
+
+        & .next-tile-container {
+          width: 16rem;
+          & .next-tile {
             margin: 3rem 4rem;
-            & .grid-row {
+            & .next-tile-row {
               padding: 0;
               margin: 0;
               list-style: none;
               display: flex;
               justify-content: space-around;
               line-height: 0.4;
-              & .grid-cell {
-                background-color: rgba($secondary-color, .05);
+              & .next-tile-cell {
+                background-color: rgba($secondary-color, .02);
                 margin: 1px;
                 color: white;
                 font-weight: bold;
@@ -114,7 +237,10 @@
                 flex: 1 0 auto;
                 height: auto;
                 border-radius: 3px;
-                &.grid-cell-filled { background-color: #4285F4; }
+                &.blue { background-color: #4285F4; }
+                &.green { background-color: #0F9D58; }
+                &.yellow { background-color: #F4B400; }
+                &.red { background-color: #DB4437; }
                 &:before {
                   content:'';
                   float:left;
@@ -124,17 +250,54 @@
             }
           }
         }
-
-        & .tiles-stack {
-          display: flex;
-          width: 18.75rem;
-          height: 15.75rem;
-          background-color: greenyellow;
-        }
       }
     }
   }
 }
 
-
-
+.specter-container {
+  width: 18.75rem;
+  & .specter {
+    margin: 3rem 4rem;
+    & .grid-row {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      justify-content: space-around;
+      line-height: 0.4;
+      & .grid-cell {
+        background-color: rgba($secondary-color, .05);
+        margin: 1px;
+        color: white;
+        font-weight: bold;
+        font-size: 1.5em;
+        text-align: center;
+        flex: 1 0 auto;
+        height: auto;
+        border-radius: 3px;
+        &.grid-cell-filled { background-color: #4285F4; }
+        &:before {
+          content:'';
+          float:left;
+          padding-top:100%;
+        }
+      }
+    }
+  }
+  &.specter-container-large {
+    width: 25.125rem;
+    & .specter {
+      margin: 0 20px;
+    }
+  }
+  & .specter-statistics {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    color: rgba($secondary-color, .5);
+    margin: 10px 15px;
+  }
+}
