@@ -1,5 +1,6 @@
 // import middleware from '../middlewares/middleware';
 import getById from '../routes/user/get';
+import updateById from '../routes/user/put';
 import getLogin from '../routes/user/getLogin';
 import postSignup from '../routes/user/postSignup';
 
@@ -12,6 +13,7 @@ class Router {
         postSignup,
         getLogin,
         getById,
+        updateById,
       ],
     };
   }

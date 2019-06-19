@@ -27,6 +27,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  scores: [
+    {
+      score: {
+        type: Number,
+        default: 0,
+      },
+      hasWon: {
+        type: Boolean,
+        default: false,
+      },
+      mode: String,
+      maxPlayers: {
+        type: Number,
+        enum: [1, 2],
+      },
+    },
+  ],
   createdAt: Date,
   updatedAt: Date,
 });
