@@ -40,7 +40,7 @@ class UserHelper {
 
   static login(user) {
     return new Promise((resolve, reject) => {
-      User.findOne({ username: user.username })
+      User.findOne({ email: user.email })
         .then((doc) => {
           if (isEmpty(doc)) throw new Error(ERRORS.NO_USER);
           const tmpPwd = hash(user.password, doc.salt);

@@ -7,7 +7,7 @@ import { ERRORS } from '../../config/constants';
 const router = express.Router();
 
 router.get('/login', (req, res) => {
-  if (isEmpty(req.body.user) || isEmpty(req.body.user.username)
+  if (isEmpty(req.body.user) || isEmpty(req.body.user.email)
     || isEmpty(req.body.user.password)) {
     return res.status(400).json({ err: ERRORS.DATA_MISSING });
   }
