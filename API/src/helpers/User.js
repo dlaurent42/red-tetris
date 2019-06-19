@@ -14,17 +14,17 @@ class UserHelper {
       /* With try catch that would be cleaner (ASK!) */
       User.find({ $or: [{ email: user.email }, { username: user.username }] })
         .then((doc) => {
-          if (!isEmpty(doc)) return reject(new Error(ERRORS.UNIQUE_LOGIN));
+          if (!isEmpty(doc)) throw new Error(ERRORS.UNIQUE_LOGIN);
           const newUser = new User(user);
           newUser.salt = random(255);
           newUser.password = hash(newUser.password, newUser.salt);
-          return newUser.save()
+          newUser.save()
             .then(res => resolve(res))
             .catch(err => reject(err));
         })
         .catch((err) => {
           console.log(`Unexpected eror: ${err.message}`);
-          return reject(new Error(ERRORS.DB_FAIL));
+          reject(new Error(ERRORS.DB_FAIL));
         });
     });
   }
