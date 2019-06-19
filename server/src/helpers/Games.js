@@ -30,7 +30,7 @@ class Games {
 
   // Method used to verify wheter a lobby exists and to return it
   getInfos(data) {
-    return this.getLobby(data) || (countBy(this.lobbies, { name: data.name }).true === 1)
+    return this.getLobby(data)
       ? find(this.lobbies, { name: data.name })
       : undefined;
   }

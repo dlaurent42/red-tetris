@@ -8,7 +8,6 @@ const generateID = (length) => {
   for (let i = 0; i < length; i += 1) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-  console.log(`New random ID generated: ${result}`);
   return result;
 };
 

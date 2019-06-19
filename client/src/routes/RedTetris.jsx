@@ -17,6 +17,7 @@ const Tournaments = lazy(() => import('./tournaments/Tournaments'));
 const Leaderboard = lazy(() => import('./leaderboard/Leaderboard'));
 
 const Page404 = lazy(() => import('../misc/navigation/404/404'));
+const Redirection = lazy(() => import('./room/Redirection'));
 const Notifications = lazy(() => import('../misc/notifications/Notifications'));
 
 
@@ -54,8 +55,10 @@ const RedTetris = () => (
           {/* user */}
           <Route path="/profile" render={() => <></>} />
           <Route path="/account" render={() => <></>} />
-          <Route path="/friends" render={() => <></>} />
           <Route path="/logout" render={() => <></>} />
+
+          {/* misc */}
+          <Route path="/redirection" component={Redirection} />
           <Route component={Page404} />
         </Switch>
       </HashRouter>

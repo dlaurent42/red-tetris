@@ -35,7 +35,7 @@ const notifications = (props) => {
     });
 
     props.socket.on(SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS, data => (
-      enqueueSnackbar(`Forbidden access to ${data.name} room.`, { action, ...NOTIFICATIONS.FORBIDDEN_ACCESS })
+      enqueueSnackbar(`Forbidden access to ${data.name === '' ? '' : `${data.name} `}room.`, { action, ...NOTIFICATIONS.FORBIDDEN_ACCESS })
     ));
   });
 

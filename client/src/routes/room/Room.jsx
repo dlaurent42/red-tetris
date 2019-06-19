@@ -31,16 +31,17 @@ const room = (props) => {
 
     // Check if user navigated to this page through url directly
     if (props.location.state === undefined) {
-      props.socket.emit(SOCKETS.ROOM_FORBIDDEN_ACCESS, { name: window.location.hash.split('/').slice(1)[0].split(/\[(.*?)\]/)[0] });
+      props.socket.emit(SOCKETS.ROOM_FORBIDDEN_ACCESS, { name: '' });
       props.history.push('/tournaments');
       return;
     }
+
 
     // Fetch information about room
     props.socket.emit(SOCKETS.ROOM_INFOS, { ...props.location.state.room }, (data) => {
 
       // Check password
-      if (data.hasPassword && data.password !== props.location.state.password) {
+      if (data.hasPassword && data.password !== props.location.state.room.password) {
         props.socket.emit(SOCKETS.ROOM_FORBIDDEN_ACCESS, { name: data.name });
         props.history.push('/tournaments');
         return;
@@ -73,22 +74,23 @@ const room = (props) => {
     return () => unlisten();
   }, [roomInfos, userInfos]);
 
-  // Event listener on game starts / game over / romm update events
+  // Event listener on game starts / game over / room update events
   const handleGameStarts = (data) => {
     setTiles([data.startTile]);
     setTilesStack(data.tilesStack);
     setRoomInfos(data.lobby);
   };
   const handleGameOver = data => setRoomInfos(data);
-  const handleGameUpdate = data => setRoomInfos(data);
+  const handleRoomUpdate = data => setRoomInfos(data);
+
   useEffect(() => {
     props.socket.on(SOCKETS.GAME_STARTS, handleGameStarts);
     props.socket.on(SOCKETS.GAME_OVER, handleGameOver);
-    props.socket.on(SOCKETS.ROOM_UPDATE, handleGameUpdate);
+    props.socket.on(SOCKETS.ROOM_UPDATE, handleRoomUpdate);
     return () => {
       props.socket.removeListener(SOCKETS.GAME_STARTS, handleGameStarts);
       props.socket.removeListener(SOCKETS.GAME_OVER, handleGameOver);
-      props.socket.removeListener(SOCKETS.ROOM_UPDATE, handleGameUpdate);
+      props.socket.removeListener(SOCKETS.ROOM_UPDATE, handleRoomUpdate);
     };
   }, []);
 

@@ -66,12 +66,11 @@
             padding: 5px 10px;
             margin: 0 5px;
             opacity: .75;
-            transition: .5s;
             border: 1px solid #282c34;
             border-radius: 5px;
-            transition: .5s;
             background: transparent;
             outline:none;
+            transition: .5s;
           }
           & .current-player-not-ready:hover,
           & .current-player-ready:hover {
@@ -129,26 +128,22 @@
           font-size: 1rem;
           letter-spacing: 2px;
           padding: 5px 15px;
-          margin: 0 5px;
           opacity: .85;
-          transition: .5s;
           border: 1px solid rgba(#282c34, .5);
           border-radius: 5px;
-          transition: .5s;
           align-items: center;
           margin: 15px auto;
           outline:none;
+          transition: .5s;
           &.not-ready-to-start:hover {
             cursor:not-allowed;
           }
           &.ready-to-start:hover {
-            & {
-              color: rgba($secondary-color, 1);
-              opacity: 1;
-              transition: .5s;
-              border: 1px solid rgba(#282c34, 1);
-              cursor:pointer;
-            }
+            color: rgba($secondary-color, 1);
+            opacity: 1;
+            transition: .5s;
+            border: 1px solid rgba(#282c34, 1);
+            cursor:pointer;
           }
         }
       }
@@ -226,24 +221,19 @@
         & .room-exiting-lobby-new-game-button {
           width: fit-content;
           font: $roboto;
-          background: $primary-color;
           font-size: 1rem;
           letter-spacing: 2px;
           padding: 5px 15px;
-          margin: 0 5px;
-          opacity: .85;
-          transition: .5s;
-          border: 1px solid rgba(#282c34, .5);
-          border-radius: 5px;
-          transition: .5s;          
+          border-radius: 5px;      
           margin: 15px auto;
+          color: rgba($primary-color, 1);
+          background: $tertiary-color;
+          opacity: .7;
+          border: none;
           outline:none;
-          color: rgba($secondary-color, .6);
-          opacity: 1;
           transition: .5s;
-          border: 1px solid rgba(#282c34, 1);
           cursor:pointer;
-          &:hover { color: rgba($secondary-color, 1);}
+          &:hover { color: rgba($primary-color, 1); opacity: 1; }
         }
       }
     }
@@ -418,5 +408,13 @@
     padding: 10px 15px;
     color: rgba($secondary-color, .5);
     margin: 10px 15px;
+    & span span {
+      transform: translate(50%, 120%);
+      font-size: 14px;
+      background: white;
+      & .lobby-icon.crown { color: #F4B400; }
+      & .lobby-icon.gamepad { color: #4285F4; }
+      & .lobby-icon.times-circle { color: #DB4437; }
+    }
   }
 }

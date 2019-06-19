@@ -11,23 +11,12 @@ const emptySlot = (props) => {
     props.setUserInfos(user);
   };
 
-  // Method invite friend
-  const inviteFriend = () => {
-    // Nothing here for now
-  };
-
   // Define type of slot following user information
-  let slot;
-  if (props.userInfos.role === ROOM_ROLES.SPECTATOR) {
-    slot = <button type="button" className="room-entering-lobby-empty-slot-join" onClick={enterGame}>JOIN</button>;
-  } else if (props.userInfos.id) {
-    slot = <button type="button" className="room-entering-lobby-empty-slot-invite" onClick={inviteFriend}>INVITE FRIEND</button>;
-  } else {
-    slot = <div className="room-entering-lobby-empty-slot-wait">WAITING FOR PLAYER</div>;
-  }
   return (
     <div className="room-entering-lobby-empty-slot">
-      {slot}
+      {(props.userInfos.role === ROOM_ROLES.SPECTATOR)
+        ? <button type="button" className="room-entering-lobby-empty-slot-join" onClick={enterGame}>JOIN</button>
+        : <div className="room-entering-lobby-empty-slot-wait">WAITING FOR PLAYER</div>}
     </div>
   );
 };

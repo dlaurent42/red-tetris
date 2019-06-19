@@ -19,7 +19,7 @@ const joinRoom = (props) => {
       && ((props.data.hasPassword && password !== props.data.password)
       || props.data.nbPlayers >= props.data.maxPlayers)) return;
     props.history.push({
-      pathname: `/${props.data.name}[${props.user.username}]`,
+      pathname: `/${props.data.id}[${props.user.username}]`,
       state: {
         room: {
           id: props.data.id,

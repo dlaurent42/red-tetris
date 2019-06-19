@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Avatar from '@material-ui/core/Avatar';
+import Badge from '@material-ui/core/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GAME_SETTINGS, ICONS, ROOM_ROLES } from '../../../config/constants';
 
@@ -12,7 +14,17 @@ const specter = (props) => {
       {(props.type === 'large')
         ? (
           <div className="specter-statistics">
-            {<FontAwesomeIcon icon={(props.player.role === ROOM_ROLES.CREATOR) ? ICONS.CROWN : ICONS.GAMEPAD} className="lobby-icon" />}
+            <Badge
+              badgeContent={
+                (
+                  <FontAwesomeIcon
+                    icon={(props.player.role === ROOM_ROLES.CREATOR) ? ICONS.CROWN : ICONS.GAMEPAD}
+                    className={['lobby-icon', (props.player.role === ROOM_ROLES.CREATOR) ? ICONS.CROWN : ICONS.GAMEPAD].join(' ')}
+                  />
+                )}
+            >
+              <Avatar src={require(`../../../assets/avatars/${props.player.avatar}`) /* eslint-disable-line */} alt="avatar" />
+            </Badge>
             <div>{props.player.username || 'unkwown-player'}</div>
             <div>{padNumber(props.player.score)}</div>
           </div>

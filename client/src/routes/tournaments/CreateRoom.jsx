@@ -13,17 +13,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import generateId from '../../utils/generateId';
 import { GAME_MODES, REGEX, ROOM_ROLES } from '../../config/constants';
-
-const makeid = (length) => {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i += 1) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
 
 const createRoom = (props) => {
 
@@ -53,11 +44,12 @@ const createRoom = (props) => {
       (!GAME_MODES.includes(form.mode)),
       (form.password.length > 0 && !REGEX.ROOM_PWD.test(form.password)),
     ].includes(true)) return;
+    const id = generateId(64);
     props.history.push({
-      pathname: `/${form.name}[${props.user.username}]`,
+      pathname: `/${id}[${props.user.username}]`,
       state: {
         room: {
-          id: makeid(64),
+          id,
           name: form.name,
           maxPlayers: form.maxPlayers,
           hasPassword: (form.password.length > 0),
