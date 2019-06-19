@@ -9,7 +9,7 @@ import { ERRORS } from '../config/constants';
 
 class UserHelper {
   static toObject(user) {
-    return {
+    return { // Add more to return more on user.
       id: user.id,
       email: user.email,
       avatar: user.avatar,
@@ -21,7 +21,6 @@ class UserHelper {
 
   static addNewUser(user) {
     return new Promise((resolve, reject) => {
-      // Check for unique email and username
       /* With try catch that would be cleaner (ASK!) */
       User.find({ $or: [{ email: user.email }, { username: user.username }] })
         .then((doc) => {

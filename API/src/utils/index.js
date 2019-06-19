@@ -12,6 +12,7 @@ import hash from './string/hash';
 import random from './string/random';
 import template from './string/interpolation';
 import recursiveRegex from './string/recursiveRegex';
+import isNumeric from './string/isNumeric';
 
 // User
 import userIsPassword from './user/isPassword';
@@ -24,6 +25,7 @@ export {
   isEmpty,
   random,
   recursiveRegex,
+  isNumeric,
   sleep,
   template,
   timeoutPromise,
