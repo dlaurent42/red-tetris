@@ -7,7 +7,6 @@ const emptySlot = (props) => {
   // Method enter game
   const enterGame = () => {
     const user = { ...props.userInfos, role: ROOM_ROLES.PLAYER };
-    console.log('emitting ROOM_USER_JOINED');
     props.socket.emit(SOCKETS.ROOM_USER_JOINED, { id: props.roomInfos.id, user });
     props.setUserInfos(user);
   };

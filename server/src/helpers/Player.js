@@ -5,6 +5,7 @@ class Player {
     this.uid = props.uid || 0;
     this.socketId = props.socketId;
     this.username = props.username;
+    this.avatar = props.avatar;
     this.score = 0;
     this.blockedRows = 0;
     this.isReady = false;
@@ -16,6 +17,7 @@ class Player {
   update(data) {
     if (!data) return;
     this.username = data.username || this.username;
+    this.avatar = data.avatar || this.avatar;
     this.score = data.score || this.score;
     this.blockedRows = data.blockedRows || this.blockedRows;
     this.isReady = data.isReady || this.isReady;

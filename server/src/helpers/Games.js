@@ -96,7 +96,7 @@ class Games {
       )),
       scores: lobby.players
         .filter(player => player.role !== ROOM_ROLES.SPECTATOR)
-        .map(player => ({ socketId: player.socketId, score: 0, username: player.username })),
+        .map(player => ({ ...player, score: 0 })),
     });
     return { lobby, startTile };
   }

@@ -31,7 +31,6 @@ const SOCKETS = {
   NOTIFY_ROOM_NOT_CREATED: 'roomNotCreated',
   NOTIFY_PLAYER_LEFT_GAME: 'playerLeftGame',
   NOTIFY_PLAYER_ENTERS_GAME: 'playerEntersGame',
-  NOTIFY_FRIEND_CONNECTION: 'friendConnection',
 };
 
 const ROOM_ROLES = {

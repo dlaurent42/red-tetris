@@ -74,14 +74,22 @@ const room = (props) => {
   }, [roomInfos, userInfos]);
 
   // Event listener on game starts / game over / romm update events
+  const handleGameStarts = (data) => {
+    setTiles([data.startTile]);
+    setTilesStack(data.tilesStack);
+    setRoomInfos(data.lobby);
+  };
+  const handleGameOver = data => setRoomInfos(data);
+  const handleGameUpdate = data => setRoomInfos(data);
   useEffect(() => {
-    props.socket.on(SOCKETS.GAME_STARTS, (data) => {
-      setTiles([data.startTile]);
-      setTilesStack(data.tilesStack);
-      setRoomInfos(data.lobby);
-    });
-    props.socket.on(SOCKETS.GAME_OVER, data => setRoomInfos(data));
-    props.socket.on(SOCKETS.ROOM_UPDATE, data => setRoomInfos(data));
+    props.socket.on(SOCKETS.GAME_STARTS, handleGameStarts);
+    props.socket.on(SOCKETS.GAME_OVER, handleGameOver);
+    props.socket.on(SOCKETS.ROOM_UPDATE, handleGameUpdate);
+    return () => {
+      props.socket.removeListener(SOCKETS.GAME_STARTS, handleGameStarts);
+      props.socket.removeListener(SOCKETS.GAME_OVER, handleGameOver);
+      props.socket.removeListener(SOCKETS.ROOM_UPDATE, handleGameUpdate);
+    };
   }, []);
 
   // Select lobby to display

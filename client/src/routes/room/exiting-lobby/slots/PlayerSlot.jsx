@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { get, find } from 'lodash';
+import Avatar from '@material-ui/core/Avatar';
+import Badge from '@material-ui/core/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ICONS, ROOM_ROLES } from '../../../../config/constants';
 
@@ -13,7 +15,9 @@ const playerSlot = (props) => {
   if (role === ROOM_ROLES.PLAYER) icon = ICONS.GAMEPAD;
   return (
     <div className="room-exiting-lobby-player-slot">
-      {<FontAwesomeIcon icon={icon} className="lobby-icon" />}
+      <Badge badgeContent={<FontAwesomeIcon icon={icon} className={['lobby-icon', icon].join(' ')} />}>
+        <Avatar src={require(`../../../../assets/avatars/${props.player.avatar}`) /* eslint-disable-line */} alt="avatar" />
+      </Badge>
       <div>{(props.player.socketId === props.socket.id) ? 'You' : props.player.username || 'unkwown-player'}</div>
       <div>{padNumber(props.player.score)}</div>
     </div>

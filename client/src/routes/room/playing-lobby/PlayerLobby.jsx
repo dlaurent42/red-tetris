@@ -71,6 +71,7 @@ const playerLobby = (props) => {
   // Tile moves
   const rotate = () => {
     const movingTile = cloneDeep(props.tiles[0]);
+    if (!movingTile) return;
 
     // If piece has size equal to 2, it is a square
     if (!movingTile || movingTile.size === 2) return;
@@ -100,6 +101,8 @@ const playerLobby = (props) => {
     // Distinguish moving tile from other tiles
     const movingTile = cloneDeep(props.tiles[0]);
     const otherTiles = cloneDeep(props.tiles.slice(1));
+
+    if (!movingTile) return;
 
     // Move until a collision happens
     while (!isCollision(movingTile, props.tiles.slice(1))) {

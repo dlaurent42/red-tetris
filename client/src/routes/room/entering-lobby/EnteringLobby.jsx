@@ -9,10 +9,7 @@ import { SOCKETS, ROOM_ROLES } from '../../../config/constants';
 const enteringLobby = (props) => {
 
   // Method used to start game
-  const handleStart = () => {
-    console.log('emitting GAME_STARTS');
-    props.socket.emit(SOCKETS.GAME_STARTS, { id: props.roomInfos.id });
-  };
+  const handleStart = () => props.socket.emit(SOCKETS.GAME_STARTS, { id: props.roomInfos.id });
 
   const emptySlotsCount = props.roomInfos.maxPlayers - get(countBy(props.roomInfos.players, { role: ROOM_ROLES.SPECTATOR }), 'false', 0);
   const allPlayersReady = props.roomInfos.maxPlayers === get(countBy(props.roomInfos.players, { isReady: true }), 'true', 0);

@@ -16,9 +16,6 @@ const notifications = (props) => {
   );
 
   useEffect(() => {
-    props.socket.on(SOCKETS.NOTIFY_FRIEND_CONNECTION, data => (
-      enqueueSnackbar(`${(data.username === '') ? 'A player' : data.username} is connected.`, { action, ...NOTIFICATIONS.FRIEND_CONNECTION })
-    ));
 
     props.socket.on(SOCKETS.NOTIFY_PLAYER_LEFT_GAME, data => (
       enqueueSnackbar(`${(data.username === '') ? 'A player' : data.username} has left the room.`, { action, ...NOTIFICATIONS.PLAYER_LEFT })

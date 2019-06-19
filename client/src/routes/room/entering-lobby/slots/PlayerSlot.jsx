@@ -11,13 +11,21 @@ const playerSlot = (props) => {
     if (props.player.isReady) return;
     const user = { ...props.userInfos, isReady: true };
     props.setUserInfos(user);
-    console.log('emitting ROOM_USER_UPDATE');
     props.socket.emit(SOCKETS.ROOM_USER_UPDATE, { id: props.roomInfos.id, user });
   };
+
   return (
     <div className="room-entering-lobby-player-slot">
-      <Badge badgeContent={<FontAwesomeIcon icon={(props.player.role === ROOM_ROLES.CREATOR) ? ICONS.CROWN : ICONS.GAMEPAD} className="lobby-icon" />}>
-        <Avatar className="menu-profile-avatar" src={require(`../../../../assets/avatars/${props.player.avatar}`) /* eslint-disable-line */} alt="avatar" />
+      <Badge
+        badgeContent={
+          (
+            <FontAwesomeIcon
+              icon={(props.player.role === ROOM_ROLES.CREATOR) ? ICONS.CROWN : ICONS.GAMEPAD}
+              className={['lobby-icon', (props.player.role === ROOM_ROLES.CREATOR) ? ICONS.CROWN : ICONS.GAMEPAD].join(' ')}
+            />
+          )}
+      >
+        <Avatar src={require(`../../../../assets/avatars/${props.player.avatar}`) /* eslint-disable-line */} alt="avatar" />
       </Badge>
       {(props.player.socketId === props.socket.id) ? 'You' : props.player.username || 'unkwown-player'}
       {(props.player.socketId === props.socket.id)

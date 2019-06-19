@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { find } from 'lodash';
+import { find, get } from 'lodash';
 import { GAME_SETTINGS } from '../../../config/constants';
 
 const tetrisGrid = (props) => {
@@ -10,7 +10,7 @@ const tetrisGrid = (props) => {
     let tile = false;
     if (typeof props.tiles === 'object' && props.tiles.length) {
       props.tiles.some((el) => {
-        if (find(el.positions, { x, y })) tile = el;
+        if (find(get(el, 'positions', []), { x, y })) tile = el;
         return tile;
       });
     }
