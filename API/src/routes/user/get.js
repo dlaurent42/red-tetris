@@ -1,19 +1,14 @@
 import express from 'express';
-import UserHelper from '../../helpers/User';
+import { get } from 'lodash';
 
-import { isEmpty } from '../../utils';
+import UserHelper from '../../helpers/User';
 
 const router = express.Router();
 
-router.get('/:id', (req, res) => {
-  if (isEmpty(req.params.id)) return res.status(404);
-
-  return UserHelper.getById(req.params.id)
-    .then(doc => res.json({ user: doc }))
-    .catch((err) => {
-      console.log(err);
-      res.status(200).json({ err: err.message });
-    });
-});
+router.get('/:id', (req, res) => (
+  new UserHelper(req.params).getById()
+    .then(user => res.status(200).json({ success: true, user }))
+    .catch(err => res.status(200).json({ success: false, err: get(err, 'message', err) }))
+));
 
 export default router;

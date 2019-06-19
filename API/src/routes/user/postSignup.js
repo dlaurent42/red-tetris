@@ -1,4 +1,5 @@
 import express from 'express';
+import { get } from 'lodash';
 import UserHelper from '../../helpers/User';
 
 import {
@@ -10,23 +11,20 @@ import {
 import { ERRORS } from '../../config/constants';
 
 const router = express.Router();
-const dataCheck = user => (
-  userIsUsername(user.username)
-  && userIsEmail(user.email)
-  && userIsPassword(user.password)
+const validateFields = ({ username, email, password }) => (
+  userIsUsername(username) && userIsEmail(email) && userIsPassword(password)
 );
 
 router.post('/signup', (req, res) => {
   if (isEmpty(req.body.user)) return res.status(400).json({ err: ERRORS.DATA_MISSING });
-  if (!dataCheck(req.body.user)) return res.status(200).json({ err: ERRORS.DATA_VALIDATION });
+  if (!validateFields(req.body.user)) return res.status(200).json({ err: ERRORS.DATA_VALIDATION });
 
-  return UserHelper.addNewUser(req.body.user)
-    .then(doc => res.json({ success: 'true', user: doc }))
-    .then(() => console.log(`Send a letter to ${req.body.user.email}`))
-    .catch((err) => {
-      console.log(err);
-      return res.status(200).json({ err: err.message });
-    });
+  return new UserHelper(req.body.user).addNewUser()
+    .then((user) => {
+      console.log(`Send a letter to ${JSON.stringify(user)}`);
+      return res.status(200).json({ success: true, user });
+    })
+    .catch(err => res.status(200).json({ success: false, err: get(err, 'message', err) }));
 });
 
 export default router;

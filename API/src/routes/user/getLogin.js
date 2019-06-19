@@ -1,23 +1,23 @@
 import express from 'express';
-import UserHelper from '../../helpers/User';
+import { get } from 'lodash';
 
 import { isEmpty } from '../../utils';
+import UserHelper from '../../helpers/User';
 import { ERRORS } from '../../config/constants';
 
 const router = express.Router();
 
+const validateFields = ({ email, password }) => !isEmpty(email) && !isEmpty(password);
+
 router.get('/login', (req, res) => {
-  if (isEmpty(req.body.user) || isEmpty(req.body.user.email)
-    || isEmpty(req.body.user.password)) {
+  if (!req.body.user || !validateFields(req.body.user)) {
     return res.status(400).json({ err: ERRORS.DATA_MISSING });
   }
 
-  return UserHelper.login(req.body.user)
-    .then(doc => res.json({ user: doc }))
-    .catch((err) => {
-      console.log(err);
-      res.status(200).json({ err: err.message });
-    });
+  // If data is correct, try to log user.
+  return new UserHelper(req.body.user).login()
+    .then(user => res.status(200).json({ success: true, user }))
+    .catch(err => res.status(200).json({ success: false, err: get(err, 'message', err) }));
 });
 
 export default router;

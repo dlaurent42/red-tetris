@@ -1,3 +1,4 @@
+import { pick } from 'lodash';
 import User from '../models/User.model';
 
 import {
@@ -7,64 +8,53 @@ import {
 } from '../utils';
 import { ERRORS } from '../config/constants';
 
+const FILTERS = ['id', 'username', 'avatar', 'email'];
+
 class UserHelper {
-  static toObject(user) {
-    return { // Add more to return more on user.
-      id: user.id,
-      email: user.email,
-      avatar: user.avatar,
-      username: user.username,
-      updatedAt: user.updatedAt,
-      createdAt: user.createdAt,
-    };
+  constructor(userInformation) {
+    this.id = userInformation.id;
+    this.username = userInformation.username;
+    this.password = userInformation.password;
+    this.avatar = userInformation.avatar;
+    this.email = userInformation.email;
+    this.score = userInformation.score || {}; // implement
+    // fill
   }
 
-  static addNewUser(user) {
-    return new Promise((resolve, reject) => {
-      /* With try catch that would be cleaner (ASK!) */
-      User.find({ $or: [{ email: user.email }, { username: user.username }] })
+  addNewUser() {
+    return new Promise((resolve, reject) => (
+      User.find({ $or: [{ email: this.email }, { username: this.username }] })
         .then((doc) => {
           if (!isEmpty(doc)) throw new Error(ERRORS.UNIQUE_LOGIN);
-          const newUser = new User(user);
-          newUser.salt = random(255);
-          newUser.password = hash(newUser.password, newUser.salt);
-          newUser.save()
-            .then(res => resolve(res))
-            .catch(err => reject(err));
+          const user = new User(this);
+          user.salt = random(255);
+          user.password = hash(this.password, user.salt);
+          return user.save();
         })
-        .catch((err) => {
-          reject(err);
-        });
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    ));
+  }
+
+  login() {
+    return new Promise((resolve, reject) => {
+      User.findOne({ email: this.email })
+        .then((user) => {
+          if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
+          if (hash(this.password, user.salt) !== user.password) throw new Error(ERRORS.BAD_PASS);
+          return resolve(pick(user, FILTERS));
+        })
+        .catch(err => reject(err));
     });
   }
 
-  static login(user) {
+  getById() {
     return new Promise((resolve, reject) => {
-      User.findOne({ email: user.email })
-        .then((doc) => {
-          if (isEmpty(doc)) throw new Error(ERRORS.NO_USER);
-          const tmpPwd = hash(user.password, doc.salt);
-          if (tmpPwd !== doc.password) throw new Error(ERRORS.BAD_PASS);
-          resolve(this.toObject(doc));
-        })
-        .catch((err) => {
-          console.log(err);
-          reject(new Error(ERRORS.NO_USER));
-        });
-    });
-  }
-
-  static getById(id) {
-    return new Promise((resolve, reject) => {
-      User.findById(id)
-        .then((doc) => {
-          if (isEmpty(doc)) throw new Error(ERRORS.NO_USER);
-          resolve(this.toObject(doc));
-        })
-        .catch((err) => {
-          console.log(err);
-          reject(new Error(ERRORS.NO_USER));
-        });
+      User.findById(this.id)
+        .then(user => (
+          (isEmpty(user)) ? reject(new Error(ERRORS.NO_USER)) : resolve(pick(user, FILTERS))
+        ))
+        .catch(err => reject(err));
     });
   }
 }
