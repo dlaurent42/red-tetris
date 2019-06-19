@@ -53,6 +53,20 @@ class UserHelper {
         });
     });
   }
+
+  static getById(id) {
+    return new Promise((resolve, reject) => {
+      User.findById(id)
+        .then((doc) => {
+          if (isEmpty(doc)) throw new Error(ERRORS.NO_USER);
+          resolve(this.toObject(doc));
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(new Error(ERRORS.NO_USER));
+        });
+    });
+  }
 }
 
 export default UserHelper;
