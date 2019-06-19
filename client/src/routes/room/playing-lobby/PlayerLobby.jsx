@@ -9,7 +9,7 @@ const playerLobby = (props) => {
 
   // State
   const [blockedRows, setBlockedRows] = useState([]);
-  const [delay, setDelay] = useState(2000);
+  const [delay, setDelay] = useState(1000);
 
   // Check collisions
   const isCollision = (movingTile, otherTiles) => {
@@ -233,7 +233,7 @@ const playerLobby = (props) => {
 
   // Update game each [delay] ms and make game faster each 10 seconds
   useInterval(() => moveDown(), delay);
-  useInterval(() => { if (delay > 150) setDelay(delay * 0.9); }, 30 * 1000);
+  useInterval(() => { if (delay > 150 && props.mode === 'hard') setDelay(delay * 0.9); }, 30 * 1000);
   return (
     <TetrisGrid
       tiles={props.tiles}
@@ -244,6 +244,7 @@ const playerLobby = (props) => {
 playerLobby.propTypes = {
   socket: PropTypes.objectOf(PropTypes.any).isRequired,
   id: PropTypes.string.isRequired,
+  mode: PropTypes.string.isRequired,
   tiles: PropTypes.arrayOf(PropTypes.any).isRequired,
   setTiles: PropTypes.func.isRequired,
   tilesStack: PropTypes.arrayOf(PropTypes.any).isRequired,

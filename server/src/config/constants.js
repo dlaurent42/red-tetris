@@ -42,7 +42,7 @@ const ROOM_ROLES = {
 
 const GAME_MODES = [
   'classic',
-  'survival',
+  'hard',
   'invisible',
 ];
 

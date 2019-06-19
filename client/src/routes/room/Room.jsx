@@ -121,6 +121,7 @@ const room = (props) => {
           <div className="flex-container">
             <PlayerLobby
               id={roomInfos.id}
+              mode={roomInfos.mode}
               socket={props.socket}
               tiles={tiles}
               setTiles={setTiles}
@@ -129,18 +130,20 @@ const room = (props) => {
             />
             <div className="flex-container-right">
               <GameInformations roomInfos={roomInfos} socket={props.socket} />
-              <NextTile tile={tilesStack[0]} />
-              {roomInfos.players
-                .filter(player => (
-                  player.role !== ROOM_ROLES.SPECTATOR && player.socketId !== props.socket.id
-                ))
-                .map(player => (
-                  <Specter
-                    key={`specter${player.socketId}`}
-                    type="small"
-                    player={player}
-                  />
-                ))}
+              {(roomInfos.mode !== 'invisible') ? <NextTile tile={tilesStack[0]} /> : null}
+              {(roomInfos.mode !== 'invisible')
+                ? roomInfos.players
+                  .filter(player => (
+                    player.role !== ROOM_ROLES.SPECTATOR && player.socketId !== props.socket.id
+                  ))
+                  .map(player => (
+                    <Specter
+                      key={`specter${player.socketId}`}
+                      type="small"
+                      player={player}
+                    />
+                  ))
+                : null}
             </div>
           </div>
         );

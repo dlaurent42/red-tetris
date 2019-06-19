@@ -46,13 +46,13 @@ const enteringLobby = (props) => {
             />
           ))}
         </div>
-        <div>
+        <div className="room-entering-lobby-start">
           {(props.userInfos.role === ROOM_ROLES.CREATOR)
             ? (
               <button
                 disabled={!allPlayersReady}
                 type="button"
-                className={['room-entering-lobby-start', (allPlayersReady) ? 'ready-to-start' : 'not-ready-to-start'].join(' ')}
+                className={['room-entering-lobby-start-button', (allPlayersReady) ? 'ready-to-start' : 'not-ready-to-start'].join(' ')}
                 onClick={handleStart}
               >
                 START !

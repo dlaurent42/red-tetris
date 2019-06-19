@@ -97,7 +97,7 @@ export const ICONS = {
 
 export const GAME_MODES = [
   'classic',
-  'survival',
+  'hard',
   'invisible',
 ];
 
