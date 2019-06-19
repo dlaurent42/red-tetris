@@ -13,6 +13,7 @@
   "rules": {
     "padded-blocks": "off",
     "no-console": "warn",
+    "func-names": "off",
     "no-param-reassign": [
       "error",
       {
