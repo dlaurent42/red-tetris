@@ -4,6 +4,8 @@ import updateById from '../routes/user/put';
 import getLogin from '../routes/user/getLogin';
 import deleteUser from '../routes/user/delete';
 import postSignup from '../routes/user/postSignup';
+import getRecoverPassword from '../routes/user/getRecoverPassword';
+import postRecoverPassword from '../routes/user/postRecoverPassword';
 
 class Router {
   constructor(app) {
@@ -16,6 +18,8 @@ class Router {
         getById,
         updateById,
         deleteUser,
+        postRecoverPassword,
+        getRecoverPassword,
       ],
     };
   }
