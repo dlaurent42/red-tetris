@@ -77,14 +77,28 @@ class UserHelper {
 
       User.findById(id)
         .then((user) => {
-          const cpy = user; // idk why | eslint: no-param-reassign
+          if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
+          const self = user; // idk why | eslint: no-param-reassign
           if (!validData(this)) throw new Error(ERRORS.DATA_VALIDATION);
-          cpy.username = this.username || cpy.username;
-          cpy.avatar = this.avatar || cpy.avatar;
-          cpy.password = this.password ? hash(this.password, cpy.salt) : cpy.password;
-          if (this.score) cpy.scores.push(this.score);
-          cpy.save();
-          return resolve(pick(cpy, FILTERS));
+          self.username = this.username || self.username;
+          self.avatar = this.avatar || self.avatar;
+          self.password = this.password ? hash(this.password, self.salt) : self.password;
+          if (this.score) self.scores.push(this.score);
+          self.save();
+          return resolve(pick(self, FILTERS));
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  deleteById(id) {
+    return new Promise((resolve, reject) => {
+      User.findById(id)
+        .then((user) => {
+          if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
+          if (!this.password) throw new Error(ERRORS.DATA_VALIDATION);
+          if (user.password !== hash(this.password, user.salt)) throw new Error(ERRORS.BAD_PASS);
+          return resolve(user.delete());
         })
         .catch(err => reject(err));
     });
