@@ -2,6 +2,7 @@
 import getById from '../routes/user/get';
 import updateById from '../routes/user/put';
 import getLogin from '../routes/user/getLogin';
+import deleteUser from '../routes/user/delete';
 import postSignup from '../routes/user/postSignup';
 
 class Router {
@@ -14,6 +15,7 @@ class Router {
         getLogin,
         getById,
         updateById,
+        deleteUser,
       ],
     };
   }
