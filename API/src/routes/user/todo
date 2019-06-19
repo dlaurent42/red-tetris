@@ -1,18 +1,18 @@
 Routes
 
 GET     /user/:id                     |     Fetch user information (including scores)     | DONE
-PUT     /user/:id                     |     Modify user information (including scores)    | URGENT
+PUT     /user/:id                     |     Modify user information (including scores)    | DONE +- need consultation for checking
   => if / else to check what to update
 
-DELETE  /user/:id      (with password) |     Delete user                                  | not urgent
+DELETE  /user/:id      (with password) |     Delete user                                  | not urgent -> TODO
 GET     /user/login                   |     Log user                                      | DONE
 POST    /user/signup                  |     Register user (+send email?)                  | DONE
-POST    /user/recover-password        |                                                   | not urgent
-GET     /user/recover-password        |     Send recover password email                   | not urgent
+POST    /user/recover-password        |                                                   | not urgent -> TODO
+GET     /user/recover-password        |     Send recover password email                   | not urgent -> TODO
 
 // implement to router but send return
 
-GET     /leaderboard  -> check client but as I remember it concerns                       | not urgent
+GET     /leaderboard  -> check client but as I remember it concerns                       | not urgent -> TODO
   -> Max of scores sums between players :
     SUM player.scores.score
     ORDER BY sum
