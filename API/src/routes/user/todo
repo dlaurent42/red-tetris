@@ -4,7 +4,7 @@ GET     /user/:id                     |     Fetch user information (including sc
 PUT     /user/:id                     |     Modify user information (including scores)    | DONE +- need consultation for checking
   => if / else to check what to update
 
-DELETE  /user/:id      (with password) |     Delete user                                  | not urgent -> TODO
+DELETE  /user/:id      (with password)|     Delete user                                   | DONE
 GET     /user/login                   |     Log user                                      | DONE
 POST    /user/signup                  |     Register user (+send email?)                  | DONE
 POST    /user/recover-password        |                                                   | not urgent -> TODO
