@@ -15,6 +15,7 @@ const ERRORS = {
   DATA_VALIDATION: 'Input are not valid',
   DATA_MISSING: 'Form is missing some data',
   UNIQUE_LOGIN: 'User with this email or username already exists',
+  DB_FAIL: 'Error occured while accessing database',
 };
 
 export {
