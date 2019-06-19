@@ -7,6 +7,8 @@ import postSignup from '../routes/user/postSignup';
 import getRecoverPassword from '../routes/user/getRecoverPassword';
 import postRecoverPassword from '../routes/user/postRecoverPassword';
 
+import getLeaderboard from '../routes/leaderboard/get';
+
 class Router {
   constructor(app) {
     this.app = app;
@@ -20,6 +22,9 @@ class Router {
         deleteUser,
         postRecoverPassword,
         getRecoverPassword,
+      ],
+      '/leaderboard': [
+        getLeaderboard,
       ],
     };
   }
