@@ -8,6 +8,7 @@ const generateID = (length) => {
   for (let i = 0; i < length; i += 1) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
+  console.log(`New random ID generated: ${result}`);
   return result;
 };
 
@@ -22,6 +23,7 @@ class Game {
     this.hasStarted = false;
     this.hasEnded = false;
     this.players = [];
+    this.scores = [];
   }
 
   toObject() {
@@ -36,6 +38,7 @@ class Game {
       hasStarted: this.hasStarted,
       hasEnded: this.hasEnded,
       players: this.players,
+      scores: this.scores,
     };
   }
 
@@ -50,6 +53,7 @@ class Game {
     this.hasStarted = data.hasStarted || this.hasStarted;
     this.hasEnded = data.hasEnded || this.hasEnded;
     this.players = data.players || this.players;
+    this.scores = data.scores || this.scores;
   }
 }
 

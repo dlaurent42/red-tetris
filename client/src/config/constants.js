@@ -92,6 +92,7 @@ export const ICONS = {
   SEARCH: 'search',
   CROWN: 'crown',
   GAMEPAD: 'gamepad',
+  TIMES_CIRCLE: 'times-circle',
 };
 
 export const GAME_MODES = [
@@ -131,111 +132,31 @@ export const SOCKETS = {
 
   /* ----------------   Tournaments   --------------- */
   TOURNAMENTS_LIST: 'tournamentsList',
-  // Value :   tournamentsList
-  // Type  :   emit with fallback function
-  // Send  :   {}
-  // Data  : {
-  //  tournaments: [
-  //    {roomId, roomName, nbPlayers, maxPlayers, roomHasPassword, roomPassword, roomMode},
-  //    {roomId, roomName, nbPlayers, maxPlayers, roomHasPassword, roomPassword, roomMode},
-  //  ]}
   TOURNAMENTS_UPDATE: 'tournamentsUpdate',
-  // Value :   tournamentsUpdate
-  // Type  :   on
-  // Data  :   see above
 
   /* -------------------   Room   ------------------- */
   ROOM_INFOS: 'roomInfos',
-  // Value :   roomInfos
-  // Type  :   emit with callback
-  /* Data  :   {
-    roomId,
-    roomName,
-    roomMode,
-    maxPlayers,
-    roomPassword,
-    roomHasPassword,
-    gameHasStarted,
-    users: [ { username, userId (if connected), score, status(ready, not ready), role }]
-  } */
   ROOM_UPDATE: 'roomUpdate',
-  // Value :   roomUpdate
-  // Type  :   on
-  // Data  :   data sent by roomInfos
   ROOM_CREATION: 'roomCreation',
-  // Value :   roomCreation
-  // Type  :   emit
-  // Data  :   data sent by roomInfos with users = empty array
   ROOM_USER_UPDATE: 'roomUserUpdate',
-  // Value :   roomUserUpdate
-  // Type  :   emit / on
-  /* Data  : {
-    user: {username, userId (if connected), score, status (ready, not ready), role},
-    roomId,
-  } */
   ROOM_USER_JOINED: 'roomUserJoined',
-  // Value :   roomUserJoined
-  // Type  :   emit
-  // Data  :   data sent by roomInfos
   ROOM_USER_LEFT: 'roomUserLeft',
-  // Value :   roomUserLeft
-  // Type  :   emit
-  // Data  :   data sent by roomInfos
   ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
-  // Value :   roomForbiddenAccess
-  // -----------------------
-  // Type  :   emit
-  // Data  :   data sent by roomInfos
   NOTIFY_ROOM_FORBIDDEN_ACCESS: 'roomForbiddenAccess',
-  // -----------------------
-  // Type  :   on
-  // Data  :   data sent by roomInfos
-  // Whhhhhaaaat ? I send you an emit, then I redirect user and you send me emit (for notifications)
 
   /* -------------------   Game   ------------------- */
   GAME_SPECTER_UPDATE: 'gameSpecterUpdate',
-  // Value :   gameSpecterUpdate
-  // Type  :   emit + on
-  // Data  :   { roomId, specter }
   GAME_STARTS: 'gameStarts',
-  // Value :   gameStarts
-  // Type  :   on
-  // Data  :   { tiles (x3): [{ positions: [], innerPositions: [] }, {}, {}] }
   GAME_OVER: 'gameOver',
-  // Value :   gameOver
-  // Type  :   emit + on
-  // Data  :   { roomId }
   GAME_SCORED: 'gameScored',
-  // Value :   gameScored
-  // Type  :   emit + on
-  // Data  :   { roomId, score = number of rows scored }
   GAME_NEW_TILE: 'gameNewTile',
-  // Value :   gameNewTile
-  // Type  :   emit with fallback function
-  // Data s:   { roomId }
-  // Data r:   { tile: { positions: [], innerPositions: [] } }
 
   /* ---------------   Notifications   -------------- */
   NOTIFY_ROOM_CREATED: 'roomCreated',
-  // Value :   roomCreated
-  // Type  :   on
-  // Data  :   { roomName }
   NOTIFY_ROOM_NOT_CREATED: 'roomNotCreated',
-  // Value :   roomNotCreated
-  // Type  :   on
-  // Data  :   { roomName }
   NOTIFY_PLAYER_LEFT_GAME: 'playerLeftGame',
-  // Value :   playerLeftGame
-  // Type  :   on
-  // Data  :   { username }
   NOTIFY_PLAYER_ENTERS_GAME: 'playerEntersGame',
-  // Value :   playerEntersGame
-  // Type  :   on
-  // Data  :   { username }
   NOTIFY_FRIEND_CONNECTION: 'friendConnection',
-  // Value :   friendConnection
-  // Type  :   on
-  // Data  :   { username }
 };
 
 export const ROOM_ROLES = {

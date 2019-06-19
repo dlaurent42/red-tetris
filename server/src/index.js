@@ -15,7 +15,7 @@ class Server {
 
   listen() {
     this.http.listen(SERVER.PORT, SERVER.HOST, () => {
-      console.log(`Listening on http://${SERVER.HOST}:${SERVER.PORT}`);
+      process.stdout.write(`Listening on http://${SERVER.HOST}:${SERVER.PORT}\n`);
     });
   }
 }

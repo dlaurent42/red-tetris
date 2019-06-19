@@ -20,16 +20,12 @@ class Games {
     return find(this.lobbies, { id });
   }
 
-  // Method used to fetch all lobbies
-  getLobbies() {
-    return this.lobbies.filter(lobby => (
-      !lobby.hasEnded && get(countBy(lobby.players, { role: ROOM_ROLES.SPECTATOR }).false, 0)
-    ));
-  }
-
   // Method used to fetch all lobbies as formatted object
   getFormatedLobbies() {
-    return this.lobbies.map(lobby => lobby.toObject());
+    return this.lobbies.map(lobby => lobby.toObject()).filter(lobby => (
+      (!lobby.hasEnded
+        && get(countBy(lobby.players, { role: ROOM_ROLES.SPECTATOR }), 'false', 0))
+    ));
   }
 
   // Method used to verify wheter a lobby exists and to return it
@@ -52,7 +48,7 @@ class Games {
 
     // Verify that key is uniq
     if (countBy(this.lobbies, { id: lobby.id }).true > 0) {
-      console.error('Duplicate ID in lobby creation');
+      process.stderr.write('Duplicate ID in lobby creation\n');
       return undefined;
     }
 
@@ -98,6 +94,9 @@ class Games {
       players: lobby.players.map(player => (
         (player.role === ROOM_ROLES.SPECTATOR) ? player : { ...player, tilesStack }
       )),
+      scores: lobby.players
+        .filter(player => player.role !== ROOM_ROLES.SPECTATOR)
+        .map(player => ({ socketId: player.socketId, score: 0, username: player.username })),
     });
     return { lobby, startTile };
   }
@@ -124,17 +123,31 @@ class Games {
 
   // Method used to update score of a user and number of blocked rows of other players
   setPlayerScoring(data, socketId) {
-    const lobby = this.getLobby(data);
-    if (!lobby) return lobby;
+    const { lobby, player } = this.getPlayerAndLobby(data, socketId);
+    if (!player) return lobby;
+
+    // Update player score
+    Object.assign(player, { score: player.score + (data.score ** 2) * 100 });
+
+    // Update also score in lobby.scores
+    const scoredPlayer = find(lobby.scores, { socketId });
+    if (scoredPlayer) {
+      Object.assign(scoredPlayer, {
+        score: scoredPlayer.score + (data.score ** 2) * 100,
+      });
+    }
+
+    // Check wheter an update of other players is relevant
+    if (data.score - 1 === 0) return lobby;
+
+    // Update players number of blocked rows
     Object.assign(lobby, {
-      ...lobby,
-      players: lobby.players.map(player => (
-        (player.role === ROOM_ROLES.SPECTATOR)
-          ? player
-          : Object.assign(player, {
-            score: player.score + (player.socketId === socketId) ? data.score : 0,
-            blockedRows: player.blockedRows + (player.socketId !== socketId) ? data.score : 0,
-          })
+      players: lobby.players.map(el => (
+        (el.role !== ROOM_ROLES.SPECTATOR && el.socketId !== socketId)
+          ? {
+            ...el,
+            blockedRows: el.blockedRows + data.score - 1,
+          } : el
       )),
     });
     return lobby;

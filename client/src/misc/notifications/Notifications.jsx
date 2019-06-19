@@ -17,15 +17,15 @@ const notifications = (props) => {
 
   useEffect(() => {
     props.socket.on(SOCKETS.NOTIFY_FRIEND_CONNECTION, data => (
-      enqueueSnackbar(`${data.username} is connected.`, { action, ...NOTIFICATIONS.FRIEND_CONNECTION })
+      enqueueSnackbar(`${(data.username === '') ? 'A player' : data.username} is connected.`, { action, ...NOTIFICATIONS.FRIEND_CONNECTION })
     ));
 
     props.socket.on(SOCKETS.NOTIFY_PLAYER_LEFT_GAME, data => (
-      enqueueSnackbar(`${data.username} has left the room.`, { action, ...NOTIFICATIONS.PLAYER_LEFT })
+      enqueueSnackbar(`${(data.username === '') ? 'A player' : data.username} has left the room.`, { action, ...NOTIFICATIONS.PLAYER_LEFT })
     ));
 
     props.socket.on(SOCKETS.NOTIFY_PLAYER_ENTERS_GAME, data => (
-      enqueueSnackbar(`${data.username} has joined the room.`, { action, ...NOTIFICATIONS.PLAYER_ENTERS })
+      enqueueSnackbar(`${(data.username === '') ? 'A player' : data.username} has joined the room.`, { action, ...NOTIFICATIONS.PLAYER_ENTERS })
     ));
 
     props.socket.on(SOCKETS.NOTIFY_ROOM_CREATED, data => (
@@ -40,7 +40,7 @@ const notifications = (props) => {
     props.socket.on(SOCKETS.NOTIFY_ROOM_FORBIDDEN_ACCESS, data => (
       enqueueSnackbar(`Forbidden access to ${data.name} room.`, { action, ...NOTIFICATIONS.FORBIDDEN_ACCESS })
     ));
-  }, []);
+  });
 
   return <React.Fragment />;
 };

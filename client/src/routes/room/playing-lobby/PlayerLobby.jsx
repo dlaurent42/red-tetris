@@ -8,33 +8,22 @@ import { SOCKETS, KEYS, GAME_SETTINGS } from '../../../config/constants';
 const playerLobby = (props) => {
 
   // State
-  const [blockedRows, setBlockedRows] = useState(0);
+  const [blockedRows, setBlockedRows] = useState([]);
   const [delay, setDelay] = useState(2000);
 
   // Check collisions
   const isCollision = (movingTile, otherTiles) => {
     let collision = false;
-    if (!movingTile) {
-      console.log('Collision: no moving tile...');
-      return collision;
-    }
+    if (!movingTile) return collision;
     movingTile.positions.some((pos) => {
 
       // Check if moving Tile is out-of-map
-      if (pos.x < 0 || pos.x >= GAME_SETTINGS.GRID_WIDTH) {
-        console.log('Collision: out-of-horizontal bounds');
-        collision = true;
-      } else if (pos.y >= GAME_SETTINGS.GRID_HEIGHT) {
-        console.log('Collision: piece reach bottom of grid');
-        collision = true;
-      }
+      if (pos.x < 0 || pos.x >= GAME_SETTINGS.GRID_WIDTH) collision = true;
+      else if (pos.y >= GAME_SETTINGS.GRID_HEIGHT) collision = true;
 
       // Check collisions between moving tile and other tiles
       otherTiles.some((tile) => {
-        if (find(tile.positions, { x: pos.x, y: pos.y })) {
-          console.log('Collision: 2 tiles are hitting each other');
-          collision = true;
-        }
+        if (find(tile.positions, { x: pos.x, y: pos.y })) collision = true;
         return collision;
       });
       return collision;
@@ -49,22 +38,24 @@ const playerLobby = (props) => {
     const scoringRows = Object
       .entries(countBy(pieces.map(el => el.positions).flat(), 'y'))
       .map(entry => ((entry[1] >= GAME_SETTINGS.GRID_WIDTH) ? parseInt(entry[0], 10) : []))
-      .flat();
+      .flat()
+      .filter(el => !blockedRows.includes(el));
 
     // Warn server about scoring
     if (scoringRows.length) {
-      console.log('emitting ROOM_USER_UPDATE');
       props.socket.emit(SOCKETS.GAME_SCORED, { id: props.id, score: scoringRows.length });
     }
 
     // Remove rows corresponding to scoringRows
     let updatedPieces = pieces;
     scoringRows.forEach((y) => {
-      updatedPieces = updatedPieces.map(tile => ({
-        ...tile,
-        innerPositions: tile.innerPositions.filter((el, idx) => (tile.positions[idx].y !== y)),
-        positions: tile.positions.filter(el => el.y !== y),
-      }));
+      updatedPieces = updatedPieces.map(tile => (
+        (tile.innerPositions) ? {
+          ...tile,
+          innerPositions: tile.innerPositions.filter((el, idx) => (tile.positions[idx].y !== y)),
+          positions: tile.positions.filter(el => el.y !== y),
+        } : tile
+      ));
     });
 
     //  Drop down pieces
@@ -124,8 +115,6 @@ const playerLobby = (props) => {
 
     // If a collision occurs between tiles and next moving tile, then it is end of the game
     if (isCollision(props.tilesStack[0], finalTiles)) {
-      console.log(props.tilesStack[0], finalTiles);
-      console.log('emitting GAME_OVER');
       props.setTiles([props.tilesStack[0], ...finalTiles]);
       props.socket.emit(SOCKETS.GAME_OVER, { id: props.id });
 
@@ -133,7 +122,6 @@ const playerLobby = (props) => {
     } else {
       props.setTiles([props.tilesStack[0], ...finalTiles.filter(tile => tile.positions.length)]);
       props.setTilesStack(props.tilesStack.slice(1));
-      console.log('emitting GAME_NEW_TILE and GAME_SPECTER_UPDATE');
       props.socket.emit(SOCKETS.GAME_NEW_TILE, { id: props.id });
       props.socket.emit(SOCKETS.GAME_SPECTER_UPDATE, {
         id: props.id,
@@ -182,23 +170,65 @@ const playerLobby = (props) => {
     return () => { document.removeEventListener('keydown', onKeyStroke); };
   });
 
+  const gameScoringHandler = (data) => {
+
+    // Move current tiles
+    const movingTile = props.tiles[0];
+    const otherTiles = props.tiles.slice(1).map(tile => ({
+      ...tile,
+      positions: tile.positions.map(position => ({
+        x: position.x,
+        y: position.y - data.delta,
+      })),
+    }));
+
+    // Add blocked tiles
+    const blockedTiles = Array(data.delta).fill(0).map((row, idx) => ({
+      color: 'black',
+      positions: [
+        { x: 0, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 1, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 2, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 3, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 4, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 5, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 6, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 7, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 8, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+        { x: 9, y: GAME_SETTINGS.GRID_HEIGHT - idx - 1 },
+      ],
+    }));
+
+    // Move moving tile if needed
+    while (isCollision(movingTile, otherTiles)) {
+      Object.assign(movingTile, {
+        positions: movingTile.positions.map(position => ({
+          x: position.x,
+          y: position.y - 1,
+        })),
+      });
+    }
+
+    setBlockedRows(
+      Array(data.blockedRows).fill(0).map((el, idx) => GAME_SETTINGS.GRID_HEIGHT - idx - 1),
+    );
+    props.setTiles([movingTile, ...otherTiles, ...blockedTiles]);
+  };
+
+  const gameNewTileHandler = (data) => {
+    props.setTilesStack(data.tilesStack);
+  };
+
   // Listen to enemy scoring
   useEffect(() => {
-    props.socket.on(SOCKETS.GAME_SCORED, (data) => {
-      console.log('receiving GAME_SCORED', data);
-      setBlockedRows(blockedRows + data.score - 1);
-      // addRows at the bottom
-      // if (conflict) => move moving tile to top until no more conflict
-      // else do nothing
-    });
-  }, []);
+    props.socket.on(SOCKETS.GAME_SCORED, gameScoringHandler);
+    return () => props.socket.removeListener(SOCKETS.GAME_SCORED, gameScoringHandler);
+  }, [props.tiles]);
 
   // Listen to game new tile event
   useEffect(() => {
-    props.socket.on(SOCKETS.GAME_NEW_TILE, (data) => {
-      console.log('receiving GAME_NEW_TILE', data);
-      props.setTilesStack(data.tilesStack);
-    });
+    props.socket.on(SOCKETS.GAME_NEW_TILE, gameNewTileHandler);
+    return () => props.socket.removeListener(SOCKETS.GAME_NEW_TILE, gameNewTileHandler);
   }, []);
 
   // Update game each [delay] ms and make game faster each 10 seconds

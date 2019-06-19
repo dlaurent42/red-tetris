@@ -37,7 +37,6 @@ const room = (props) => {
     }
 
     // Fetch information about room
-    console.log('emitting ROOM_INFOS');
     props.socket.emit(SOCKETS.ROOM_INFOS, { ...props.location.state.room }, (data) => {
 
       // Check password
@@ -61,7 +60,6 @@ const room = (props) => {
       // Update information containers
       setUserInfos({ ...user });
       setRoomInfos({ ...data });
-      console.log('emitting ROOM_USER_JOINED');
       props.socket.emit(SOCKETS.ROOM_USER_JOINED, { id: data.id, user });
 
     });
@@ -70,7 +68,6 @@ const room = (props) => {
   // Event listener on page unload
   useEffect(() => {
     const unlisten = props.history.listen(() => {
-      console.log('emitting ROOM_USER_LEFT');
       props.socket.emit(SOCKETS.ROOM_USER_LEFT, { id: roomInfos.id, user: userInfos });
     });
     return () => unlisten();
@@ -79,19 +76,12 @@ const room = (props) => {
   // Event listener on game starts / game over / romm update events
   useEffect(() => {
     props.socket.on(SOCKETS.GAME_STARTS, (data) => {
-      console.log('receiving GAME_STARTS', data);
       setTiles([data.startTile]);
       setTilesStack(data.tilesStack);
       setRoomInfos(data.lobby);
     });
-    props.socket.on(SOCKETS.GAME_OVER, (data) => {
-      console.log('receiving GAME_OVER', data);
-      setRoomInfos(data);
-    });
-    props.socket.on(SOCKETS.ROOM_UPDATE, (data) => {
-      console.log('receiving ROOM_UPDATE', data);
-      setRoomInfos(data);
-    });
+    props.socket.on(SOCKETS.GAME_OVER, data => setRoomInfos(data));
+    props.socket.on(SOCKETS.ROOM_UPDATE, data => setRoomInfos(data));
   }, []);
 
   // Select lobby to display
@@ -159,7 +149,11 @@ const room = (props) => {
     // Handle case where game has ended
     case 2:
       lobby = (
-        <ExitingLobby />
+        <ExitingLobby
+          socket={props.socket}
+          tiles={tiles}
+          roomInfos={roomInfos}
+        />
       );
       break;
     default: lobby = null;
