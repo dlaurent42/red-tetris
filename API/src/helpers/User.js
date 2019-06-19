@@ -8,6 +8,17 @@ import {
 import { ERRORS } from '../config/constants';
 
 class UserHelper {
+  static toObject(user) {
+    return {
+      id: user.id,
+      email: user.email,
+      avatar: user.avatar,
+      username: user.username,
+      updatedAt: user.updatedAt,
+      createdAt: user.createdAt,
+    };
+  }
+
   static addNewUser(user) {
     return new Promise((resolve, reject) => {
       // Check for unique email and username
@@ -23,8 +34,23 @@ class UserHelper {
             .catch(err => reject(err));
         })
         .catch((err) => {
-          console.log(`Unexpected eror: ${err.message}`);
-          reject(new Error(ERRORS.DB_FAIL));
+          reject(err);
+        });
+    });
+  }
+
+  static login(user) {
+    return new Promise((resolve, reject) => {
+      User.findOne({ username: user.username })
+        .then((doc) => {
+          if (isEmpty(doc)) throw new Error(ERRORS.NO_USER);
+          const tmpPwd = hash(user.password, doc.salt);
+          if (tmpPwd !== doc.password) throw new Error(ERRORS.BAD_PASS);
+          resolve(this.toObject(doc));
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(new Error(ERRORS.NO_USER));
         });
     });
   }

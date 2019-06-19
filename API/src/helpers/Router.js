@@ -1,5 +1,6 @@
 // import middleware from '../middlewares/middleware';
 import postSignup from '../routes/user/postSignup';
+import getLogin from '../routes/user/getLogin';
 
 class Router {
   constructor(app) {
@@ -8,6 +9,7 @@ class Router {
       // '': [middleware],
       '/user': [
         postSignup,
+        getLogin,
       ],
     };
   }
