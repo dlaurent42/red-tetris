@@ -6,7 +6,7 @@ POST    /user/:id                     |     Modify user information (including s
 
 DELETE  /user/:id                     |     Delete user
 GET     /user/login                   |     Log user
-POST    /user/signup                  |     Register user (+send email?)
+POST    /user/signup                  |     Register user (+send email?)                  | +- done, need to make sure about things and implement mailing
 GET     /user/recover-password        |     Send recover password email
 
 User = {
