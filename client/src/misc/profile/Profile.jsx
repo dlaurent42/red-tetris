@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { countBy, sumBy } from 'lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -34,24 +35,23 @@ const profile = (props) => {
 
   // Fetch user information
   useEffect(() => {
-    console.log(`Fetching user with id: ${props.user.id}`);
 
     // Check if user is logged
     if (!props.user.id) return;
 
     // Make API call
-    axios.get(API_CALLS.GET_USER({ id: props.user.id }), API_CALLS.CONFIG)
+    axios.get(`${API_CALLS.GET_USER}/${props.user.id}`, API_CALLS.CONFIG)
       .then((result) => {
-        console.log('API Fetch', result);
-        if (result.success) setProfileInfos(...result.user);
+        if (result.data.success === false) return;
+        const statistics = {
+          gamesPlayed: result.data.user.scores.length,
+          gamesWon: countBy(result.data.user.scores, { hasWon: true }).true || 0,
+          totalScore: sumBy(result.data.user.scores, 'score') || 0,
+        };
+        setProfileInfos({ ...result.data.user, statistics });
       })
-      .catch((err) => {
-        console.log('API Fetch error');
-        console.log(err);
-      });
+      .catch(() => {});
   }, []);
-
-  console.log('profileInfos', profileInfos);
 
   return (
     <Dialog

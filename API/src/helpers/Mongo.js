@@ -21,9 +21,15 @@ class MongoDb {
     this.db.on('disconnected', () => {
       console.log(`Disconnected from ${this.uri}`);
       sleep(5000);
-      this.connection = mongoose.connect(this.uri, { useNewUrlParser: true });
+      this.connection = mongoose.connect(this.uri, {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+      });
     });
-    this.connection = mongoose.connect(this.uri, { useNewUrlParser: true });
+    this.connection = mongoose.connect(this.uri, {
+      useNewUrlParser: true,
+      useFindAndModify: false,
+    });
   }
 }
 

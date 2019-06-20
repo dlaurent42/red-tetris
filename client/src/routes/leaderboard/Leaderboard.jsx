@@ -28,21 +28,18 @@ const leaderboard = () => {
     // Make API call
     axios.get(API_CALLS.GET_LEADERBOARD, API_CALLS.CONFIG)
       .then((result) => {
-        console.log('API Fetch', result);
-        if (!result.success) return;
+        if (!result.data.success) return;
 
         // Update statistics and fill empty slots to be sure having at least 5 'users'
         setStats({
-          scoring: result.leaderboards.scoring.concat(emptySlots).splice(0, 5),
-          gamesPlayed: result.leaderboards.gamesPlayed.concat(emptySlots).splice(0, 5),
+          scoring: result.data.leaderboard.scoring.concat(emptySlots).splice(0, 5),
+          gamesPlayed: result.data.leaderboard.gamesPlayed.concat(emptySlots).splice(0, 5),
         });
       })
-      .catch((err) => {
-        console.log('API Fetch error');
-        console.log(err);
-      });
+      .catch(() => {});
   }, []);
 
+  console.log('rendering');
   return (
     <div className="leaderboard-container">
       {openProfile

@@ -1,4 +1,9 @@
-import { pick, sumBy, orderBy, take } from 'lodash';
+import {
+  pick,
+  sumBy,
+  orderBy,
+  take,
+} from 'lodash';
 import User from '../models/User.model';
 
 import { isEmpty } from '../utils';
@@ -9,15 +14,20 @@ const getLeaderboard = () => (
     User.find({})
       .then((users) => {
         if (isEmpty(users)) return resolve({ scoring: [], gamePlayed: [] });
-        const board = [];
-        users.forEach(user => (
-          board.push({
+        const boardScore = [];
+        const boardPlayed = [];
+        users.forEach((user) => {
+          boardScore.push({
             ...pick(user, ['username', 'avatar', 'id']),
-            gamesPlayed: user.scores.length,
             score: sumBy(user.scores, 'score') || 0,
-          })));
-        const scoring = take(orderBy(board, ['score'], ['desc']), BOUNDARY_VALUES.LEADERBOARD_LEN);
-        const gamesPlayed = take(orderBy(board, ['value'], ['desc']), BOUNDARY_VALUES.LEADERBOARD_LEN);
+          });
+          boardPlayed.push({
+            ...pick(user, ['username', 'avatar', 'id']),
+            score: user.scores.length,
+          });
+        });
+        const scoring = take(orderBy(boardScore, ['score'], ['desc']), BOUNDARY_VALUES.LEADERBOARD_LEN);
+        const gamesPlayed = take(orderBy(boardPlayed, ['score'], ['desc']), BOUNDARY_VALUES.LEADERBOARD_LEN);
         return resolve({ scoring, gamesPlayed });
       })
       .catch(err => reject(err));

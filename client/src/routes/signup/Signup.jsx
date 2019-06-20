@@ -65,10 +65,8 @@ const signup = (props) => {
     // Make API call
     axios.post(API_CALLS.POST_USER_REGISTER, { user: values }, API_CALLS.CONFIG)
       .then((res) => {
-        if (res.data.success) {
-          props.onUserRegister(res.data.user);
-          props.history.push('/');
-        } else setErrors({ ...errors, signup: (typeof res.data.err === 'string') ? res.data.err : true });
+        if (res.data.success) props.onUserRegister(res.data.user);
+        else setErrors({ ...errors, signup: (typeof res.data.err === 'string') ? res.data.err : true });
       })
       .catch(() => setErrors({ ...formErrors, signup: true }));
 

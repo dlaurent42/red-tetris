@@ -149,7 +149,7 @@ export const API_CALLS = {
   POST_USER_REGISTER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/signup`,
 
   /* PUT */
-  PUT_USER: template`${CONFIG.API.URL}:${CONFIG.API.PORT}/user/${'id'}`,
+  PUT_USER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/`,
 
 };
 

@@ -55,7 +55,7 @@ const exitingLobby = (props) => {
       };
 
       // For each logged user, make API call
-      axios.put(API_CALLS.PUT_USER({ id: player.id }), { score }, API_CALLS.CONFIG)
+      axios.put(`${API_CALLS.PUT_USER}${player.id}`, { user: { score } }, API_CALLS.CONFIG)
         .then(() => {})
         .catch(err => console.log(err));
 

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Profile from '../../../../misc/profile/Profile';
 import { SOCKETS, ICONS, ROOM_ROLES } from '../../../../config/constants';
 
+
 const playerSlot = (props) => {
 
   const onReady = () => {
