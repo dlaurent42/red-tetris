@@ -6,7 +6,9 @@ import { userLogout } from '../../store/actions';
 
 const logout = (props) => {
 
-  useEffect(() => props.onUserLogout(), []);
+  useEffect(() => {
+    props.onUserLogout();
+  }, []);
   return <Redirect to="/" />;
 };
 
@@ -14,8 +16,10 @@ logout.propTypes = {
   onUserLogout: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = () => {};
+
 const mapDispatchToProps = dispatch => ({
   onUserLogout: () => dispatch(userLogout()),
 });
 
-export default withRouter(connect(mapDispatchToProps)(logout));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(logout));

@@ -10,12 +10,13 @@ const router = express.Router();
 const validateFields = ({ email, password }) => !isEmpty(email) && !isEmpty(password);
 
 router.get('/login', (req, res) => {
-  if (!req.body.user || !validateFields(req.body.user)) {
+  const { email, password } = req.query;
+  if (!validateFields({ email, password })) {
     return res.status(400).json({ success: false, err: ERRORS.DATA_MISSING });
   }
 
   // If data is correct, try to log user.
-  return new UserHelper(req.body.user).login()
+  return new UserHelper({ email, password }).login()
     .then(user => res.status(200).json({ success: true, user }))
     .catch(err => res.status(200).json({ success: false, err: get(err, 'message', err) }));
 });

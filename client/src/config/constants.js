@@ -135,13 +135,13 @@ export const NOTIFICATIONS = {
 };
 
 export const API_CALLS = {
-  CONFIG: { headers: { Authorization: `bearer ${CONFIG.API_TOKEN}` } },
+  CONFIG: { headers: { Authorization: `bearer ${CONFIG.API.TOKEN}` } },
 
   /* DELETE */
-  DELETE_USER: template`${CONFIG.API.URL}:${CONFIG.API.PORT}/user/${'id'}`,
+  DELETE_USER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/`,
 
   /* GET */
-  GET_USER: template`${CONFIG.API.URL}:${CONFIG.API.PORT}/user/${'id'}`,
+  GET_USER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/`,
   GET_USER_LOGIN: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/login`,
   GET_LEADERBOARD: `${CONFIG.API.URL}:${CONFIG.API.PORT}/leaderboard`,
 

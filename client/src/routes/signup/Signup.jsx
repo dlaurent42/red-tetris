@@ -50,7 +50,6 @@ const signup = (props) => {
 
     // Create object containing errors based on form
     const formErrors = {
-      ...errors,
       username: !(REGEX.USERNAME.test(values.username)),
       email: !(REGEX.EMAIL.test(values.email)),
       password: !(REGEX.PASSWORD.test(values.password)),
@@ -59,21 +58,23 @@ const signup = (props) => {
 
     // Check if an occured in form
     if (Object.values(formErrors).includes(true)) {
-      setErrors(formErrors);
+      setErrors({ ...formErrors, ...formErrors });
       return;
     }
 
     // Make API call
+    console.log(API_CALLS.POST_USER_REGISTER);
     axios.post(API_CALLS.POST_USER_REGISTER, { user: values }, API_CALLS.CONFIG)
-      .then((result) => {
-        console.log('API Fetch', result);
-        if (result.success) props.onUserRegister(result.user);
-        else setErrors({ ...errors, signup: (typeof result.err === 'string') ? result.err : true });
+      .then((res) => {
+        if (res.data.success) {
+          props.onUserRegister(res.data.user);
+          props.history.push('/');
+        } else setErrors({ ...errors, signup: (typeof res.data.err === 'string') ? res.data.err : true });
       })
       .catch((err) => {
         console.log('API Fetch error');
         console.log(err);
-        setErrors({ ...errors, signup: true });
+        setErrors({ ...formErrors, signup: true });
       });
 
   };

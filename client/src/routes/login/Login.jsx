@@ -34,29 +34,25 @@ const login = (props) => {
 
     // Create object containing errors based on form
     const formErrors = {
-      ...errors,
       email: !(REGEX.EMAIL.test(values.email)),
       password: !(REGEX.PASSWORD.test(values.password)),
     };
 
     // Check if an occured in form
     if (Object.values(formErrors).includes(true)) {
-      setErrors(formErrors);
+      setErrors({ ...errors, ...formErrors });
       return;
     }
 
     // Make API call
-    axios.get(API_CALLS.GET_USER_LOGIN, API_CALLS.CONFIG)
-      .then((result) => {
-        console.log('API Fetch', result);
-        if (result.success) props.onUserLogin(result.user);
-        else setErrors({ ...errors, login: (typeof result.err === 'string') ? result.err : true });
+    axios.get(`${API_CALLS.GET_USER_LOGIN}?email=${values.email}&password=${values.password}`, API_CALLS.CONFIG)
+      .then((res) => {
+        if (res.data.success) {
+          props.onUserLogin(res.data.user);
+          props.history.push('/');
+        } else setErrors({ ...formErrors, login: (typeof res.data.err === 'string') ? res.data.err : true });
       })
-      .catch((err) => {
-        console.log('API Fetch error');
-        console.log(err);
-        setErrors({ ...errors, login: true });
-      });
+      .catch(err => setErrors({ ...formErrors, login: err.message }));
   };
 
   if (props.user.id) return <Redirect to="/" />;
@@ -118,7 +114,7 @@ login.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user.user,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({

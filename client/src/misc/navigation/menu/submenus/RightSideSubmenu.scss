@@ -8,7 +8,7 @@
     &:link, &:visited, &:active { @include link-pseudo-classes; }
     &:hover, &.active { @include link-hover; }
   }
-  .menu-signup {
+  .menu-signup, .menu-logout {
     @include link;
     border: 1px solid $secondary-color;
     border-radius: 5px;
