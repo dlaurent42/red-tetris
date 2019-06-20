@@ -19,10 +19,9 @@ const DATABASE = {
 };
 
 const MAIL = {
-  HOST: process.env.MAIL_HOST || '127.0.0.1',
-  NAME: process.env.MAIL_NAME || 'red-tetris',
   USER: process.env.MAIL_USER,
   PASS: process.env.MAIL_PASS,
+  ADMIN: process.env.MAIL_ADMIN || '',
 };
 
 export { SERVER, DATABASE, MAIL };

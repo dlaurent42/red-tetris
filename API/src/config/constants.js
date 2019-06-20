@@ -18,6 +18,8 @@ const ERRORS = {
   DB_FAIL: 'Error occured while accessing database',
   NO_USER: 'Such user does not exist',
   BAD_PASS: 'Password is incorrect',
+  UNIQUE_USERNAME: 'User with such username already exists',
+  UPDATE_FAILED: 'Cannot update user',
 };
 
 export {
