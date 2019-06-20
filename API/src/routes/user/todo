@@ -1,7 +1,7 @@
 Routes
 
 GET     /user/:id                     |     Fetch user information (including scores)     | DONE
-PUT     /user/:id                     |     Modify user information (including scores)    | DONE +- need consultation for checking
+PUT     /user/:id                     |     Modify user information (including scores)    | DONE
   => if / else to check what to update
 
 DELETE  /user/:id      (with password)|     Delete user                                   | DONE
@@ -9,8 +9,6 @@ GET     /user/login                   |     Log user                            
 POST    /user/signup                  |     Register user (+send email?)                  | DONE
 POST    /user/recover-password        |                                                   | not urgent -> TODO
 GET     /user/recover-password        |     Send recover password email                   | not urgent -> TODO
-
-// implement to router but send return
 
 GET     /leaderboard  -> check client but as I remember it concerns                       | not urgent -> TODO
   -> Max of scores sums between players :
