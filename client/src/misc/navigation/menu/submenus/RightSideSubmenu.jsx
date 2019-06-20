@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
 import './RightSideSubmenu.scss';
 
 const rightSideSubmenu = (props) => {
@@ -15,7 +14,8 @@ const rightSideSubmenu = (props) => {
     </div>
   ) : (
     <div className="menu-right">
-      <Link to="/profile"><Avatar className="menu-profile-avatar" src={require(`../../../../assets/avatars/${props.user.avatar}`) /* eslint-disable-line */} alt="avatar" /></Link>
+      <Link to="/profile" className="menu-item menu-login">PROFILE</Link>
+      <Link to="/logout" className="menu-signup">LOG OUT</Link>
     </div>
   );
 };

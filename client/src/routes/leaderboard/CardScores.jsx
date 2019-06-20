@@ -8,6 +8,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
+
 import { ICONS } from '../../config/constants';
 
 const cardScores = props => (
@@ -25,7 +26,7 @@ const cardScores = props => (
         else if (idx < 3) icon = <FontAwesomeIcon icon={ICONS.MEDAL} className="leaderboard-icon medal" />;
         else icon = <FontAwesomeIcon icon={ICONS.AWARD} className="leaderboard-icon award" />;
         return (
-          <ListItem className="leaderboard-player" key={user.username}>
+          <ListItem className="leaderboard-player" key={user.username} onClick={() => props.toggleProfile(user)}>
             <ListItemAvatar>{icon}</ListItemAvatar>
             <ListItemText primary={user.username} secondary={`score: ${user.score}`} />
             <ListItemAvatar><Avatar className="leaderboard-avatar" src={require(`../../assets/avatars/${user.avatar}`) /* eslint-disable-line */} alt={user.avatar} /></ListItemAvatar>
@@ -38,6 +39,7 @@ const cardScores = props => (
 );
 
 cardScores.propTypes = {
+  toggleProfile: PropTypes.func.isRequired,
   scores: PropTypes.arrayOf(PropTypes.any),
 };
 

@@ -13,6 +13,7 @@ import {
   faCrown,
   faGamepad,
   faTimesCircle,
+  faPercent,
 } from '@fortawesome/free-solid-svg-icons';
 import store from './store/reducers';
 import RedTetris from './routes/RedTetris';
@@ -29,6 +30,7 @@ library.add(
   faCrown,
   faGamepad,
   faTimesCircle,
+  faPercent,
 );
 
 ReactDOM.render(

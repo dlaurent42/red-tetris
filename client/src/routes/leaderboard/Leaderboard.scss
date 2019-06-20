@@ -26,11 +26,26 @@
         display: flex;
         flex-direction: column;
         flex: 1;
+
+        & .leaderboard-player {
+          cursor: pointer;
+          & .leaderboard-icon {
+            font-size: 2rem;
+            color: rgba($secondary-color, .8);
+          }
+        }
       }
-      & .leaderboard-icon {
-        font-size: 2rem;
-        color: $secondary-color;
-        color: $tertiary-color;
+      & .leaderboard-list .leaderboard-player {
+        opacity: 1;
+        transition: .5s;
+      }
+      & .leaderboard-list:hover .leaderboard-player {
+        opacity: .7;
+        transition: .5s;
+      }
+      & .leaderboard-list .leaderboard-player:hover {
+        opacity: 1;
+        transition: .5s;
       }
     }
   }

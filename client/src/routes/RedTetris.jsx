@@ -54,7 +54,6 @@ const RedTetris = () => (
           <Route path="/recover-password[:key]" component={RecoverPasswordKey} />
           {/* user */}
           <Route path="/profile" render={() => <></>} />
-          <Route path="/account" render={() => <></>} />
           <Route path="/logout" render={() => <></>} />
 
           {/* misc */}

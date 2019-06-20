@@ -19,6 +19,10 @@ export const CONFIG = {
     URL: 'http://localhost',
     PORT: '8080',
   },
+  API: {
+    URL: 'http://localhost',
+    PORT: '4000',
+  },
 };
 
 export const REGEX = {
@@ -83,6 +87,7 @@ export const AVATARS = [
 ];
 
 export const ICONS = {
+  PERCENT: 'percent',
   TROPHY: 'trophy',
   MEDAL: 'medal',
   AWARD: 'award',
@@ -126,6 +131,10 @@ export const NOTIFICATIONS = {
     variant: 'error',
     autoHideDuration: 4000,
   },
+};
+
+export const API_CALLS = {
+  USER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user`,
 };
 
 export const SOCKETS = {

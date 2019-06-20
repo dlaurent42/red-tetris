@@ -20,7 +20,7 @@ const cardGamesPlayed = props => (
         else if (idx < 3) icon = <FontAwesomeIcon icon={ICONS.MEDAL} className="leaderboard-icon medal" />;
         else icon = <FontAwesomeIcon icon={ICONS.AWARD} className="leaderboard-icon award" />;
         return (
-          <ListItem className="leaderboard-player" key={user.username}>
+          <ListItem className="leaderboard-player" key={user.username} onClick={() => props.toggleProfile(user)}>
             <ListItemAvatar>{icon}</ListItemAvatar>
             <ListItemText primary={user.username} secondary={`games won: ${user.score}`} />
             <ListItemAvatar><Avatar className="leaderboard-avatar" src={require(`../../assets/avatars/${user.avatar}`) /* eslint-disable-line */} alt={user.avatar} /></ListItemAvatar>
@@ -38,6 +38,7 @@ const cardGamesPlayed = props => (
 );
 
 cardGamesPlayed.propTypes = {
+  toggleProfile: PropTypes.func.isRequired,
   games: PropTypes.arrayOf(PropTypes.any),
 };
 

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Profile from '../../../../misc/profile/Profile';
 import { SOCKETS, ICONS, ROOM_ROLES } from '../../../../config/constants';
 
 const playerSlot = (props) => {
@@ -14,8 +15,18 @@ const playerSlot = (props) => {
     props.socket.emit(SOCKETS.ROOM_USER_UPDATE, { id: props.roomInfos.id, user });
   };
 
+  const [openProfile, setOpenProfile] = useState(false);
+  const toggleProfile = () => setOpenProfile(!openProfile);
+
   return (
-    <div className="room-entering-lobby-player-slot">
+    <div
+      role="presentation"
+      onClick={toggleProfile}
+      className={['room-entering-lobby-player-slot', (props.player.socketId !== props.socket.id) ? 'clickable' : ''].join(' ')}
+    >
+      {(props.player.socketId !== props.socket.id && openProfile)
+        ? <Profile open={openProfile} onClose={toggleProfile} user={props.player} />
+        : null}
       <Badge
         badgeContent={
           (

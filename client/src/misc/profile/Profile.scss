@@ -1,0 +1,46 @@
+@import '../../config/styles.scss';
+
+.profile {
+
+  color: $secondary-color;
+
+  & .profile-avatar {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    top: -60px;
+    margin: auto;
+    background: wheat;
+    border: 5px solid white;
+  }
+
+  & h6 {
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  & ul {
+    display: flex;
+    justify-content: space-around;
+
+    & li {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      width: fit-content;
+
+      & span {
+        font-weight: 500;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+      }
+    }
+  }
+
+  & p {
+    text-align: justify;
+  }
+
+}

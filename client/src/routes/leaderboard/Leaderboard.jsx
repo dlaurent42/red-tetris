@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../misc/navigation/header/Header';
 import Footer from '../../misc/navigation/footer/Footer';
+import Profile from '../../misc/profile/Profile';
 import { AVATARS } from '../../config/constants';
 import CardScores from './CardScores';
 import CardGamesPlayed from './CardGamesPlayed';
@@ -12,6 +13,12 @@ const random = bound => Math.floor(Math.random() * bound);
 const leaderboard = () => {
   const [games, setGames] = useState([]);
   const [scores, setScores] = useState([]);
+  const [playerInfos, setPlayerInfos] = useState({});
+  const [openProfile, setOpenProfile] = useState(false);
+  const toggleProfile = (player) => {
+    setPlayerInfos(player);
+    setOpenProfile(!openProfile);
+  };
 
   useEffect(() => {
     const datascores = [];
@@ -34,10 +41,13 @@ const leaderboard = () => {
 
   return (
     <div className="leaderboard-container">
+      {openProfile
+        ? <Profile open={openProfile} onClose={toggleProfile} user={playerInfos} />
+        : null}
       <Header color="dark" />
       <div className="leaderboard-subcontainer">
-        <CardScores scores={scores} />
-        <CardGamesPlayed games={games} />
+        <CardScores open toggleProfile={toggleProfile} scores={scores} />
+        <CardGamesPlayed open toggleProfile={toggleProfile} games={games} />
       </div>
       <Footer />
     </div>

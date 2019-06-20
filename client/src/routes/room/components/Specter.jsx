@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Profile from '../../../misc/profile/Profile';
 import { GAME_SETTINGS, ICONS, ROOM_ROLES } from '../../../config/constants';
 
 const padNumber = number => (number <= 999999 ? `00000${number}`.slice(-6) : number);
 
 const specter = (props) => {
+  const [openProfile, setOpenProfile] = useState(false);
+  const toggleProfile = () => setOpenProfile(!openProfile);
   const grid = Array(GAME_SETTINGS.GRID_HEIGHT).fill(Array(GAME_SETTINGS.GRID_WIDTH).fill(0));
   return (
     <div className={['specter-container', `specter-container-${props.type}`].join(' ')}>
       {(props.type === 'large')
         ? (
-          <div className="specter-statistics">
+          <div
+            role="presentation"
+            onClick={toggleProfile}
+            className="specter-statistics clickable"
+          >
+            <Profile open={openProfile} onClose={toggleProfile} user={props.player} />
             <Badge
               badgeContent={
                 (
