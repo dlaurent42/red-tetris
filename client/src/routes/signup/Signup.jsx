@@ -63,7 +63,6 @@ const signup = (props) => {
     }
 
     // Make API call
-    console.log(API_CALLS.POST_USER_REGISTER);
     axios.post(API_CALLS.POST_USER_REGISTER, { user: values }, API_CALLS.CONFIG)
       .then((res) => {
         if (res.data.success) {
@@ -71,11 +70,7 @@ const signup = (props) => {
           props.history.push('/');
         } else setErrors({ ...errors, signup: (typeof res.data.err === 'string') ? res.data.err : true });
       })
-      .catch((err) => {
-        console.log('API Fetch error');
-        console.log(err);
-        setErrors({ ...formErrors, signup: true });
-      });
+      .catch(() => setErrors({ ...formErrors, signup: true }));
 
   };
 

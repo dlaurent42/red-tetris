@@ -152,7 +152,7 @@ createRoom.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user.user,
+  user: state.user,
 });
 
 export default withRouter(connect(mapStateToProps)(createRoom));

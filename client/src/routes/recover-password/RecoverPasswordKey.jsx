@@ -89,7 +89,7 @@ recoverPassword.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user.user,
+  user: state.user,
 });
 
 export default connect(mapStateToProps)(recoverPassword);

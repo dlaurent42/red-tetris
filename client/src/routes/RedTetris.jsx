@@ -29,7 +29,6 @@ const Notifications = lazy(() => import('../misc/notifications/Notifications'));
 const redTetris = (props) => {
 
   useEffect(() => {
-
     // Check if API call is needed to fetch user information
     if (!props.user.id || props.user.username) return;
 
@@ -96,7 +95,7 @@ redTetris.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user,
+  user: state.user.user,
 });
 
 const mapDispatchToProps = dispatch => ({

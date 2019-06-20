@@ -34,7 +34,7 @@ export const user = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONS.USER_LOGIN: return loginAndRegisterHandlers(state, action);
     case ACTIONS.USER_REGISTER: return loginAndRegisterHandlers(state, action);
-    case ACTIONS.USER_UPDATE: return updateState(state, { user: action.payload.user });
+    case ACTIONS.USER_UPDATE: return updateState(state, { user: action.payload });
     case ACTIONS.USER_LOGOUT: return logoutAndDeleteHandler(state);
     case ACTIONS.USER_DELETE: return logoutAndDeleteHandler(state);
     default: return state;

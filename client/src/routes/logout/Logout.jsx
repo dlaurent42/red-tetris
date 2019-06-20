@@ -16,7 +16,9 @@ logout.propTypes = {
   onUserLogout: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = () => {};
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
 const mapDispatchToProps = dispatch => ({
   onUserLogout: () => dispatch(userLogout()),
