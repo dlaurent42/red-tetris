@@ -15,7 +15,7 @@ class MongoDb {
     this.db.once('open', () => { console.log('Connection opened'); });
     this.db.on('reconnected', () => { console.log(`Reconnected on ${this.uri}`); });
     this.db.on('error', (err) => {
-      console.error(`Error in MongoDb connection: ${err}`);
+      console.error(`Error in MongoDb connection: ${err.message}`);
       mongoose.disconnect();
     });
     this.db.on('disconnected', () => {
