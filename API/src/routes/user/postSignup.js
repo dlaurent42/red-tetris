@@ -1,6 +1,7 @@
 import express from 'express';
 import { get } from 'lodash';
 import UserHelper from '../../helpers/User';
+import Mail from '../../helpers/Mail';
 
 import {
   isEmpty,
@@ -25,7 +26,7 @@ router.post('/signup', (req, res) => {
 
   return new UserHelper(req.body.user).addNewUser()
     .then((user) => {
-      console.log(`Send a letter to ${JSON.stringify(user)}`);
+      new Mail().register(user);
       return res.status(200).json({ success: true, user });
     })
     .catch(err => res.status(200).json({ success: false, err: get(err, 'message', err) }));
