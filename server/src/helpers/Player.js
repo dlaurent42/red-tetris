@@ -2,7 +2,7 @@ const { ROOM_ROLES } = require('../config/constants');
 
 class Player {
   constructor(props) {
-    this.uid = props.uid || 0;
+    this.id = props.id || 0;
     this.socketId = props.socketId;
     this.username = props.username;
     this.avatar = props.avatar;
