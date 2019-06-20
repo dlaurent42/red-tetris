@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => (
   getLeaderboard()
-    .then(result => res.status(200).json({ success: true, leaderboard: result }))
+    .then(leaderboard => res.status(200).json({ success: true, leaderboard }))
     .catch(err => res.status(200).json({ success: false, err: get(err, 'message', err) }))
 ));
 

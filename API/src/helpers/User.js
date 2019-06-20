@@ -17,8 +17,9 @@ class UserHelper {
     this.password = userInformation.password;
     this.avatar = userInformation.avatar;
     this.email = userInformation.email;
-    this.score = userInformation.score || {}; // implement
-    // fill
+
+    // Used in case of score update
+    this.score = userInformation.score || {};
   }
 
   addNewUser() {
@@ -101,9 +102,9 @@ class UserHelper {
       : this.updateByIdInformations();
   }
 
-  deleteById(id) {
+  deleteById() {
     return new Promise((resolve, reject) => {
-      User.findById(id)
+      User.findById(this.id)
         .then((user) => {
           if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
           if (!this.password) throw new Error(ERRORS.DATA_VALIDATION);
