@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 
 import { MAIL } from '../config/config';
-import { isEmpty } from '../utils';
 
 class Mail {
   constructor() {
@@ -18,12 +17,7 @@ class Mail {
   }
 
   send(options) {
-    return new Promise((resolve, reject) => {
-      this.transporter.sendMail(options, (err, res) => {
-        if (!isEmpty(err)) return reject(err);
-        return resolve(res);
-      });
-    });
+    this.transporter.sendMail(options, err => process.stderr.write(err));
   }
 
   register(user) {
