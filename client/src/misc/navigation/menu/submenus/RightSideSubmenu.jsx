@@ -7,7 +7,7 @@ import './RightSideSubmenu.scss';
 const rightSideSubmenu = (props) => {
   if (props.variant !== 'full') return null;
 
-  return (!props.user.uid) ? (
+  return (!props.user.id) ? (
     <div className={['menu-right', props.color].join(' ')}>
       <Link to="/login" className="menu-item menu-login">LOG IN</Link>
       <Link to="/signup" className="menu-signup">SIGN UP</Link>

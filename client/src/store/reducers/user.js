@@ -3,23 +3,43 @@ import { ACTIONS, DEFAULT } from '../../config/constants';
 
 const initialState = {
   user: {
-    // uid: 1,
-    uid: Cookies.get('uid'),
+    id: Cookies.get('user'),
     username: '',
     avatar: DEFAULT.AVATAR,
   },
 };
 
+const updateState = (state, updatedValues) => ({
+  ...state,
+  ...updatedValues,
+});
+
+const loginAndRegisterHandlers = (state, action) => {
+  Cookies.set('user', action.payload.id, { expires: 7 });
+  return updateState(state, {
+    user: action.payload.user,
+  });
+};
+
+const logoutAndDeleteHandler = (state) => {
+  Cookies.remove('user');
+  return updateState(state, {
+    user: {
+      id: 0,
+      username: '',
+      avatar: DEFAULT.AVATAR,
+    },
+  });
+};
+
 export const user = (state = initialState, action) => {
+  console.log('Action received in reducer: ', action);
   switch (action.type) {
-    case ACTIONS.USER_LOGIN: return state;
-    case ACTIONS.USER_REGISTER: return state;
-    case ACTIONS.USER_LOGOUT: return state;
-    case ACTIONS.USER_CHANGE_AVATAR: return state;
-    case ACTIONS.USER_CHANGE_USERNAME: return state;
-    case ACTIONS.USER_CHANGE_PASSWORD: return state;
-    case ACTIONS.USER_CHANGE_EMAIL: return state;
-    case ACTIONS.USER_UPDATE_STATS: return state;
+    case ACTIONS.USER_LOGIN: return loginAndRegisterHandlers(state, action);
+    case ACTIONS.USER_REGISTER: return loginAndRegisterHandlers(state, action);
+    case ACTIONS.USER_UPDATE: return updateState(state, { user: action.payload.user });
+    case ACTIONS.USER_LOGOUT: return logoutAndDeleteHandler(state);
+    case ACTIONS.USER_DELETE: return logoutAndDeleteHandler(state);
     default: return state;
   }
 };

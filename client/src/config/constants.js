@@ -1,17 +1,17 @@
+import template from '../utils/interpolation';
+
 export const ACTIONS = {
   USER_LOGIN: 'USER_LOGIN',
   USER_REGISTER: 'USER_REGISTER',
+  USER_UPDATE: 'USER_UPDATE',
   USER_LOGOUT: 'USER_LOGOUT',
-  USER_CHANGE_AVATAR: 'USER_CHANGE_AVATAR',
-  USER_CHANGE_USERNAME: 'USER_CHANGE_USERNAME',
-  USER_CHANGE_PASSWORD: 'USER_CHANGE_PASSWORD',
-  USER_CHANGE_EMAIL: 'USER_CHANGE_EMAIL',
-  USER_UPDATE_STATS: 'USER_UPDATE_STATS',
+  USER_DELETE: 'USER_DELETE',
 };
 
 export const DEFAULT = {
   AVATAR: 'man.png',
   USERNAME: 'unknown-user',
+  ERROR_MESSAGE: 'An error occured.',
 };
 
 export const CONFIG = {
@@ -22,6 +22,7 @@ export const CONFIG = {
   API: {
     URL: 'http://localhost',
     PORT: '4000',
+    TOKEN: 'abcd',
   },
 };
 
@@ -134,7 +135,22 @@ export const NOTIFICATIONS = {
 };
 
 export const API_CALLS = {
-  USER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user`,
+  CONFIG: { headers: { Authorization: `bearer ${CONFIG.API_TOKEN}` } },
+
+  /* DELETE */
+  DELETE_USER: template`${CONFIG.API.URL}:${CONFIG.API.PORT}/user/${'id'}`,
+
+  /* GET */
+  GET_USER: template`${CONFIG.API.URL}:${CONFIG.API.PORT}/user/${'id'}`,
+  GET_USER_LOGIN: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/login`,
+  GET_LEADERBOARD: `${CONFIG.API.URL}:${CONFIG.API.PORT}/leaderboard`,
+
+  /* POST */
+  POST_USER_REGISTER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/signup`,
+
+  /* PUT */
+  PUT_USER: template`${CONFIG.API.URL}:${CONFIG.API.PORT}/user/${'id'}`,
+
 };
 
 export const SOCKETS = {

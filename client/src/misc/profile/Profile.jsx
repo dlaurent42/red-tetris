@@ -15,11 +15,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { DEFAULT, API_CALLS } from '../../config/constants';
 import './Profile.scss';
 
+// Create style to handle avatar display
 const useStyles = makeStyles({ dialogPaper: { overflow: 'visible' } });
 
 const profile = (props) => {
 
+  // Set style to handle avatar display
   const classes = useStyles();
+
+  // Profile data structure
   const [profileInfos, setProfileInfos] = useState({ ...props.user,
     statistics: {
       gamesPlayed: 'N/A',
@@ -28,10 +32,15 @@ const profile = (props) => {
     },
   });
 
+  // Fetch user information
   useEffect(() => {
-    console.log(`Fetching user with id: ${props.user.uid}`);
-    if (!props.user.uid) return;
-    axios.get(`${API_CALLS.USER}/${props.user.uid}`)
+    console.log(`Fetching user with id: ${props.user.id}`);
+
+    // Check if user is logged
+    if (!props.user.id) return;
+
+    // Make API call
+    axios.get(API_CALLS.GET_USER({ id: props.user.id }), API_CALLS.CONFIG)
       .then((result) => {
         console.log('API Fetch', result);
         if (result.success) setProfileInfos(...result.user);

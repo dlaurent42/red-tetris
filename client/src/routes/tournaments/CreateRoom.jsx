@@ -58,7 +58,7 @@ const createRoom = (props) => {
         },
         user: {
           role: ROOM_ROLES.CREATOR,
-          id: props.user.uid,
+          id: props.user.id,
           username: props.user.username,
           avatar: props.user.avatar,
         },

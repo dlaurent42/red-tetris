@@ -34,7 +34,7 @@ const recoverPassword = (props) => {
     /* check key */
   }, []);
 
-  if (props.user.uid) return <Redirect to="/" />;
+  if (props.user.id) return <Redirect to="/" />;
   return (
     <div>
       <Header variant="reduced" />

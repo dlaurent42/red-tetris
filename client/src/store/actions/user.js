@@ -1,41 +1,26 @@
 import { ACTIONS } from '../../config/constants';
 
-export const userLogin = payload => ({
+export const userLogin = (payload = { user: {} }) => ({
   type: ACTIONS.USER_LOGIN,
   payload,
 });
 
-export const userRegister = payload => ({
+export const userRegister = (payload = { user: {} }) => ({
   type: ACTIONS.USER_REGISTER,
   payload,
 });
 
-export const userLogout = payload => ({
+export const userLogout = (payload = { user: {} }) => ({
   type: ACTIONS.USER_LOGOUT,
   payload,
 });
 
-export const userChangeAvatar = payload => ({
-  type: ACTIONS.USER_CHANGE_AVATAR,
+export const userUpdate = (payload = { user: {} }) => ({
+  type: ACTIONS.USER_UPDATE,
   payload,
 });
 
-export const userChangeUsername = payload => ({
-  type: ACTIONS.USER_CHANGE_USERNAME,
-  payload,
-});
-
-export const userChangePassword = payload => ({
-  type: ACTIONS.USER_CHANGE_PASSWORD,
-  payload,
-});
-
-export const userChangeEmail = payload => ({
-  type: ACTIONS.USER_CHANGE_EMAIL,
-  payload,
-});
-
-export const userUpdateStats = payload => ({
-  type: ACTIONS.USER_UPDATE_STATS,
+export const userDelete = (payload = { user: {} }) => ({
+  type: ACTIONS.USER_UPDATE,
   payload,
 });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
@@ -7,13 +8,16 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Header from '../../misc/navigation/header/Header';
 import SelectAvatar from '../../misc/UI/selectAvatar/SelectAvatar';
-import { DEFAULT, REGEX } from '../../config/constants';
+import { DEFAULT, REGEX, API_CALLS } from '../../config/constants';
+import { userRegister } from '../../store/actions';
 import './Signup.scss';
 
 const signup = (props) => {
 
-  // Handle form data
+  // Avatar selection
   const [displayAvatarSelection, toggleAvatarSelectionWindow] = useState(false);
+
+  // Form data structure
   const [values, setValues] = useState({
     avatar: DEFAULT.AVATAR,
     username: '',
@@ -21,12 +25,17 @@ const signup = (props) => {
     password: '',
     cpassword: '',
   });
+
+  // Form errors structure
   const [errors, setErrors] = useState({
     username: false,
     email: false,
     password: false,
     cpassword: false,
+    signup: false,
   });
+
+  // Handle value change
   const handleValueChange = name => event => setValues({ ...values, [name]: event.target.value });
 
   // Handle avatar change
@@ -38,15 +47,38 @@ const signup = (props) => {
   // Handle form validation
   const validateForm = (event) => {
     event.preventDefault();
-    setErrors({
+
+    // Create object containing errors based on form
+    const formErrors = {
+      ...errors,
       username: !(REGEX.USERNAME.test(values.username)),
       email: !(REGEX.EMAIL.test(values.email)),
       password: !(REGEX.PASSWORD.test(values.password)),
       cpassword: (values.password !== values.cpassword),
-    });
+    };
+
+    // Check if an occured in form
+    if (Object.values(formErrors).includes(true)) {
+      setErrors(formErrors);
+      return;
+    }
+
+    // Make API call
+    axios.post(API_CALLS.POST_USER_REGISTER, { user: values }, API_CALLS.CONFIG)
+      .then((result) => {
+        console.log('API Fetch', result);
+        if (result.success) props.onUserRegister(result.user);
+        else setErrors({ ...errors, signup: (typeof result.err === 'string') ? result.err : true });
+      })
+      .catch((err) => {
+        console.log('API Fetch error');
+        console.log(err);
+        setErrors({ ...errors, signup: true });
+      });
+
   };
 
-  if (props.user.uid) return <Redirect to="/" />;
+  if (props.user.id) return <Redirect to="/" />;
   return (
     <div>
       <Header variant="reduced" />
@@ -115,6 +147,9 @@ const signup = (props) => {
               margin="normal"
             />
             <Button variant="contained" className="button" onClick={validateForm}>Validate</Button>
+            {(errors.signup)
+              ? <div className="signup-error">{typeof errors.signup === 'string' ? errors.signup : DEFAULT.ERROR_MESSAGE}</div>
+              : null}
             <Link className="signup-link" to="/login">Already have an account?</Link>
           </form>
         </div>
@@ -125,6 +160,7 @@ const signup = (props) => {
 };
 
 signup.propTypes = {
+  onUserRegister: PropTypes.func.isRequired,
   user: PropTypes.objectOf(PropTypes.any),
 };
 
@@ -136,4 +172,8 @@ const mapStateToProps = state => ({
   user: state.user.user,
 });
 
-export default connect(mapStateToProps)(signup);
+const mapDispatchToProps = dispatch => ({
+  onUserRegister: user => dispatch(userRegister(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(signup);

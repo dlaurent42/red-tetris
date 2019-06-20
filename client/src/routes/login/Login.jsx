@@ -2,35 +2,64 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Header from '../../misc/navigation/header/Header';
-import { REGEX } from '../../config/constants';
+import { DEFAULT, REGEX, API_CALLS } from '../../config/constants';
+import { userLogin } from '../../store/actions';
 import './Login.scss';
 
 const login = (props) => {
 
-  // Handle form data
+  // Form data structure
   const [values, setValues] = useState({
     email: '',
     password: '',
   });
+
+  // Form errors structure
   const [errors, setErrors] = useState({
     email: false,
     password: false,
+    login: false,
   });
+
+  // Handle value change
   const handleValueChange = name => event => setValues({ ...values, [name]: event.target.value });
 
   // Handle form validation
   const validateForm = (event) => {
     event.preventDefault();
-    setErrors({
+
+    // Create object containing errors based on form
+    const formErrors = {
+      ...errors,
       email: !(REGEX.EMAIL.test(values.email)),
       password: !(REGEX.PASSWORD.test(values.password)),
-    });
+    };
+
+    // Check if an occured in form
+    if (Object.values(formErrors).includes(true)) {
+      setErrors(formErrors);
+      return;
+    }
+
+    // Make API call
+    axios.get(API_CALLS.GET_USER_LOGIN, API_CALLS.CONFIG)
+      .then((result) => {
+        console.log('API Fetch', result);
+        if (result.success) props.onUserLogin(result.user);
+        else setErrors({ ...errors, login: (typeof result.err === 'string') ? result.err : true });
+      })
+      .catch((err) => {
+        console.log('API Fetch error');
+        console.log(err);
+        setErrors({ ...errors, login: true });
+      });
   };
 
-  if (props.user.uid) return <Redirect to="/" />;
+  if (props.user.id) return <Redirect to="/" />;
   return (
     <div>
       <Header variant="reduced" />
@@ -66,6 +95,9 @@ const login = (props) => {
               margin="normal"
             />
             <Button variant="contained" className="button" onClick={validateForm}>Validate</Button>
+            {(errors.login)
+              ? <div className="login-error">{typeof errors.login === 'string' ? errors.login : DEFAULT.ERROR_MESSAGE}</div>
+              : null}
             <Link className="login-link" to="/signup">Don&#39;t have account?</Link>
             <Link className="login-link" to="/recover-password">Forgot password?</Link>
           </form>
@@ -78,6 +110,7 @@ const login = (props) => {
 
 login.propTypes = {
   user: PropTypes.objectOf(PropTypes.any),
+  onUserLogin: PropTypes.func.isRequired,
 };
 
 login.defaultProps = {
@@ -88,4 +121,8 @@ const mapStateToProps = state => ({
   user: state.user.user,
 });
 
-export default connect(mapStateToProps)(login);
+const mapDispatchToProps = dispatch => ({
+  onUserLogin: user => dispatch(userLogin(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(login);

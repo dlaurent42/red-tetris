@@ -8,6 +8,7 @@ const Homepage = lazy(() => import('./homepage/Homepage'));
 
 const Login = lazy(() => import('./login/Login'));
 const Signup = lazy(() => import('./signup/Signup'));
+const Logout = lazy(() => import('./logout/Logout'));
 const RecoverPassword = lazy(() => import('./recover-password/RecoverPassword'));
 const RecoverPasswordKey = lazy(() => import('./recover-password/RecoverPasswordKey'));
 const About = lazy(() => import('./about/About'));
@@ -22,6 +23,8 @@ const Notifications = lazy(() => import('../misc/notifications/Notifications'));
 
 
 const RedTetris = () => (
+
+  // suspense permits to display spinner until data has loaded
   <Suspense fallback={<div className="spinner"><GooSpinner size={100} color="#ff0550" /></div>}>
     <SnackbarProvider
       maxSnack={4}
@@ -54,7 +57,7 @@ const RedTetris = () => (
           <Route path="/recover-password[:key]" component={RecoverPasswordKey} />
           {/* user */}
           <Route path="/profile" render={() => <></>} />
-          <Route path="/logout" render={() => <></>} />
+          <Route path="/logout" component={Logout} />
 
           {/* misc */}
           <Route path="/redirection" component={Redirection} />

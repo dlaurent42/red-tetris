@@ -29,7 +29,7 @@ const joinRoom = (props) => {
         },
         user: {
           role,
-          id: props.user.uid,
+          id: props.user.id,
           username: props.user.username,
           avatar: props.user.avatar,
         },

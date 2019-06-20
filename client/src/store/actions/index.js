@@ -1,10 +1,7 @@
 export {
   userLogin,
   userRegister,
+  userUpdate,
   userLogout,
-  userChangeAvatar,
-  userChangeUsername,
-  userChangePassword,
-  userChangeEmail,
-  userUpdateStats,
+  userDelete,
 } from './user';
