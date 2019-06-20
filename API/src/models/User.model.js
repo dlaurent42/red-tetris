@@ -44,6 +44,12 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  recoverPasswordTokens: [
+    {
+      token: String,
+      expires: Date,
+    },
+  ],
   createdAt: Date,
   updatedAt: Date,
 });
