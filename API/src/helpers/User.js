@@ -5,8 +5,6 @@ import {
   hash,
   random,
   isEmpty,
-  userIsUsername,
-  userIsPassword,
 } from '../utils';
 import { ERRORS } from '../config/constants';
 
@@ -60,35 +58,47 @@ class UserHelper {
     });
   }
 
-  updateById(id) {
-    return new Promise((resolve, reject) => {
-      const validData = ({ username, password }) => {
-        if ((username && !userIsUsername(username))
-          || (password && !userIsPassword(password))) return false;
-        // if (username) { // have to fix this
-        //   User.find({ username })
-        //     .then((user) => {
-        //       if (user.length) return false;
-        //       return true;
-        //     });
-        // }
-        return true;
-      };
-
-      User.findById(id)
+  updateByIdScore() {
+    return new Promise((resolve, reject) => (
+      User.findOneAndUpdate(this.id, { $push: { scores: this.score } })
         .then((user) => {
-          if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
-          const self = user; // idk why | eslint: no-param-reassign
-          if (!validData(this)) throw new Error(ERRORS.DATA_VALIDATION);
-          self.username = this.username || self.username;
-          self.avatar = this.avatar || self.avatar;
-          self.password = this.password ? hash(this.password, self.salt) : self.password;
-          if (this.score) self.scores.push(this.score);
-          self.save();
-          return resolve(pick(self, FILTERS));
+          if (isEmpty(user)) throw new Error(ERRORS.UPDATE_FAILED);
+          return resolve(pick(user, FILTERS));
         })
-        .catch(err => reject(err));
-    });
+        .catch(err => reject(err))
+    ));
+  }
+
+  updateByIdInformations() {
+    return new Promise((resolve, reject) => (
+      User.findById(this.id)
+        .then(user => ({
+          user,
+          userWithUsername: User.findOne({ username: this.username }),
+        }))
+        .then(({ user, userWithUsername }) => {
+          if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
+          if (this.username !== user.username && !isEmpty(userWithUsername)) {
+            throw new Error(ERRORS.UNIQUE_USERNAME);
+          }
+          return User.findOneAndUpdate(this.id, {
+            username: this.username || user.username,
+            avatar: this.avatar || user.avatar,
+            password: this.password ? hash(this.password, user.salt) : user.password,
+          });
+        })
+        .then((user) => {
+          if (isEmpty(user)) throw new Error(ERRORS.UPDATE_FAILED);
+          return resolve(pick(user, FILTERS));
+        })
+        .catch(err => reject(err))
+    ));
+  }
+
+  updateById() {
+    return (!isEmpty(this.score))
+      ? this.updateByIdScore()
+      : this.updateByIdInformations();
   }
 
   deleteById(id) {
