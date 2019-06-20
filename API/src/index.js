@@ -4,13 +4,13 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import { Mongo, Router } from './helpers';
-import { SERVER } from './config/config';
+import { SERVER, CORS } from './config/config';
 
 class Server {
   constructor() {
     this.app = express();
     this.app.use(bodyParser.json());
-    this.app.use(cors());
+    this.app.use(cors(CORS));
     this.db = new Mongo();
     this.http = http.Server(this.app);
     this.routes = new Router(this.app).setAllRoutes();
