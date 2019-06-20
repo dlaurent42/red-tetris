@@ -16,8 +16,12 @@ const validateFields = ({ username, email, password }) => (
 );
 
 router.post('/signup', (req, res) => {
-  if (isEmpty(req.body.user)) return res.status(400).json({ err: ERRORS.DATA_MISSING });
-  if (!validateFields(req.body.user)) return res.status(200).json({ err: ERRORS.DATA_VALIDATION });
+  if (isEmpty(req.body.user)) {
+    return res.status(400).json({ success: false, err: ERRORS.DATA_MISSING });
+  }
+  if (!validateFields(req.body.user)) {
+    return res.status(200).json({ success: false, err: ERRORS.DATA_VALIDATION });
+  }
 
   return new UserHelper(req.body.user).addNewUser()
     .then((user) => {

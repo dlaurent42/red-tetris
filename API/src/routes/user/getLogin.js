@@ -11,7 +11,7 @@ const validateFields = ({ email, password }) => !isEmpty(email) && !isEmpty(pass
 
 router.get('/login', (req, res) => {
   if (!req.body.user || !validateFields(req.body.user)) {
-    return res.status(400).json({ err: ERRORS.DATA_MISSING });
+    return res.status(400).json({ success: false, err: ERRORS.DATA_MISSING });
   }
 
   // If data is correct, try to log user.
