@@ -1,9 +1,9 @@
-// import middleware from '../middlewares/middleware';
 import getById from '../routes/user/get';
 import updateById from '../routes/user/put';
 import getLogin from '../routes/user/getLogin';
 import deleteUser from '../routes/user/delete';
 import postSignup from '../routes/user/postSignup';
+import middleware from '../middlewares/middleware';
 import getRecoverPassword from '../routes/user/getRecoverPassword';
 import postRecoverPassword from '../routes/user/postRecoverPassword';
 
@@ -13,7 +13,7 @@ class Router {
   constructor(app) {
     this.app = app;
     this.routes = {
-      // '': [middleware],
+      '': [middleware],
       '/user': [
         postSignup,
         getLogin,

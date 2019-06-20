@@ -22,7 +22,12 @@ const ERRORS = {
   UPDATE_FAILED: 'Cannot update user',
 };
 
+const TOKENS = {
+  AUTH: 'abcd',
+};
+
 export {
   BOUNDARY_VALUES,
   ERRORS,
+  TOKENS,
 };
