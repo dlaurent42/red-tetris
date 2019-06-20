@@ -1,0 +1,36 @@
+Routes
+
+GET     /user/:id                     |     Fetch user information (including scores)     | DONE
+PUT     /user/:id                     |     Modify user information (including scores)    | DONE
+  => if / else to check what to update
+
+DELETE  /user/:id      (with password)|     Delete user                                   | DONE
+GET     /user/login                   |     Log user                                      | DONE
+POST    /user/signup                  |     Register user (+send email?)                  | DONE
+POST    /user/recover-password        |                                                   | not urgent -> TODO
+GET     /user/recover-password        |     Send recover password email                   | not urgent -> TODO
+
+GET     /leaderboard  -> check client but as I remember it concerns                       | not urgent -> TODO
+  -> Max of scores sums between players :
+    SUM player.scores.score
+    ORDER BY sum
+    LIMIT 5
+  -> Number of games won
+      get(countBy(player.scores, { hasWon: true }), 'true', 0)
+
+User = {
+  username,
+  email,
+  password,
+  salt / hash,
+  avatar (string),
+  recoverPasswordTokens = [
+    {token, expires}, // expires: Data.now() + 1 day (you can use Moment.js`)
+  ]
+  scores: [
+    { score: 100, hasWon: true, mode: string, maxPlayers: int [1,2] },
+    { score: 100, hasWon: true, mode: string, maxPlayers: int [1,2] },
+  ]
+}
+
+=> Total score, number of parties played, number of parties won, success rate
