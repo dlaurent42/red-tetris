@@ -24,4 +24,14 @@ const MAIL = {
   ADMIN: process.env.MAIL_ADMIN || '',
 };
 
-export { SERVER, DATABASE, MAIL };
+// To implement | Whitelist works.
+const CORS = {
+  origin: 'localhost',
+};
+
+export {
+  SERVER,
+  DATABASE,
+  MAIL,
+  CORS,
+};

@@ -9,6 +9,7 @@ const BOUNDARY_VALUES = {
   NAME_MIN_LEN: 5,
   NAME_MAX_LEN: 25,
   PASS_MIN_LEN: 8,
+  LEADERBOARD_LEN: 5,
 };
 
 const ERRORS = {
