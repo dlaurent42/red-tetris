@@ -15,13 +15,13 @@ class Router {
     this.routes = {
       '': [middleware],
       '/user': [
+        getRecoverPassword,
         postSignup,
         getLogin,
         getById,
         updateById,
         deleteUser,
         postRecoverPassword,
-        getRecoverPassword,
       ],
       '/leaderboard': [
         getLeaderboard,

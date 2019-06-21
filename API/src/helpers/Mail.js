@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-import { MAIL } from '../config/config';
+import { LINKS, MAIL } from '../config/config';
 
 class Mail {
   constructor() {
@@ -26,6 +26,16 @@ class Mail {
       to: user.email,
       subject: 'Welcome to Red-Tetris',
       text: `We glad you registered player ${user.username}. Let the fights begin!`,
+    };
+    return this.send(options);
+  }
+
+  recoveryToken(email, token) {
+    const options = {
+      from: this.user,
+      to: email,
+      subject: 'Red-Tetris password recovery',
+      text: `Your password recovery link: ${LINKS.WEBSITE}/user/recover-password?token=${token}`,
     };
     return this.send(options);
   }

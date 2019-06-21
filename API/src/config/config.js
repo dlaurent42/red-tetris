@@ -10,6 +10,10 @@ const SERVER = {
   PORT: '4000',
 };
 
+const LINKS = {
+  WEBSITE: '127.0.0.1:3000',
+};
+
 const DATABASE = {
   HOST: process.env.DATABASE_HOST || '127.0.0.1',
   PORT: process.env.DATABASE_PORT || '27017',
@@ -30,8 +34,9 @@ const CORS = {
 };
 
 export {
+  CORS,
+  MAIL,
+  LINKS,
   SERVER,
   DATABASE,
-  MAIL,
-  CORS,
 };

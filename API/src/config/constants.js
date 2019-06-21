@@ -21,10 +21,12 @@ const ERRORS = {
   BAD_PASS: 'Password is incorrect',
   UNIQUE_USERNAME: 'User with such username already exists',
   UPDATE_FAILED: 'Cannot update user',
+  TOKEN_EXPIRED: 'Token is expired',
 };
 
 const TOKENS = {
   AUTH: 'abcd',
+  PASSWORD_EXPIRE: 1000 * 60 * 60 * 24,
 };
 
 export {

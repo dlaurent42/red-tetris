@@ -1,12 +1,13 @@
-import { pick } from 'lodash';
+import { pick, find } from 'lodash';
 import User from '../models/User.model';
+import Mail from './Mail';
 
 import {
   hash,
   random,
   isEmpty,
 } from '../utils';
-import { ERRORS } from '../config/constants';
+import { TOKENS, ERRORS } from '../config/constants';
 
 const FILTERS = ['id', 'username', 'avatar', 'email', 'scores'];
 
@@ -20,6 +21,9 @@ class UserHelper {
 
     // Used in case of score update
     this.score = userInformation.score || {};
+
+    // Used in password recovery
+    this.token = userInformation.token || '';
   }
 
   addNewUser() {
@@ -110,6 +114,38 @@ class UserHelper {
           if (!this.password) throw new Error(ERRORS.DATA_VALIDATION);
           if (user.password !== hash(this.password, user.salt)) throw new Error(ERRORS.BAD_PASS);
           return resolve(user.delete());
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  recoverPasswordByEmail() {
+    const recoverPasswordTokens = {
+      token: random(127),
+      expires: Date.now() + TOKENS.PASSWORD_EXPIRE,
+    };
+
+    return new Promise((resolve, reject) => {
+      User.findOneAndUpdate({ email: this.email }, { $push: { recoverPasswordTokens } })
+        .then((user) => {
+          if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
+          // new Mail().recoveryToken(this.email, recoverPasswordTokens.token);
+          console.log('Do not forget recovery token MAIL', this.email, recoverPasswordTokens.token);
+          return resolve({ message: `Recovery token was sent to ${this.email}` });
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  recoverPasswordByToken() {
+    return new Promise((resolve, reject) => {
+      User.findOne({ 'recoverPasswordTokens.token': this.token })
+        .then((user) => {
+          if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
+          // If token is valid
+          const token = find(user.recoverPasswordTokens, { token: this.token });
+          if (Date.now() > token.expires) throw new Error(ERRORS.TOKEN_EXPIRED);
+          return resolve({ id: user.id });
         })
         .catch(err => reject(err));
     });
