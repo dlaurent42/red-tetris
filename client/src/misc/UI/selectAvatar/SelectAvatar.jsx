@@ -27,9 +27,13 @@ const selectAvatar = (props) => {
 };
 
 selectAvatar.propTypes = {
-  selectedValue: PropTypes.string.isRequired,
+  selectedValue: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+};
+
+selectAvatar.defaultProps = {
+  selectedValue: '',
 };
 
 export default selectAvatar;

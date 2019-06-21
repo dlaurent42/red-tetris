@@ -16,6 +16,7 @@ const Signup = lazy(() => import('./signup/Signup'));
 const Logout = lazy(() => import('./logout/Logout'));
 const RecoverPassword = lazy(() => import('./recover-password/RecoverPassword'));
 const RecoverPasswordKey = lazy(() => import('./recover-password/RecoverPasswordKey'));
+const Profile = lazy(() => import('./profile/Profile'));
 const About = lazy(() => import('./about/About'));
 
 const Room = lazy(() => import('./room/Room'));
@@ -72,7 +73,7 @@ const redTetris = (props) => {
             <Route path="/recover-password" component={RecoverPassword} />
             <Route path="/recover-password[:key]" component={RecoverPasswordKey} />
             {/* user */}
-            <Route path="/profile" render={() => <></>} />
+            <Route path="/profile" component={Profile} />
             <Route path="/logout" component={Logout} />
 
             {/* misc */}
@@ -86,12 +87,8 @@ const redTetris = (props) => {
 };
 
 redTetris.propTypes = {
-  user: PropTypes.objectOf(PropTypes.any),
+  user: PropTypes.objectOf(PropTypes.any).isRequired,
   onUserUpdate: PropTypes.func.isRequired,
-};
-
-redTetris.defaultProps = {
-  user: {},
 };
 
 const mapStateToProps = state => ({

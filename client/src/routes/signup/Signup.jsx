@@ -81,14 +81,11 @@ const signup = (props) => {
           <form className="signup-form" autoComplete="off">
 
             <h1>SIGN UP</h1>
-            {(displayAvatarSelection)
-              ? (
-                <SelectAvatar
-                  open={displayAvatarSelection}
-                  onClose={handleAvatarChange}
-                  selectedValue={values.avatar}
-                />
-              ) : null}
+            <SelectAvatar
+              open={displayAvatarSelection}
+              onClose={handleAvatarChange}
+              selectedValue={values.avatar}
+            />
             <Avatar className="signup-avatar" onClick={() => toggleAvatarSelectionWindow(true)} src={require(`../../assets/avatars/${values.avatar}`)} alt={values.avatar} /> {/* eslint-disable-line */}
             <TextField
               autoFocus

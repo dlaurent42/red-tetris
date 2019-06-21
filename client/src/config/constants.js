@@ -1,5 +1,3 @@
-import template from '../utils/interpolation';
-
 export const ACTIONS = {
   USER_LOGIN: 'USER_LOGIN',
   USER_REGISTER: 'USER_REGISTER',
@@ -99,6 +97,7 @@ export const ICONS = {
   CROWN: 'crown',
   GAMEPAD: 'gamepad',
   TIMES_CIRCLE: 'times-circle',
+  EDIT: 'edit',
 };
 
 export const GAME_MODES = [

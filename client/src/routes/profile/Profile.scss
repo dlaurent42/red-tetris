@@ -1,0 +1,97 @@
+@import '../../config/styles.scss';
+
+.profile-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  & .profile-bg {
+    background-image: url('../../assets/backgrounds/art-black-and-white-controller-194511.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: radial-gradient( circle farthest-corner at 10% 20%, rgba(90,92,106,1) 0%, rgba(32,45,58,1) 81.3% );
+    width: 100vw;
+    height: 100vh;
+    transition: .5s;
+  }
+
+}
+
+.MuiTooltip-popper[role=tooltip] {
+  top: -40px !important;
+  left: 60px  !important;
+}
+
+.profile {
+  color: $secondary-color;
+
+  & div { position: relative; top: -30px; }
+
+  & div:nth-child(2) { top: -40px; }
+
+  & .profile-avatar {
+    width: 160px;
+    height: 160px;
+    top: -80px;
+    margin: auto;
+    background: wheat;
+    border: 5px solid white;
+    cursor: pointer;
+  }
+
+  & input {
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
+    margin: 0;
+    border: none;
+    outline: none;
+    transition: .5s;
+    border-bottom: 1px solid transparent;
+    &:focus {
+      border-bottom: 1px solid grey;
+      transition: .5s;
+    }
+  }
+
+  & h6 {
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  & ul {
+    display: flex;
+    justify-content: space-around;
+
+    & li {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      width: fit-content;
+
+      & span {
+        font-weight: 500;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+      }
+    }
+  }
+  & p {
+    text-align: justify;
+  }
+
+}
+
+.MuiDialogContent-root p {
+  text-align: justify;
+}
