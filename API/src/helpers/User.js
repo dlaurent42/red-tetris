@@ -17,6 +17,7 @@ class UserHelper {
     this.id = userInformation.id;
     this.username = userInformation.username;
     this.password = userInformation.password;
+    this.salt = userInformation.salt || random(255);
     this.avatar = userInformation.avatar;
     this.email = userInformation.email;
 
@@ -32,10 +33,10 @@ class UserHelper {
       User.find({ $or: [{ email: this.email }, { username: this.username }] })
         .then((doc) => {
           if (!isEmpty(doc)) throw new Error(ERRORS.UNIQUE_LOGIN);
-          const user = new User(this);
-          user.salt = random(255);
-          user.password = hash(this.password, user.salt);
-          return user.save();
+          return User.create({
+            ...this,
+            password: hash(this.password, this.salt),
+          });
         })
         .then(res => resolve(res))
         .catch(err => reject(err))
@@ -108,7 +109,7 @@ class UserHelper {
   }
 
   deleteById() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => (
       User.findById(this.id)
         .then((user) => {
           if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
@@ -116,12 +117,12 @@ class UserHelper {
           if (user.password !== hash(this.password, user.salt)) throw new Error(ERRORS.BAD_PASS);
           return resolve(user.delete());
         })
-        .catch(err => reject(err));
-    });
+        .catch(err => reject(err))
+    ));
   }
 
   recoverPasswordByEmail() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => (
       User.findOne({ email: this.email })
         .then((user) => {
           if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
@@ -129,23 +130,22 @@ class UserHelper {
             .then(token => token);
         })
         .then((token) => {
-          // new Mail().recoveryToken(this.email, recoverPasswordTokens.token);
-          console.log('Do not forget recovery token MAIL', this.email, token.token);
+          new Mail().recoveryToken(this.email, token.token);
           return resolve({ message: `Recovery token was sent to ${this.email}` });
         })
-        .catch(err => reject(err));
-    });
+        .catch(err => reject(err))
+    ));
   }
 
   recoverPasswordByToken() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => (
       PasswordRecover.findOneAndRemove({ token: this.token })
         .then((token) => {
           if (isEmpty(token)) throw new Error(ERRORS.TOKEN_NO_EXPIRED);
           return resolve({ id: token.userId });
         })
-        .catch(err => reject(err));
-    });
+        .catch(err => reject(err))
+    ));
   }
 }
 
