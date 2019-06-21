@@ -1,5 +1,6 @@
-import { pick, find } from 'lodash';
+import { pick } from 'lodash';
 import User from '../models/User.model';
+import PasswordRecover from '../models/PasswordRecover.model';
 import Mail from './Mail';
 
 import {
@@ -7,7 +8,7 @@ import {
   random,
   isEmpty,
 } from '../utils';
-import { TOKENS, ERRORS } from '../config/constants';
+import { ERRORS } from '../config/constants';
 
 const FILTERS = ['id', 'username', 'avatar', 'email', 'scores'];
 
@@ -120,17 +121,16 @@ class UserHelper {
   }
 
   recoverPasswordByEmail() {
-    const recoverPasswordTokens = {
-      token: random(127),
-      expires: Date.now() + TOKENS.PASSWORD_EXPIRE,
-    };
-
     return new Promise((resolve, reject) => {
-      User.findOneAndUpdate({ email: this.email }, { $push: { recoverPasswordTokens } })
+      User.findOne({ email: this.email })
         .then((user) => {
           if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
+          return PasswordRecover.create({ token: random(127), userId: user.id })
+            .then(token => token);
+        })
+        .then((token) => {
           // new Mail().recoveryToken(this.email, recoverPasswordTokens.token);
-          console.log('Do not forget recovery token MAIL', this.email, recoverPasswordTokens.token);
+          console.log('Do not forget recovery token MAIL', this.email, token.token);
           return resolve({ message: `Recovery token was sent to ${this.email}` });
         })
         .catch(err => reject(err));
@@ -139,13 +139,10 @@ class UserHelper {
 
   recoverPasswordByToken() {
     return new Promise((resolve, reject) => {
-      User.findOne({ 'recoverPasswordTokens.token': this.token })
-        .then((user) => {
-          if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
-          // If token is valid
-          const token = find(user.recoverPasswordTokens, { token: this.token });
-          if (Date.now() > token.expires) throw new Error(ERRORS.TOKEN_EXPIRED);
-          return resolve({ id: user.id });
+      PasswordRecover.findOneAndRemove({ token: this.token })
+        .then((token) => {
+          if (isEmpty(token)) throw new Error(ERRORS.TOKEN_NO_EXPIRED);
+          return resolve({ id: token.userId });
         })
         .catch(err => reject(err));
     });

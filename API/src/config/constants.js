@@ -22,11 +22,12 @@ const ERRORS = {
   UNIQUE_USERNAME: 'User with such username already exists',
   UPDATE_FAILED: 'Cannot update user',
   TOKEN_EXPIRED: 'Token is expired',
+  TOKEN_NO_EXPIRED: 'Token does not exist or it\'s expired',
 };
 
 const TOKENS = {
   AUTH: 'abcd',
-  PASSWORD_EXPIRE: 1000 * 60 * 60 * 24,
+  PASSWORD_EXPIRE: 86400,
 };
 
 export {
