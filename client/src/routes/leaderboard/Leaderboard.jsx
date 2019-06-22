@@ -39,7 +39,6 @@ const leaderboard = () => {
       .catch(() => {});
   }, []);
 
-  console.log('rendering');
   return (
     <div className="leaderboard-container">
       {openProfile

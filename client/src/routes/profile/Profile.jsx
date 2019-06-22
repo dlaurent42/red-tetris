@@ -50,21 +50,37 @@ const account = (props) => {
     textFieldTitle: '',
   });
 
+  const modifyUserAccount = (param, value) => {
+    if (value === '') return;
+    axios.put(`${API_CALLS.PUT_USER}${profileInfos.id}`, { user: { [param]: value } }, API_CALLS.CONFIG)
+      .then(result => ((result.data.success) ? props.onUserUpdate({ ...result.data.user }) : null))
+      .catch(() => {});
+  };
+
   // Handle avatar change
   const handleAvatarChange = (avatar) => {
-    setProfileInfos({ ...profileInfos, avatar });
     toggleAvatarSelectionWindow(false);
-
-    // AXIOS UPDATE HERE FOR AVATAR
+    modifyUserAccount('avatar', avatar);
   };
 
   // Handle form validation
   const validateForm = (param, value) => {
 
-    // AXIOS UPDATE OR DELETE HERE
-    console.log(param, value);
     setDialogFormParameters({ open: false });
 
+    // Handle account modification
+    if (param !== 'delAccount') modifyUserAccount(param, value);
+
+    // Handle account deletion
+    else {
+      axios.delete(`${API_CALLS.DELETE_USER}${profileInfos.id}`, { ...API_CALLS.CONFIG, data: { password: value } })
+        .then((result) => {
+          if (result.data.success === false) return;
+          props.onUserDelete(profileInfos);
+          props.history.push('/');
+        })
+        .catch(() => {});
+    }
   };
 
   // Toggle dialog form
@@ -119,7 +135,7 @@ const account = (props) => {
         setProfileInfos({ ...result.data.user, statistics });
       })
       .catch(() => { props.history.replace('/'); });
-  }, []);
+  }, [props.user]);
 
   return (
     <div className="profile-container">
@@ -180,8 +196,8 @@ const account = (props) => {
 
 account.propTypes = {
   user: PropTypes.objectOf(PropTypes.any).isRequired,
-  // onUserUpdate: PropTypes.func.isRequired,
-  // onUserDelete: PropTypes.func.isRequired,
+  onUserUpdate: PropTypes.func.isRequired,
+  onUserDelete: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

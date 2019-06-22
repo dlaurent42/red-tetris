@@ -73,9 +73,9 @@ class UserHelper {
   updateByIdInformations() {
     return new Promise((resolve, reject) => (
       User.findById(this.id)
-        .then(user => ({
+        .then(async user => ({
           user,
-          userWithUsername: User.findOne({ username: this.username }),
+          userWithUsername: await User.findOne({ username: this.username }),
         }))
         .then(({ user, userWithUsername }) => {
           if (isEmpty(user)) throw new Error(ERRORS.NO_USER);

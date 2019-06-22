@@ -6,7 +6,7 @@ import UserHelper from '../../helpers/User';
 const router = express.Router();
 
 router.delete('/:id', (req, res) => (
-  new UserHelper({ ...req.body, ...req.params }).deleteById()
+  new UserHelper({ password: req.body.password, id: req.params.id }).deleteById()
     .then(() => res.status(200).json({ success: true }))
     .catch(err => res.status(200).json({ success: false, err: get(err, 'message', err) }))
 ));
