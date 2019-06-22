@@ -47,8 +47,11 @@ const login = (props) => {
     // Make API call
     axios.get(`${API_CALLS.GET_USER_LOGIN}?email=${values.email}&password=${values.password}`, API_CALLS.CONFIG)
       .then((res) => {
-        if (res.data.success) props.onUserLogin(res.data.user);
-        else setErrors({ ...formErrors, login: (typeof res.data.err === 'string') ? res.data.err : true });
+        if (res.data.success) {
+          console.log(res.data);
+          props.onUserLogin(res.data.user);
+          props.history.push('/');
+        } else setErrors({ ...formErrors, login: (typeof res.data.err === 'string') ? res.data.err : true });
       })
       .catch(err => setErrors({ ...formErrors, login: err.message }));
   };

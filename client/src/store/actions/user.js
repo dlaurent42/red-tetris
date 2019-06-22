@@ -21,6 +21,6 @@ export const userUpdate = (payload = { user: {} }) => ({
 });
 
 export const userDelete = (payload = { user: {} }) => ({
-  type: ACTIONS.USER_UPDATE,
+  type: ACTIONS.USER_DELETE,
   payload,
 });

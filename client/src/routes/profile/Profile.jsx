@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { countBy, sumBy, get } from 'lodash';
+import { omit, countBy, sumBy, get } from 'lodash';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -52,9 +52,9 @@ const account = (props) => {
 
   const modifyUserAccount = (param, value) => {
     if (value === '') return;
-    axios.put(`${API_CALLS.PUT_USER}${profileInfos.id}`, { user: { [param]: value } }, API_CALLS.CONFIG)
-      .then(result => ((result.data.success) ? props.onUserUpdate({ ...result.data.user }) : null))
-      .catch(() => {});
+    axios.put(`${API_CALLS.PUT_USER}${profileInfos.id}`, { user: { [param]: value, id: profileInfos.id } }, API_CALLS.CONFIG)
+      .then(result => ((result.data.success) ? props.onUserUpdate({ ...props.user, ...omit(result.data.user, 'id') }) : null))
+      .catch((res) => { console.log(res); });
   };
 
   // Handle avatar change
@@ -126,6 +126,7 @@ const account = (props) => {
     // Make API call to get latest information about user
     axios.get(`${API_CALLS.GET_USER}/${props.user.id}`, API_CALLS.CONFIG)
       .then((result) => {
+
         if (result.data.success === false) props.history.replace('/');
         const statistics = {
           gamesPlayed: result.data.user.scores.length,

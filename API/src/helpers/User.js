@@ -39,7 +39,7 @@ class UserHelper {
             password: hash(this.password, this.salt),
           });
         })
-        .then(res => resolve(res))
+        .then(user => resolve(pick(user, FILTERS)))
         .catch(err => reject(err))
     ));
   }
@@ -68,7 +68,7 @@ class UserHelper {
 
   updateByIdScore() {
     return new Promise((resolve, reject) => (
-      User.findOneAndUpdate(this.id, { $push: { scores: this.score } })
+      User.findByIdAndUpdate(this.id, { $push: { scores: this.score } })
         .then((user) => {
           if (isEmpty(user)) throw new Error(ERRORS.UPDATE_FAILED);
           return resolve(pick(user, FILTERS));
@@ -89,7 +89,7 @@ class UserHelper {
           if (this.username !== user.username && !isEmpty(userWithUsername)) {
             throw new Error(ERRORS.UNIQUE_USERNAME);
           }
-          return User.findOneAndUpdate(this.id, {
+          return User.findByIdAndUpdate(this.id, {
             username: this.username || user.username,
             avatar: this.avatar || user.avatar,
             password: this.password ? hash(this.password, user.salt) : user.password,
