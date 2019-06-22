@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { omit } from 'lodash';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link, Redirect } from 'react-router-dom';
 import Header from '../../misc/navigation/header/Header';
-import { REGEX } from '../../config/constants';
+import { REGEX, DEFAULT, API_CALLS } from '../../config/constants';
 import './RecoverPassword.scss';
 
 const recoverPassword = (props) => {
 
   // Handle form data
+  const [id, setId] = useState(0);
   const [values, setValues] = useState({
     password: '',
     cpassword: '',
@@ -18,20 +21,42 @@ const recoverPassword = (props) => {
   const [errors, setErrors] = useState({
     password: false,
     cpassword: false,
+    recoverPassword: false,
   });
   const handleValueChange = name => event => setValues({ ...values, [name]: event.target.value });
 
   // Handle form validation
   const validateForm = (event) => {
     event.preventDefault();
-    setErrors({
+
+    const formErrors = {
       password: !(REGEX.PASSWORD.test(values.password)),
       cpassword: (values.password !== values.cpassword),
-    });
+    };
+
+    // Check if an occured in form
+    if (Object.values(formErrors).includes(true)) {
+      setErrors({ ...errors, ...formErrors });
+      return;
+    }
+
+    axios.put(`${API_CALLS.PUT_USER}${id}`, { user: { password: values.password, id } }, API_CALLS.CONFIG)
+      .then((res) => {
+        if (res.data.success) props.history.replace('/login');
+        else setErrors({ ...errors, recoverPassword: (typeof res.data.err === 'string') ? res.data.err : true });
+      })
+      .catch(() => {});
   };
 
+  // On page load, check token and get user id
   useEffect(() => {
-    /* check key */
+    const token = window.location.hash.split('/').slice(1)[0].split(/\[(.+?)\]/)[1];
+    axios.get(`${API_CALLS.GET_USER_RECOVER_PASSWORD}?token=${token}`, API_CALLS.CONFIG)
+      .then((res) => {
+        if (res.data.success) setId(res.data.id);
+        else props.history.replace('/recover-password');
+      })
+      .catch(() => {});
   }, []);
 
   if (props.user.id) return <Redirect to="/" />;
@@ -69,7 +94,10 @@ const recoverPassword = (props) => {
               onChange={handleValueChange('cpassword')}
               margin="normal"
             />
-            <Button variant="contained" className="button" onClick={validateForm}>Validate</Button>
+            {(errors.recoverPassword)
+              ? <div className="recover-password-error">{typeof errors.recoverPassword === 'string' ? errors.recoverPassword : DEFAULT.ERROR_MESSAGE}</div>
+              : null}
+            <Button disabled={Object.values(errors).includes(true) || errors.recoverPassword} variant="contained" className="button" onClick={validateForm}>Validate</Button>
             <Link className="recover-password-link" to="/signup">Don&#39;t have account?</Link>
             <Link className="recover-password-link" to="/login">Remember password?</Link>
           </form>

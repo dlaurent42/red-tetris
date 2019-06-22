@@ -10,6 +10,7 @@ export const DEFAULT = {
   AVATAR: 'man.png',
   USERNAME: 'unknown-user',
   ERROR_MESSAGE: 'An error occured.',
+  REDIRECT_RECOVER_PWD: 'http://localhost:3000/#/recover-password',
 };
 
 export const CONFIG = {
@@ -143,9 +144,11 @@ export const API_CALLS = {
   GET_USER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/`,
   GET_USER_LOGIN: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/login`,
   GET_LEADERBOARD: `${CONFIG.API.URL}:${CONFIG.API.PORT}/leaderboard`,
+  GET_USER_RECOVER_PASSWORD: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/recover-password`,
 
   /* POST */
   POST_USER_REGISTER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/signup`,
+  POST_USER_RECOVER_PASSWORD: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/recover-password`,
 
   /* PUT */
   PUT_USER: `${CONFIG.API.URL}:${CONFIG.API.PORT}/user/`,

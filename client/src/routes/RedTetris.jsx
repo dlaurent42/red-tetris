@@ -61,12 +61,6 @@ const redTetris = (props) => {
             {/* misc */}
             <Route path="/about" component={About} />
 
-            {/* game */}
-            <Route path="/leaderboard" component={Leaderboard} />
-            <Route path="/tournaments" component={Tournaments} />
-            <Route path="/:room[:username]" component={Room} />
-            <Route path="/:room[]" component={Room} />
-
             {/* forms */}
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
@@ -75,6 +69,12 @@ const redTetris = (props) => {
             {/* user */}
             <Route path="/profile" component={Profile} />
             <Route path="/logout" component={Logout} />
+
+            {/* game */}
+            <Route path="/leaderboard" component={Leaderboard} />
+            <Route path="/tournaments" component={Tournaments} />
+            <Route path="/:room[:username]" component={Room} />
+            <Route path="/:room[]" component={Room} />
 
             {/* misc */}
             <Route path="/redirection" component={Redirection} />

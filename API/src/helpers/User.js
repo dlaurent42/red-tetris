@@ -142,7 +142,7 @@ class UserHelper {
       PasswordRecover.findOneAndRemove({ token: this.token })
         .then((token) => {
           if (isEmpty(token)) throw new Error(ERRORS.TOKEN_NO_EXPIRED);
-          return resolve({ id: token.userId });
+          return resolve(token.userId);
         })
         .catch(err => reject(err))
     ));

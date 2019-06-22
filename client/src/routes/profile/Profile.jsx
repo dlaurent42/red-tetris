@@ -53,8 +53,8 @@ const account = (props) => {
   const modifyUserAccount = (param, value) => {
     if (value === '') return;
     axios.put(`${API_CALLS.PUT_USER}${profileInfos.id}`, { user: { [param]: value, id: profileInfos.id } }, API_CALLS.CONFIG)
-      .then(result => ((result.data.success) ? props.onUserUpdate({ ...props.user, ...omit(result.data.user, 'id') }) : null))
-      .catch((res) => { console.log(res); });
+      .then(res => ((res.data.success) ? props.onUserUpdate({ ...props.user, ...omit(res.data.user, 'id') }) : null))
+      .catch(() => {});
   };
 
   // Handle avatar change

@@ -35,7 +35,7 @@ class Mail {
       from: this.user,
       to: email,
       subject: 'Red-Tetris password recovery',
-      text: `Your password recovery link: ${redirectUrl}?token=${token}`,
+      text: `Your password recovery link: ${redirectUrl}[${token}]`,
     };
     return this.send(options);
   }
