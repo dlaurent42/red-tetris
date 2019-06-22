@@ -27,7 +27,6 @@ const ERRORS = {
 
 const TOKENS = {
   AUTH: 'abcd',
-  PASSWORD_EXPIRE: 86400,
 };
 
 export {

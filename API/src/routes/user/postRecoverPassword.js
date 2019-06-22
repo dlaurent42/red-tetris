@@ -2,13 +2,13 @@ import { get } from 'lodash';
 import express from 'express';
 import UserHelper from '../../helpers/User';
 
-import { userIsEmail } from '../../utils';
+import { userIsEmail, isEmpty } from '../../utils';
 import { ERRORS } from '../../config/constants';
 
 const router = express.Router();
 
 router.post('/recover-password', (req, res) => {
-  if (!userIsEmail(req.body.user.email)) {
+  if (!userIsEmail(req.body.user.email) || isEmpty(req.body.user.redirectUrl)) {
     return res.status(200).json({ success: false, err: ERRORS.DATA_VALIDATION });
   }
 

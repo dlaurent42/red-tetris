@@ -26,6 +26,7 @@ class UserHelper {
 
     // Used in password recovery
     this.token = userInformation.token || '';
+    this.redirectUrl = userInformation.redirectUrl || '';
   }
 
   addNewUser() {
@@ -126,11 +127,10 @@ class UserHelper {
       User.findOne({ email: this.email })
         .then((user) => {
           if (isEmpty(user)) throw new Error(ERRORS.NO_USER);
-          return PasswordRecover.create({ token: random(127), userId: user.id })
-            .then(token => token);
+          return PasswordRecover.create({ token: random(127), userId: user.id });
         })
         .then((token) => {
-          new Mail().recoveryToken(this.email, token.token);
+          new Mail().recoveryToken(this.email, token.token, this.redirectUrl);
           return resolve({ message: `Recovery token was sent to ${this.email}` });
         })
         .catch(err => reject(err))

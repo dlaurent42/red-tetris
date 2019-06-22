@@ -1,12 +1,14 @@
 import mongoose from 'mongoose';
 
-import { TOKENS } from '../config/constants';
-
 const tokenSchema = new mongoose.Schema({
   token: String,
   userId: String,
-}, { timestamps: true });
+  createdAt: {
+    type: Date,
+    expires: '1d',
+    default: Date.now,
+  },
+});
 
-tokenSchema.index({ createdAt: 1 }, { expireAfterSeconds: TOKENS.PASSWORD_EXPIRE });
 
 export default mongoose.model('PasswordRecovery', tokenSchema);
