@@ -93,7 +93,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js",
+    "test": "node scripts/test.js --watchAll",
+    "test-coverage": "node scripts/test.js --coverage --watchAll",
     "lint": "eslint \"src/**/*.{js,jsx}\""
   },
   "eslintConfig": {
@@ -113,7 +114,7 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
+      "src/**/*.{js,jsx}",
       "!src/**/*.d.ts"
     ],
     "setupFiles": [
@@ -121,8 +122,7 @@
     ],
     "setupFilesAfterEnv": [],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx}"
     ],
     "testEnvironment": "jest-environment-jsdom-fourteen",
     "transform": {
