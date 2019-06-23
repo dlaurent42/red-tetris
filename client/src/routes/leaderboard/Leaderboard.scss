@@ -48,5 +48,22 @@
         transition: .5s;
       }
     }
+
   }
 }
+@media (max-width: 767px) {
+  .leaderboard-container {
+    & .leaderboard-subcontainer {
+      margin-top: 60px;
+      & .leaderboard-card {
+        width: auto;
+        margin: 20px 10px;
+        & .leaderboard-cover {
+          display: none;
+          width: auto;
+        }
+      }
+    }
+  }
+}
+

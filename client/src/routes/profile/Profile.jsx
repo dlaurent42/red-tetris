@@ -5,6 +5,7 @@ import { omit, countBy, sumBy, get } from 'lodash';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -24,12 +25,17 @@ import ProfileDialogForm from './ProfileDialogForm';
 import './Profile.scss';
 
 // Create style to handle avatar display
-const useStyles = makeStyles({ dialogPaper: { overflow: 'visible', boxShadow: 'none' } });
+const useStyles = makeStyles({
+  dialogPaper: { overflow: 'visible' },
+  dialogPaperResponsive: { overflowY: 'auto' },
+});
+
 
 const account = (props) => {
 
   // Set style to handle avatar display
   const classes = useStyles();
+  const responsiveSmallScreenWidth = useMediaQuery('(max-width:1023px)');
 
   // Declare a state to earn efficiency
   const [profileInfos, setProfileInfos] = useState({ ...props.user });
@@ -143,7 +149,11 @@ const account = (props) => {
       <Header color="light" />
       <div className="profile-bg" />
       <Dialog
-        PaperProps={{ className: classes.dialogPaper }}
+        PaperProps={{
+          className: (responsiveSmallScreenWidth)
+            ? classes.dialogPaperResponsive
+            : classes.dialogPaper,
+        }}
         open
         onClose={() => {}}
       >

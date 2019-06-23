@@ -1,5 +1,7 @@
 @import '../../config/styles.scss';
 
+
+
 .about-container {
   position: absolute;
   top: 0;
@@ -37,7 +39,28 @@
         min-width: 325px;
         filter: grayscale(1);
         transition: .5s;
-        &:hover { filter: grayscale(.3); transition: .5s;} }
+        &:hover { filter: grayscale(.3); transition: .5s;}
+      }
+    }
+
+
+    @media (max-width: 1023px) {
+      & .about-cards {
+        flex-direction: column;
+        justify-content: center;
+        transform: none;
+        align-items: center;
+        margin-top: 0;
+        margin: 30px;
+
+        & > * {
+          filter: grayscale(.3); transition: .5s;
+          margin: 30px 0 5px;
+        }
+        & > *:last-child {
+          margin-bottom: 30px;
+        }
+      }
     }
   }
 

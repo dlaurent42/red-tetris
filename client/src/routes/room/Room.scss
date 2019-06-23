@@ -400,6 +400,13 @@
       margin: 0 20px;
     }
   }
+  @media (max-width: 1023px) {
+    &.specter-container-large {
+      width: fit-content;
+      margin-bottom: 30px;
+      & .specter { width: 40vw; }
+    }
+  }
   & .specter-statistics {
     display: flex;
     flex-direction: row;
@@ -421,3 +428,96 @@
 }
 
 .clickable { cursor: pointer;}
+
+@media (max-width: 1023px) {
+
+  .room-container {
+
+    min-height: 100vh;
+
+    & .room-entering-lobby  {
+
+      & .room-entering-lobby-ctn {
+
+        padding: 0;
+        & .room-entering-lobby-title {
+
+          & p:first-child { width: 100vw; text-align: center; }
+          & p:last-child { display: none; }
+        }
+        
+        & .room-entering-lobby-slots {
+          font-size: .9rem;
+          letter-spacing: 1px;
+
+          & .room-entering-lobby-player-slot {
+            & .current-player-not-ready, & .current-player-ready,
+            & .other-player-not-ready, & .other-player-ready {
+              font-size: 14px;
+              letter-spacing: 1px;
+              padding: 2px 5px;
+            }
+          }
+        }
+      }
+    }
+
+    & .room-lobby {
+      box-shadow: none;
+      & .flex-container {
+        width: 100vw;
+        height: auto;
+        top: 60px;
+        left: 0;
+        transform: none;
+        margin: auto;
+        flex-direction: column-reverse;
+        & .grid {
+          width: 60vw;
+          height: auto;
+          top: 0;
+          left: 0;
+          margin: 0 auto 30px auto;
+          transform: none;
+          & .grid-row {
+            & .grid-cell {
+              border-radius: 2px;
+            }
+          }
+        }
+  
+        & .flex-container-right {
+          & .specter-container-small, & .next-tile-container {
+            display: none;
+          }
+
+          & .room-statistics {
+            & .room-statistic-player { display: none; }
+            & .room-statistic-player:first-child { display: flex; }
+          }
+        }
+      }
+    }
+
+    & .room-exiting-lobby {
+      & .room-exiting-lobby-ctn {
+       
+        & .room-exiting-lobby-title {
+          & p:first-child { text-align: center; }
+          & p:last-child { display: none; }
+        }
+        & .room-exiting-lobby-slots {
+          font-size: .9rem;
+          letter-spacing: 1px;
+
+          & .room-exiting-lobby-player-slot {
+            width: calc(100vw - 40px);
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 2px 5px;
+          }
+        }
+      }
+    }
+  }
+}

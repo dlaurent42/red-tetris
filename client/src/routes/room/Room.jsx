@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Header from '../../misc/navigation/header/Header';
-import Footer from '../../misc/navigation/footer/Footer';
 import EnteringLobby from './entering-lobby/EnteringLobby';
 import ExitingLobby from './exiting-lobby/ExitingLobby';
 import PlayerLobby from './playing-lobby/PlayerLobby';
@@ -179,7 +178,6 @@ const room = (props) => {
       <Paper className="room-lobby">
         {lobby}
       </Paper>
-      <Footer />
     </div>
   );
 };

@@ -42,3 +42,24 @@
     -webkit-filter: grayscale(80%);
   }
 }
+
+@media (max-width: 767px) {
+  .login-container {
+    top: 120px;
+    height: fit-content;
+    margin-bottom: 30px;
+
+    & h1 {
+      display: flex;
+      flex-wrap: wrap;
+      width: 60vw;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+  .login-form {
+    margin-top: 0 !important;
+    transform: none !important;
+  }
+  .login-background { display: none }
+}

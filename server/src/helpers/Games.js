@@ -159,7 +159,8 @@ class Games {
     if (!lobby) return { lobby, player: undefined };
 
     // Check if player is already in room
-    const playerIndex = findIndex(lobby.players, { socketId });
+    const playerIndex = findIndex(lobby.players, { socketId, id: data.user.id })
+      || findIndex(lobby.players, { socketId });
 
     // If player is not already in lobby, insert it
     if (playerIndex === -1) {
@@ -169,8 +170,9 @@ class Games {
     }
 
     // If player is already in lobby, update it
-    const player = find(lobby.players, { socketId });
-    player.role = ROOM_ROLES.PLAYER;
+    const player = findIndex(lobby.players, { socketId, id: data.user.id })
+      || findIndex(lobby.players, { socketId });
+    if (player.role === ROOM_ROLES.SPECTATOR) player.role = ROOM_ROLES.PLAYER;
     return { lobby, player };
   }
 

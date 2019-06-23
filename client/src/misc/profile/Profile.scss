@@ -13,6 +13,11 @@
     background: wheat;
     border: 5px solid white;
   }
+  @media (max-width: 1023px) {
+    & .profile-avatar {
+      top: 0;
+    }
+  }
 
   & h6 {
     letter-spacing: 3px;
@@ -39,8 +44,6 @@
     }
   }
 
-  & p {
-    text-align: justify;
-  }
+  & p { text-align: justify; }
 
 }

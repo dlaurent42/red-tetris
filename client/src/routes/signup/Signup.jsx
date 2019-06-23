@@ -80,7 +80,7 @@ const signup = (props) => {
       <Header variant="reduced" />
       <div className="signup-container">
         <div className="signup-form-container">
-          <form className="signup-form" autoComplete="off">
+          <form className="signup-form">
 
             <h1>SIGN UP</h1>
             <SelectAvatar

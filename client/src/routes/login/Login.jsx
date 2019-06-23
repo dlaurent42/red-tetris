@@ -62,7 +62,7 @@ const login = (props) => {
       <Header variant="reduced" />
       <div className="login-container">
         <div className="login-form-container">
-          <form className="login-form" autoComplete="off">
+          <form className="login-form">
 
             <h1>LOG IN</h1>
             <TextField

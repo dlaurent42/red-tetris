@@ -40,7 +40,13 @@
     border: 5px solid white;
     cursor: pointer;
   }
-
+  @media (max-width: 1023px) {
+    & .profile-avatar {
+      top: 0;
+    }
+    & div { position: relative; top: 0; }
+    & div:nth-child(2) { top: 0; }
+  }
   & input {
     letter-spacing: 3px;
     text-align: center;

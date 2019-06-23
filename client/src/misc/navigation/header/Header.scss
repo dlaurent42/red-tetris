@@ -8,7 +8,7 @@
   z-index: 9999;
   background-color: transparent;
   transition: .5s;
-  &.reduced { top: 10px; left: 10px; width: auto; }
+  &.reduced { top: 10px; left: 10px; width: auto; z-index: 1;}
   & .dark { background-color: transparent; color: $secondary-color; }
   & .light { background-color: transparent; color: black; filter: invert(1); }
 }
@@ -21,6 +21,17 @@
     & .dark {
       background-color: $primary-color;
       box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23);
+    }
+    &.reduced {
+      width: 100vw;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: row;
+      & * {
+        justify-content: center;
+      }
     }
     &.reduced .dark {
       box-shadow: none;

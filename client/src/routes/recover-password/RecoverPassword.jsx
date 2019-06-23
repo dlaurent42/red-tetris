@@ -43,7 +43,7 @@ const recoverPassword = (props) => {
       <Header variant="reduced" />
       <div className="recover-password-container">
         <div className="recover-password-form-container">
-          <form className="recover-password-form" autoComplete="off">
+          <form className="recover-password-form">
             <h1>RECOVER PASSWORD</h1>
             <TextField
               required

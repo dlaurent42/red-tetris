@@ -19,7 +19,7 @@ class Sockets {
     this.broadcastTournamentsList(socket);
 
     // Check if lobby has been deleted
-    if (lobby === undefined) return;
+    if (lobby === undefined || player.role === ROOM_ROLES.SPECTATOR) return;
 
     // Verify if game is over (only one player left and maxPlayers != solo)
     if (countBy(lobby.players, { role: ROOM_ROLES.SPECTATOR }).false === 1

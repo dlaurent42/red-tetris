@@ -67,6 +67,24 @@
         }
       }
     }
+
+    @media (max-width: 1023px) {
+      & .tournaments-form {
+        min-width: auto;
+        width: fit-content;
+        & div:first-child { display: none;}
+      }
+
+      & .tournaments-table {
+        min-width: auto;
+        width: 100vw;
+
+        & .tournaments-table-head tr th { padding: 14px 5px; }
+        & .tournaments-table-head tr th:nth-child(2) { display: none; }
+        & .tournaments-table-row td { padding: 14px 5px; }
+        & .tournaments-table-row td:nth-child(2) { display: none; }
+      }
+    }
   }
 }
 

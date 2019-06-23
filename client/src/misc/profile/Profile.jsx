@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { countBy, sumBy } from 'lodash';
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -17,12 +18,16 @@ import { DEFAULT, API_CALLS } from '../../config/constants';
 import './Profile.scss';
 
 // Create style to handle avatar display
-const useStyles = makeStyles({ dialogPaper: { overflow: 'visible' } });
+const useStyles = makeStyles({
+  dialogPaper: { overflow: 'visible' },
+  dialogPaperResponsive: { overflowY: 'auto' },
+});
 
 const profile = (props) => {
 
   // Set style to handle avatar display
   const classes = useStyles();
+  const responsiveSmallScreenWidth = useMediaQuery('(max-width:1023px)');
 
   // Profile data structure
   const [profileInfos, setProfileInfos] = useState({ ...props.user,
@@ -55,7 +60,11 @@ const profile = (props) => {
 
   return (
     <Dialog
-      PaperProps={{ className: classes.dialogPaper }}
+      PaperProps={{
+        className: (responsiveSmallScreenWidth)
+          ? classes.dialogPaperResponsive
+          : classes.dialogPaper,
+      }}
       open={props.open}
       onClose={props.onClose}
     >
