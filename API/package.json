@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -r esm src/index.js",
+    "mongoDB": "mkdir -p database && mongod --dbpath ./database --port 27020",
+    "userGenerator": "NODE_ENV=development node -r esm scripts/userGenerator.js",
     "lint": "eslint \"**/*.js\"",
     "test": "jest",
     "dev": "NODE_ENV=development nodemon -r esm src/index.js",
