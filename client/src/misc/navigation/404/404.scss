@@ -3,4 +3,21 @@
 .main-container {
   @include fixed-full-screen;
   cursor: pointer;
+
+  & .me404 {
+    width: 60vw;
+    min-width: 800px;
+    height: 100vh;
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    margin: 0 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  .main-container .me404 {
+    min-width: 400px;
+  }
 }
