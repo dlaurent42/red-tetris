@@ -1,5 +1,6 @@
 @import '../../config/styles.scss';
 
+
 .home-container {
   position: absolute;
   top: 0;
@@ -125,13 +126,12 @@
       color: $tertiary-color;
       width: 60vw;
       text-align: center;
-      margin: 20px auto 100px;
+      margin: 20px auto 40px;
     }
     & .home-presentation-cards {
       display: flex;  
       flex-direction: row;
       justify-content: space-evenly;
-      vertical-align: center;
       & > * { width: 20vw; filter: grayscale(1); transition: .5s;
         &:hover { filter: grayscale(0); transition: .5s;} }
     }
@@ -141,4 +141,47 @@
 .separator {
   width: 450px;
   margin: 10px auto 20px !important;
+}
+
+@media (max-width: 767px) {
+  .home-container {
+    & .home-bg-text {
+      h1 {
+        padding: 5px;
+        font-size: 30px;
+      }
+      p {
+        font-size: 25px;
+      }
+    }
+    & .home-presentation {
+      h1 { font-size: 30px; letter-spacing: 1px; width: 100vw; }
+      .separator { width: 200px; }
+      .paragraph {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .home-container {
+    & .home-presentation {
+      & .home-presentation-cards {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        & > div { 
+          margin: 10px 0;
+        }
+        & div {
+          width: 80vw;
+          font-size: 20px;
+          & button div p { width: calc(80vw - 32px); }
+        }
+        & > * { filter: grayscale(0); }
+      }
+    }
+  }
 }

@@ -18,7 +18,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import SelectAvatar from '../../misc/UI/selectAvatar/SelectAvatar';
 import Header from '../../misc/navigation/header/Header';
-import Footer from '../../misc/navigation/footer/Footer';
 import { userUpdate, userDelete } from '../../store/actions';
 import { API_CALLS, DEFAULT } from '../../config/constants';
 import ProfileDialogForm from './ProfileDialogForm';
@@ -198,7 +197,6 @@ const account = (props) => {
         </div>
       </Dialog>
       {(dialogFormParameters.open) ? <ProfileDialogForm {...dialogFormParameters} /> : null}
-      <Footer />
     </div>
   );
 
