@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Menu from '../menu/Menu';
+import Menu from './classic-menu/Menu';
 import './Header.scss';
 
 const header = props => (
