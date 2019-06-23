@@ -32,3 +32,4 @@ yarn-error.log*
 *lock
 
 .env
+API/database
