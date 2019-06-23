@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Menu from './classic-menu/Menu';
+import ClassicMenu from './classic-menu/Menu';
+import MobileMenu from './mobile-menu/Menu';
 import './Header.scss';
 
 const header = props => (
   <header className={['header', props.variant].join(' ')}>
-    <Menu variant={props.variant} color={props.color} />
+    <ClassicMenu variant={props.variant} color={props.color} />
+    <MobileMenu variant={props.variant} color={props.color} />
   </header>
 );
 

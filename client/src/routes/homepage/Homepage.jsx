@@ -30,7 +30,7 @@ const home = () => {
 
   return (
     <div className="home-container" ref={sectionZeroRef}>
-      <Header color="light" />
+      <Header color={window.scrollY + 32 < window.innerHeight ? 'light' : 'dark'} />
       <div className="home-bg" />
       <div className="home-bg-layer" />
       <div className="home-bg-text">
