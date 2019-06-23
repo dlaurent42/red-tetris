@@ -26,6 +26,7 @@
     "css-loader": "2.1.1",
     "dotenv": "6.2.0",
     "dotenv-expand": "4.2.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "eslint-config-airbnb": "^17.1.0",
     "file-loader": "3.0.1",
     "fs-extra": "7.0.1",
@@ -88,13 +89,14 @@
     "jest": "24.7.1",
     "jest-environment-jsdom-fourteen": "0.1.0",
     "jest-resolve": "24.7.1",
-    "jest-watch-typeahead": "0.3.0"
+    "jest-watch-typeahead": "0.3.0",
+    "redux-mock-store": "^1.5.3"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --watchAll",
-    "test-coverage": "node scripts/test.js --coverage --watchAll",
+    "test": "node scripts/test.js --watchAll --updateSnapshot",
+    "test-coverage": "node scripts/test.js --coverage --watchAll --updateSnapshot",
     "lint": "eslint \"src/**/*.{js,jsx}\""
   },
   "eslintConfig": {
@@ -115,7 +117,10 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
-      "!src/**/*.d.ts"
+      "!src/**/*.d.ts",
+      "!src/*.{js,jsx}",
+      "!src/config/*",
+      "!src/hooks/*"
     ],
     "setupFiles": [
       "react-app-polyfill/jsdom"
@@ -123,6 +128,9 @@
     "setupFilesAfterEnv": [],
     "testMatch": [
       "<rootDir>/src/**/*.{spec,test}.{js,jsx}"
+    ],
+    "coverageReporters": [
+      "html"
     ],
     "testEnvironment": "jest-environment-jsdom-fourteen",
     "transform": {

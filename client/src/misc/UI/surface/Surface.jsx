@@ -31,7 +31,7 @@ card.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string,
   content: PropTypes.string,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
   height: PropTypes.number,
 };
 
@@ -39,7 +39,6 @@ card.defaultProps = {
   title: '',
   content: '',
   height: 280,
-  onClick: () => {},
 };
 
 export default card;

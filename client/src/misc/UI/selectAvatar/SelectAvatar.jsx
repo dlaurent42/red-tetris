@@ -10,10 +10,9 @@ import './SelectAvatar.scss';
 
 const selectAvatar = (props) => {
 
-  const handleClose = () => props.onClose(props.selectedValue);
   const handleListItemClick = value => props.onClose(value);
   return (
-    <Dialog className="avatars-dialog" onClose={handleClose} aria-labelledby="simple-dialog-title" open={props.open}>
+    <Dialog className="avatars-dialog" onClose={() => props.onClose(props.selectedValue)} aria-labelledby="simple-dialog-title" open={props.open}>
       <DialogTitle id="simple-dialog-title">Select your avatar</DialogTitle>
       <List className="avatars-list">
         {AVATARS.map(avatar => (
