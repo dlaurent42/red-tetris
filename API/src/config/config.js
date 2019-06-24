@@ -16,6 +16,11 @@ const DATABASE = {
   NAME: process.env.DATABASE_NAME || 'red-tetris',
   USER: process.env.DATABASE_USER,
   PASS: process.env.DATABASE_PASS,
+  OPTIONS: {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  },
 };
 
 const MAIL = {
