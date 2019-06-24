@@ -6,14 +6,15 @@ import './Menu.scss';
 
 const menu = props => (
   <nav className="menu">
-    <LeftSideSubmenu color={props.color} variant={props.variant} />
-    <RightSideSubmenu color={props.color} variant={props.variant} />
+    <LeftSideSubmenu {...props} />
+    <RightSideSubmenu {...props} />
   </nav>
 );
 
 menu.propTypes = {
   color: PropTypes.string,
   variant: PropTypes.string,
+  location: PropTypes.string.isRequired,
 };
 
 menu.defaultProps = {

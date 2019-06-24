@@ -6,8 +6,8 @@ import './Header.scss';
 
 const header = props => (
   <header className={['header', props.variant].join(' ')}>
-    <ClassicMenu variant={props.variant} color={props.color} />
-    <MobileMenu variant={props.variant} color={props.color} />
+    <ClassicMenu location={window.location.hash} {...props} />
+    <MobileMenu {...props} />
   </header>
 );
 

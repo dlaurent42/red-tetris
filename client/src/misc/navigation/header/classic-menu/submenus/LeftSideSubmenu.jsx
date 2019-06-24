@@ -9,9 +9,9 @@ const leftSideSubmenu = (props) => {
     return (
       <div className={['menu-left', props.color].join(' ')}>
         <Link to="/" className="menu-logo"><Logo variant={props.variant} /></Link>
-        <Link to="/tournaments" className={['menu-item'].concat((window.location.hash === '#/tournaments') ? 'active' : '').join(' ')}>TOURNAMENTS</Link>
-        <Link to="/leaderboard" className={['menu-item'].concat((window.location.hash === '#/leaderboard') ? 'active' : '').join(' ')}>LEADERBOARD</Link>
-        <Link to="/about" className={['menu-item'].concat((window.location.hash === '#/about') ? 'active' : '').join(' ')}>ABOUT US</Link>
+        <Link to="/tournaments" className={['menu-item'].concat((props.location === '#/tournaments') ? 'active' : '').join(' ')}>TOURNAMENTS</Link>
+        <Link to="/leaderboard" className={['menu-item'].concat((props.location === '#/leaderboard') ? 'active' : '').join(' ')}>LEADERBOARD</Link>
+        <Link to="/about" className={['menu-item'].concat((props.location === '#/about') ? 'active' : '').join(' ')}>ABOUT US</Link>
       </div>
     );
   }
@@ -28,6 +28,7 @@ const leftSideSubmenu = (props) => {
 leftSideSubmenu.propTypes = {
   color: PropTypes.string,
   variant: PropTypes.string,
+  location: PropTypes.string.isRequired,
 };
 
 leftSideSubmenu.defaultProps = {

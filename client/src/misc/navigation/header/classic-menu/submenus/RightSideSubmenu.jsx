@@ -13,7 +13,7 @@ const rightSideSubmenu = (props) => {
     </div>
   ) : (
     <div className={['menu-right', props.color].join(' ')}>
-      <Link to="/profile" className={['menu-item'].concat((window.location.hash === '#/profile') ? 'active' : '').join(' ')}>PROFILE</Link>
+      <Link to="/profile" className={['menu-item'].concat((props.location === '#/profile') ? 'active' : '').join(' ')}>PROFILE</Link>
       <Link to="/logout" className="menu-logout">LOG OUT</Link>
     </div>
   );
@@ -23,6 +23,7 @@ rightSideSubmenu.propTypes = {
   color: PropTypes.string,
   variant: PropTypes.string,
   user: PropTypes.objectOf(PropTypes.any),
+  location: PropTypes.string.isRequired,
 };
 
 rightSideSubmenu.defaultProps = {
