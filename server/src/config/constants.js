@@ -31,12 +31,6 @@ const SOCKETS = {
   NOTIFY_ROOM_NOT_CREATED: 'roomNotCreated',
   NOTIFY_PLAYER_LEFT_GAME: 'playerLeftGame',
   NOTIFY_PLAYER_ENTERS_GAME: 'playerEntersGame',
-
-  /* -------------------   JEST   ------------------- */
-  JEST_NOTIFY_ROOM_CREATED: 'jest_roomCreated',
-  JEST_NOTIFY_ROOM_NOT_CREATED: 'jest_roomNotCreated',
-  JEST_NOTIFY_PLAYER_LEFT_GAME: 'jest_playerLeftGame',
-  JEST_NOTIFY_PLAYER_ENTERS_GAME: 'jest_playerEntersGame',
 };
 
 const ROOM_ROLES = {

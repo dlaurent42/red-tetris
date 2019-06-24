@@ -60,13 +60,11 @@
     "react-router-dom": "^5.0.1",
     "react-spinners-kit": "^1.9.0",
     "react-svg": "^10.0.7",
-    "react-test-renderer": "^16.8.6",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "semver": "6.0.0",
-    "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
     "style-loader": "0.23.1",
     "styled-components": "^4.3.1",
@@ -92,7 +90,8 @@
     "jest-environment-jsdom-fourteen": "0.1.0",
     "jest-resolve": "24.7.1",
     "jest-watch-typeahead": "0.3.0",
-    "redux-mock-store": "^1.5.3"
+    "redux-mock-store": "^1.5.3",
+    "socket.io": "^2.2.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -119,10 +118,7 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
-      "!src/**/*.d.ts",
-      "!src/*.{js,jsx}",
-      "!src/config/*",
-      "!src/hooks/*"
+      "!src/**/*.d.ts"
     ],
     "setupFiles": [
       "react-app-polyfill/jsdom"
