@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 
 import { DATABASE } from '../config/config';
-
-const { sleep } = require('../utils');
+import { sleep } from '../utils';
 
 class MongoDb {
   constructor() {

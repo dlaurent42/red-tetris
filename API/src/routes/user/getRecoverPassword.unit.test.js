@@ -66,6 +66,7 @@ describe('GET /user/recover-password', () => {
     const res = await request(app)
       .get('/user/recover-password')
       .query({ token: token.token });
+    await PasswordRecovery.deleteOne({ userId: user.id });
     expect(res.body.success).toBe(true);
   });
 

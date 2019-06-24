@@ -24,7 +24,7 @@ describe('DELETE /user/:id', () => {
   beforeAll(() => {
     mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}`);
   });
-  beforeEach(() => {
+  beforeEach(async () => {
     user = new User({
       username: 'TestUser123',
       email: 'testuser123@redtetris.com',
@@ -32,9 +32,11 @@ describe('DELETE /user/:id', () => {
       password: hash(password, salt),
       avatar: 'man.png',
     });
-    return user.save();
+    await user.save();
   });
-  afterEach(() => user.delete());
+  afterEach(async () => {
+    await user.delete();
+  });
   afterAll((done) => {
     mongoose.disconnect(done);
   });
