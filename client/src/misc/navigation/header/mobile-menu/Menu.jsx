@@ -9,9 +9,12 @@ const menu = (props) => {
 
   // Boolean to check wheter the menu is displayed or not
   const [open, setOpen] = useState(false);
-
-  if (props.variant === 'full') {
-    return (
+  return (props.variant === 'reduced')
+    ? (
+      <div className={['mobile-menu', props.color].join(' ')}>
+        <Link to="/" className="menu-logo reduced-logo"><Logo variant={props.variant} /></Link>
+      </div>
+    ) : (
       <nav className={['mobile-menu', props.color].join(' ')}>
         <Link to="/" className="menu-logo"><Logo variant={props.variant} /></Link>
         <div className="mobile-menu-burger" onClick={() => setOpen(!open)} role="presentation">
@@ -30,7 +33,7 @@ const menu = (props) => {
                 <span className="separator" />
                 {(!props.user.id)
                   ? <Link to="/login" className="mobile-menu-item mobile-menu-login">LOG IN</Link>
-                  : <Link to="/profile" className="mobile-menu-item">PROFILE</Link>}
+                  : <Link to="/profile" className="mobile-menu-item mobile-menu-profile">PROFILE</Link>}
                 {(!props.user.id)
                   ? <Link to="/signup" className="mobile-menu-item mobile-menu-signup">SIGN UP</Link>
                   : <Link to="/logout" className="mobile-menu-item mobile-menu-logout">LOG OUT</Link>}
@@ -39,15 +42,6 @@ const menu = (props) => {
           ) : null}
       </nav>
     );
-  }
-  if (props.variant === 'reduced') {
-    return (
-      <div className={['mobile-menu', props.color].join(' ')}>
-        <Link to="/" className="menu-logo reduced-logo"><Logo variant={props.variant} /></Link>
-      </div>
-    );
-  }
-  return null;
 };
 
 menu.propTypes = {

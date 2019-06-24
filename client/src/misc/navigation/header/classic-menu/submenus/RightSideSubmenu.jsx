@@ -13,7 +13,7 @@ const rightSideSubmenu = (props) => {
     </div>
   ) : (
     <div className={['menu-right', props.color].join(' ')}>
-      <Link to="/profile" className={['menu-item'].concat((props.location === '#/profile') ? 'active' : '').join(' ')}>PROFILE</Link>
+      <Link to="/profile" className={['menu-item', 'menu-profile'].concat((props.location === '#/profile') ? 'active' : '').join(' ')}>PROFILE</Link>
       <Link to="/logout" className="menu-logout">LOG OUT</Link>
     </div>
   );

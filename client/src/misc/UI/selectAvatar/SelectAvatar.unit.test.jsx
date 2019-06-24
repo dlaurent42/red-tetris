@@ -29,4 +29,5 @@ describe('<SelectAvatar /> - allow user to select an avatar from selection', () 
     wrapper.find(ListItem).first().simulate('click');
     expect(mockFn).toHaveBeenCalled();
   });
+
 });

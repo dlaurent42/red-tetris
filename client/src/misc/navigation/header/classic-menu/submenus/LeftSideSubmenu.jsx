@@ -4,26 +4,21 @@ import PropTypes from 'prop-types';
 import Logo from '../../../logo/Logo';
 import './LeftSideSubmenu.scss';
 
-const leftSideSubmenu = (props) => {
-  if (props.variant === 'full') {
-    return (
+const leftSideSubmenu = props => (
+  (props.variant === 'reduced')
+    ? (
+      <div className={['menu-left', props.color].join(' ')}>
+        <Link to="/" className="menu-logo reduced-logo"><Logo variant={props.variant} /></Link>
+      </div>
+    ) : (
       <div className={['menu-left', props.color].join(' ')}>
         <Link to="/" className="menu-logo"><Logo variant={props.variant} /></Link>
         <Link to="/tournaments" className={['menu-item'].concat((props.location === '#/tournaments') ? 'active' : '').join(' ')}>TOURNAMENTS</Link>
         <Link to="/leaderboard" className={['menu-item'].concat((props.location === '#/leaderboard') ? 'active' : '').join(' ')}>LEADERBOARD</Link>
         <Link to="/about" className={['menu-item'].concat((props.location === '#/about') ? 'active' : '').join(' ')}>ABOUT US</Link>
       </div>
-    );
-  }
-  if (props.variant === 'reduced') {
-    return (
-      <div className={['menu-left', props.color].join(' ')}>
-        <Link to="/" className="menu-logo reduced-logo"><Logo variant={props.variant} /></Link>
-      </div>
-    );
-  }
-  return null;
-};
+    )
+);
 
 leftSideSubmenu.propTypes = {
   color: PropTypes.string,

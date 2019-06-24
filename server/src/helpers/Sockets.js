@@ -47,6 +47,8 @@ class Sockets {
   listenToEvents() {
     this.io.sockets.on('connection', (socket) => {
 
+      console.log('new connection ', socket.id);
+
       socket.on(SOCKETS.TOURNAMENTS_LIST, (payload, callback) => {
         callback({ tournaments: this.lobbies.getFormatedLobbies() });
       });
@@ -208,8 +210,25 @@ class Sockets {
         });
       });
 
-      socket.on('disconnect', () => {
+      socket.on(SOCKETS.JEST_NOTIFY_ROOM_CREATED, (data) => {
+        console.log('JEST_NOTIFY_ROOM_CREATED received.');
+        socket.emit(SOCKETS.NOTIFY_ROOM_CREATED, data);
+      });
+      socket.on(SOCKETS.JEST_NOTIFY_ROOM_NOT_CREATED, (data) => {
+        console.log('JEST_NOTIFY_ROOM_NOT_CREATED received.');
+        socket.emit(SOCKETS.NOTIFY_ROOM_NOT_CREATED, data);
+      });
+      socket.on(SOCKETS.JEST_NOTIFY_PLAYER_LEFT_GAME, (data) => {
+        console.log('JEST_NOTIFY_PLAYER_LEFT_GAME received.');
+        socket.emit(SOCKETS.NOTIFY_PLAYER_LEFT_GAME, data);
+      });
+      socket.on(SOCKETS.JEST_NOTIFY_PLAYER_ENTERS_GAME, (data) => {
+        console.log('JEST_NOTIFY_PLAYER_ENTERS_GAME received.');
+        socket.emit(SOCKETS.NOTIFY_PLAYER_ENTERS_GAME, data);
+      });
 
+      socket.on('disconnect', () => {
+        console.log('Socket disconnected', socket.id);
         // Delete player from any lobby
         const { lobby, player } = this.lobbies.deletePlayerFromAnyLobby(socket.id);
         if (lobby) this.handlePlayerLeft(lobby, player, socket);
