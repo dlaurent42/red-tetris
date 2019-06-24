@@ -20,7 +20,7 @@ describe('GET /user/login', () => {
   const password = 'superStrongPassword123!@#';
 
   beforeAll(() => {
-    mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}`);
+    mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}_mock`, DATABASE.OPTIONS);
   });
   beforeEach(() => {
     user = new User({

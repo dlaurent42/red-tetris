@@ -13,7 +13,7 @@ describe('Testing User helper', () => {
   const password = 'superStrongPassword123!@#';
 
   beforeAll(() => {
-    mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}`);
+    mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}_mock`, DATABASE.OPTIONS);
   });
   beforeEach(async () => {
     userDb = new User({

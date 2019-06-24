@@ -22,7 +22,7 @@ describe('DELETE /user/:id', () => {
   const password = 'superStrongPassword123!@#';
 
   beforeAll(() => {
-    mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}`);
+    mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}_mock`, DATABASE.OPTIONS);
   });
   beforeEach(async () => {
     user = new User({

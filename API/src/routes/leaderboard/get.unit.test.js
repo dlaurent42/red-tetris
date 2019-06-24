@@ -18,7 +18,7 @@ const init = () => {
 describe('GET /leaderboard', () => {
 
   beforeAll(() => {
-    mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}`);
+    mongoose.connect(`mongodb://${DATABASE.HOST}:${DATABASE.PORT}/${DATABASE.NAME}_mock`, DATABASE.OPTIONS);
   });
   afterAll((done) => {
     mongoose.disconnect(done);
