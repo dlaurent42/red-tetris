@@ -7,7 +7,7 @@ import { DATABASE } from '../config/config';
 
 import { random, hash } from '../utils';
 
-describe('Testin User helper', () => {
+describe('Testing User helper', () => {
   let userDb;
   const salt = random(255);
   const password = 'superStrongPassword123!@#';
