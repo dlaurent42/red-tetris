@@ -21,7 +21,6 @@ const DATABASE = {
 const MAIL = {
   USER: process.env.MAIL_USER,
   PASS: process.env.MAIL_PASS,
-  ADMIN: process.env.MAIL_ADMIN || '',
 };
 
 // To implement | Whitelist works.
