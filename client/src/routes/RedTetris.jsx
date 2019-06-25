@@ -6,7 +6,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 import { GooSpinner } from 'react-spinners-kit';
 import { API_CALLS } from '../config/constants';
-import { userUpdate } from '../store/actions';
+import { userUpdate, userDelete } from '../store/actions';
 import './RedTetris.scss';
 
 const Homepage = lazy(() => import('./homepage/Homepage'));
@@ -35,8 +35,11 @@ const redTetris = (props) => {
 
     // Make API call
     axios.get(`${API_CALLS.GET_USER}/${props.user.id}`, API_CALLS.CONFIG)
-      .then(res => ((res.data.success) ? props.onUserUpdate(res.data.user) : null))
-      .catch(() => {});
+      .then((res) => {
+        if (res.data.success) props.onUserUpdate(res.data.user);
+        else props.onUserDelete(props.user);
+      })
+      .catch(() => props.onUserDelete(props.user));
   }, []);
 
   return (
@@ -89,6 +92,7 @@ const redTetris = (props) => {
 redTetris.propTypes = {
   user: PropTypes.objectOf(PropTypes.any).isRequired,
   onUserUpdate: PropTypes.func.isRequired,
+  onUserDelete: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -97,6 +101,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onUserUpdate: user => dispatch(userUpdate(user)),
+  onUserDelete: user => dispatch(userDelete(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(redTetris);
