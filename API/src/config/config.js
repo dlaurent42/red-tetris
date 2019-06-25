@@ -11,8 +11,8 @@ const SERVER = {
 };
 
 const ECOSYSTEM = {
-  SOCKET: process.env.SOCKET_SERVER || '127.0.0.1:3000',
-  CLIENT: process.env.CLIENT_SERVER || '127.0.0.1:8080',
+  SOCKET: process.env.SOCKET_SERVER || 'http://localhost:3000',
+  CLIENT: process.env.CLIENT_SERVER || 'http://localhost:8080',
 };
 
 const DATABASE = {
@@ -33,7 +33,6 @@ const MAIL = {
   PASS: process.env.MAIL_PASS,
 };
 
-// To implement | Whitelist works.
 const corsWhiteList = [ECOSYSTEM.SOCKET, ECOSYSTEM.CLIENT];
 const CORS = {
   origin: (origin, callback) => {
