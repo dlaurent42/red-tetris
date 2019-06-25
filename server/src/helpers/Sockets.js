@@ -45,6 +45,7 @@ class Sockets {
   }
 
   listenToEvents() {
+
     this.io.sockets.on('connection', (socket) => {
 
       socket.on(SOCKETS.TOURNAMENTS_LIST, (payload, callback) => {
@@ -77,6 +78,9 @@ class Sockets {
 
         // Update lobby
         const lobby = this.lobbies.setLobby(payload);
+
+        // Check if update worked
+        if (!lobby) return;
 
         // If update went well, update client's info
         this.broadcastTournamentsList(socket);
