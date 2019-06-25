@@ -7,6 +7,7 @@
     "start": "nodemon -r esm src/index.js",
     "lint": "eslint \"**/*.js\"",
     "test": "jest",
+    "test-coverage": "jest --coverage --watchAll",
     "dev": "NODE_ENV=development nodemon -r esm src/index.js",
     "prod": "NODE_ENV=production nodemon -r esm src/index.js"
   },
@@ -17,23 +18,53 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/preset-env": "^7.4.5",
     "ajv-keywords": "^3.4.0",
+    "ava": "^2.1.0",
+    "babel-jest": "^24.8.0",
+    "babel-preset-env": "^1.7.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "jest": "^24.8.0",
     "lodash": "^4.17.11",
+    "mock-socket": "^8.0.5",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "path": "^0.12.7",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-node": "^9.1.0",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^24.8.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/helpers/**/*.{js,jsx}"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx}"
+    ],
+    "coverageReporters": [
+      "html"
+    ],
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ]
   }
 }

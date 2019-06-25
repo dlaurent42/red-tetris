@@ -30,9 +30,7 @@ class Games {
 
   // Method used to verify wheter a lobby exists and to return it
   getInfos(data) {
-    return this.getLobby(data)
-      ? find(this.lobbies, { name: data.name })
-      : undefined;
+    return find(this.lobbies, { name: get(data, 'name') });
   }
 
   // Method used to find a user in a lobby based on its socket id
@@ -47,10 +45,7 @@ class Games {
     const lobby = new Game(data);
 
     // Verify that key is uniq
-    if (countBy(this.lobbies, { id: lobby.id }).true > 0) {
-      process.stderr.write('Duplicate ID in lobby creation\n');
-      return undefined;
-    }
+    if (countBy(this.lobbies, { id: lobby.id }).true > 0) return undefined;
 
     // Add the lobby to lobbies
     this.lobbies.push(lobby);
@@ -169,10 +164,15 @@ class Games {
       return { lobby, player };
     }
 
-    // If player is already in lobby, update it
-    const player = findIndex(lobby.players, { socketId, id: data.user.id })
-      || findIndex(lobby.players, { socketId });
-    if (player.role === ROOM_ROLES.SPECTATOR) player.role = ROOM_ROLES.PLAYER;
+    // If player is already in lobby, and not already connected and there is place enought
+    // Then make it player
+    const player = find(lobby.players, { socketId, role: ROOM_ROLES.SPECTATOR });
+
+    if (player && get(countBy(lobby.players, { role: ROOM_ROLES.SPECTATOR }), 'false', 0) < lobby.maxPlayers
+    && player.role === ROOM_ROLES.SPECTATOR
+    && (!player.id || get(countBy(lobby.players, { id: player.id }), 'true', 0) === 1)) {
+      player.role = ROOM_ROLES.PLAYER;
+    }
     return { lobby, player };
   }
 
