@@ -21,7 +21,7 @@ export const CONFIG = {
   API: {
     URL: 'http://localhost',
     PORT: '4000',
-    TOKEN: 'abcd',
+    TOKEN: 'QQrJPF8uGYuv87gY6Cjydjgp6n7krs3MGz6TfKdGtTgn4VW2U6DQ79vmDQs3pGaa',
   },
 };
 

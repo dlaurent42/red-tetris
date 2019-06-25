@@ -26,7 +26,7 @@ const ERRORS = {
 };
 
 const TOKENS = {
-  AUTH: 'abcd',
+  AUTH: 'QQrJPF8uGYuv87gY6Cjydjgp6n7krs3MGz6TfKdGtTgn4VW2U6DQ79vmDQs3pGaa',
 };
 
 export {
