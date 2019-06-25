@@ -25,7 +25,7 @@ class Mail {
       from: this.user,
       to: user.email,
       subject: 'Welcome to Red-Tetris',
-      text: `We glad you registered player ${user.username}. Let the fights begin!`,
+      text: `Hello ${user.username},\n\nWe gladly you registered. You can now save your progress and modify you account information.\n\nLet the fights begin!`,
     };
     return this.send(options);
   }
