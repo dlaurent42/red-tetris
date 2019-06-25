@@ -33,17 +33,19 @@ const createRoom = (props) => {
 
   const handleFormChange = field => event => setForm({ ...form, [field]: event.target.value });
   const validateForm = () => {
-    setFormErrors({
+
+    const errors = {
       name: !(REGEX.ROOM_NAME.test(form.name)),
       maxPlayers: form.maxPlayers !== 1 && form.maxPlayers !== 2,
       mode: !GAME_MODES.includes(form.mode),
-      password: form.password.length > 0 && !REGEX.ROOM_PWD.test(form.password),
-    });
-    if ([(!(REGEX.ROOM_NAME.test(form.name))),
-      (form.maxPlayers !== 1 && form.maxPlayers !== 2),
-      (!GAME_MODES.includes(form.mode)),
-      (form.password.length > 0 && !REGEX.ROOM_PWD.test(form.password)),
-    ].includes(true)) return;
+      password: form.password.length > 64,
+    };
+
+    if (Object.values(errors).includes(true)) {
+      setFormErrors(errors);
+      return;
+    }
+
     const id = generateId(64);
     props.history.push({
       pathname: `/${id}[${props.user.username}]`,
