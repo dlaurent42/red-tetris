@@ -1,9 +1,9 @@
-const io = require('socket.io-client');
-const http = require('http');
-const Sockets = require('./Sockets');
-const Game = require('./Game');
-const Player = require('./Player');
-const { SOCKETS, ROOM_ROLES } = require('../config/constants');
+import io from 'socket.io-client';
+import http from 'http';
+import Sockets from './Sockets';
+import Game from './Game';
+import Player from './Player';
+import { SOCKETS, ROOM_ROLES } from '../config/constants';
 
 let clientSocket;
 let httpServer;

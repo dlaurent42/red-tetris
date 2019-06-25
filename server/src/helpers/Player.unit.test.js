@@ -1,5 +1,5 @@
-const Player = require('./Player');
-const { ROOM_ROLES } = require('../config/constants');
+import Player from './Player';
+import { ROOM_ROLES } from '../config/constants';
 
 describe('Player class is used to represent a player, a room owner or a spectator', () => {
 

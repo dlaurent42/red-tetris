@@ -1,4 +1,4 @@
-const { PIECES, COLORS } = require('../config/constants');
+import { PIECES, COLORS } from '../config/constants';
 
 class Piece {
   constructor() {
@@ -9,4 +9,4 @@ class Piece {
   }
 }
 
-module.exports = Piece;
+export default Piece;

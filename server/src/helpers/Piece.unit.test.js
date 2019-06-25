@@ -1,4 +1,4 @@
-const Piece = require('./Piece');
+import Piece from './Piece';
 
 describe('Piece class is used to represent a piece generated randomly', () => {
 

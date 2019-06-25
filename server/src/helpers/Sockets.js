@@ -1,7 +1,7 @@
-const socketIO = require('socket.io');
-const { get, countBy } = require('lodash');
-const Games = require('./Games');
-const { SOCKETS, ROOM_ROLES } = require('../config/constants');
+import socketIO from 'socket.io';
+import { get, countBy } from 'lodash';
+import Games from './Games';
+import { SOCKETS, ROOM_ROLES } from '../config/constants';
 
 class Sockets {
 
@@ -223,4 +223,4 @@ class Sockets {
   }
 }
 
-module.exports = Sockets;
+export default Sockets;

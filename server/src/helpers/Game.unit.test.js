@@ -1,5 +1,5 @@
-const Game = require('./Game');
-const { GAME_MODES } = require('../config/constants');
+import Game from './Game';
+import { GAME_MODES } from '../config/constants';
 
 describe('Game class is used to represent a piece generated randomly', () => {
 

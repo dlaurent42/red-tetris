@@ -1,5 +1,5 @@
-const { countBy } = require('lodash');
-const { GAME_MODES, ROOM_ROLES } = require('../config/constants');
+import { countBy } from 'lodash';
+import { GAME_MODES, ROOM_ROLES } from '../config/constants';
 
 const generateID = (length) => {
   let result = '';
@@ -56,4 +56,4 @@ class Game {
   }
 }
 
-module.exports = Game;
+export default Game;

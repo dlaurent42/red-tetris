@@ -1,4 +1,4 @@
-const { ROOM_ROLES } = require('../config/constants');
+import { ROOM_ROLES } from '../config/constants';
 
 class Player {
   constructor(props) {
@@ -27,4 +27,4 @@ class Player {
   }
 }
 
-module.exports = Player;
+export default Player;

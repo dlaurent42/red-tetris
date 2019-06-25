@@ -1,13 +1,13 @@
-const {
+import {
   get,
   find,
   findIndex,
   countBy,
-} = require('lodash');
-const { ROOM_ROLES } = require('../config/constants');
-const Player = require('./Player');
-const Game = require('./Game');
-const Piece = require('./Piece');
+} from 'lodash';
+import { ROOM_ROLES } from '../config/constants';
+import Player from './Player';
+import Game from './Game';
+import Piece from './Piece';
 
 class Games {
 
@@ -215,4 +215,4 @@ class Games {
 
 }
 
-module.exports = Games;
+export default Games;

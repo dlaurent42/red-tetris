@@ -1,7 +1,7 @@
-const http = require('http');
-const express = require('express');
-const Sockets = require('./helpers/Sockets');
-const { SERVER } = require('./config/constants');
+import http from 'http';
+import express from 'express';
+import Sockets from './helpers/Sockets';
+import { SERVER } from './config/constants';
 
 class Server {
   constructor() {

@@ -173,7 +173,7 @@ const PIECES = [
   },
 ];
 
-module.exports = {
+export {
   SERVER,
   SOCKETS,
   COLORS,

@@ -1,7 +1,7 @@
-const Game = require('./Game');
-const Games = require('./Games');
-const Player = require('./Player');
-const { ROOM_ROLES } = require('../config/constants');
+import Game from './Game';
+import Games from './Games';
+import Player from './Player';
+import { ROOM_ROLES } from '../config/constants';
 
 describe('Games class contains all logic relative to tetris game', () => {
 
