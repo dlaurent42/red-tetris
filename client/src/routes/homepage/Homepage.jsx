@@ -73,7 +73,7 @@ const home = () => {
             title="API"
             content="Homines enim eruditos et sobrios ut infaustos et inutiles vitant, eo quoque accedente quod et nomenclatores adsueti haec et talia venditare, mercede accepta lucris quosdam et prandiis inserunt subditicios ignobiles et obscuros."
             image={require('../../assets/backgrounds/ace-blur-card-game-1796794.jpg') /* eslint-disable-line */}
-            onClick={() => window.open('https://www.google.com/')}
+            onClick={() => window.open('https://documenter.getpostman.com/view/5992585/S1a1bUzL?version=latest')}
           />
         </div>
       </div>
