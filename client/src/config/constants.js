@@ -16,7 +16,7 @@ export const DEFAULT = {
 export const CONFIG = {
   SERVER: {
     URL: 'http://localhost',
-    PORT: '8080',
+    PORT: '3000',
   },
   API: {
     URL: 'http://localhost',
