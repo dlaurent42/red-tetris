@@ -10,7 +10,7 @@ export const DEFAULT = {
   AVATAR: 'man.png',
   USERNAME: 'unknown-user',
   ERROR_MESSAGE: 'An error occured.',
-  REDIRECT_RECOVER_PWD: 'http://localhost:3000/#/recover-password',
+  REDIRECT_RECOVER_PWD: 'http://localhost:8080/#/recover-password',
 };
 
 export const CONFIG = {

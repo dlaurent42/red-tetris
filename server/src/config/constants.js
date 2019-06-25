@@ -1,6 +1,6 @@
 const SERVER = {
   HOST: 'localhost',
-  PORT: 8080,
+  PORT: 3000,
 };
 
 const SOCKETS = {
