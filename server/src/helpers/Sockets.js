@@ -55,7 +55,7 @@ class Sockets {
       socket.on(SOCKETS.ROOM_INFOS, (payload, callback) => {
 
         // Fetch lobby based on information received
-        let lobby = this.lobbies.getInfos(payload);
+        let lobby = this.lobbies.getLobby(payload);
 
         // If lobby could not be found, create it
         if (lobby === undefined) {

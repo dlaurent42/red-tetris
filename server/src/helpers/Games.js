@@ -1,7 +1,6 @@
 import {
   get,
   find,
-  findIndex,
   countBy,
 } from 'lodash';
 import { ROOM_ROLES } from '../config/constants';
@@ -154,11 +153,11 @@ class Games {
     if (!lobby) return { lobby, player: undefined };
 
     // Check if player is already in room
-    const playerIndex = findIndex(lobby.players, { socketId, id: data.user.id })
-      || findIndex(lobby.players, { socketId });
+    const playerIndex = find(lobby.players, { socketId, id: data.user.id })
+      || find(lobby.players, { socketId });
 
     // If player is not already in lobby, insert it
-    if (playerIndex === -1) {
+    if (playerIndex === undefined) {
       const player = new Player({ ...data.user, socketId });
       if (player) lobby.players.push(player);
       return { lobby, player };
@@ -173,6 +172,7 @@ class Games {
     && (!player.id || get(countBy(lobby.players, { id: player.id }), 'true', 0) === 1)) {
       player.role = ROOM_ROLES.PLAYER;
     }
+
     return { lobby, player };
   }
 
