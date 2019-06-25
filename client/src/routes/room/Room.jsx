@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { find } from 'lodash';
 import Paper from '@material-ui/core/Paper';
 import Header from '../../misc/navigation/header/Header';
 import EnteringLobby from './entering-lobby/EnteringLobby';
@@ -80,7 +81,10 @@ const room = (props) => {
     setRoomInfos(data.lobby);
   };
   const handleGameOver = data => setRoomInfos(data);
-  const handleRoomUpdate = data => setRoomInfos(data);
+  const handleRoomUpdate = (data) => {
+    setUserInfos(find(data.players, { socketId: props.socket.id }));
+    setRoomInfos(data);
+  };
 
   useEffect(() => {
     props.socket.on(SOCKETS.GAME_STARTS, handleGameStarts);

@@ -39,6 +39,9 @@ const exitingLobby = (props) => {
   // On component will mount call api to update scores
   useEffect(() => {
 
+    // Update only if current is first in players list
+    if (props.roomInfos.players[0].socketId !== props.socket.id) return;
+
     // Remember max score
     const maxScore = max(props.roomInfos.scores.map(el => el.score));
 
