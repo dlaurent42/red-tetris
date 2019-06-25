@@ -10,6 +10,11 @@ const SERVER = {
   PORT: '4000',
 };
 
+const ECOSYSTEM = {
+  SOCKET: process.env.SOCKET_SERVER || '127.0.0.1:3000',
+  CLIENT: process.env.CLIENT_SERVER || '127.0.0.1:8080',
+};
+
 const DATABASE = {
   HOST: process.env.DATABASE_HOST || '127.0.0.1',
   PORT: process.env.DATABASE_PORT || '27017',
@@ -29,8 +34,12 @@ const MAIL = {
 };
 
 // To implement | Whitelist works.
+const corsWhiteList = [ECOSYSTEM.SOCKET, ECOSYSTEM.CLIENT];
 const CORS = {
-  origin: 'localhost',
+  origin: (origin, callback) => {
+    if (corsWhiteList.indexOf(origin) !== -1) callback(null, true);
+    else callback(new Error('CORS indentification error!'));
+  },
 };
 
 export {
