@@ -3,8 +3,10 @@
     "airbnb-base"
   ],
   "env": {
+    "browser": true,
     "node": true,
-    "jest": true
+    "jest": true,
+    "es6": true
   },
   "parserOptions": {
     "sourceType": "module",

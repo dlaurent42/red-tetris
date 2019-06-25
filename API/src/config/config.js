@@ -16,12 +16,16 @@ const DATABASE = {
   NAME: process.env.DATABASE_NAME || 'red-tetris',
   USER: process.env.DATABASE_USER,
   PASS: process.env.DATABASE_PASS,
+  OPTIONS: {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  },
 };
 
 const MAIL = {
   USER: process.env.MAIL_USER,
   PASS: process.env.MAIL_PASS,
-  ADMIN: process.env.MAIL_ADMIN || '',
 };
 
 // To implement | Whitelist works.
