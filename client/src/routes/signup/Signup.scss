@@ -28,7 +28,11 @@
 
       & .input { width: 300px; }
       & .button { margin: 45px 0; opacity: .85 }
-
+      & .signup-error {
+        color: $red;
+        position: relative;
+        top: -30px;
+      }
       & .signup-link {
         @include link;
         &:link, &:visited, &:active { @include link-pseudo-classes; }
@@ -44,8 +48,7 @@
 
   & .signup-background {
     flex: 5;
-    background-image: url('../../assets/backgrounds/arcade01.jpg');
-    background-attachment: fixed;
+    background-image: url('../../assets/backgrounds/signup.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

@@ -60,19 +60,19 @@ const home = () => {
           <Card
             title="Client"
             content="Et prima post Osdroenam quam, ut dictum est, ab hac descriptione discrevimus, Commagena, nunc Euphratensis, clementer adsurgit, Hierapoli, vetere Nino et Samosata civitatibus amplis inlustris."
-            image={require('../../assets/backgrounds/control-controller-device-687811.jpg') /* eslint-disable-line */}
+            image={require('../../assets/backgrounds/homepage_card_01.png') /* eslint-disable-line */}
             onClick={() => window.open('https://www.google.com/')}
           />
           <Card
             title="Server"
             content="Ego vero sic intellego, Patres conscripti, nos hoc tempore in provinciis decernendis perpetuae pacis habere oportere rationem. Nam quis hoc non sentit omnia alia esse nobis vacua ab omni periculo atque etiam suspicione belli?"
-            image={require('../../assets/backgrounds/battle-black-and-white-blur-131616.jpg') /* eslint-disable-line */}
+            image={require('../../assets/backgrounds/homepage_card_02.png') /* eslint-disable-line */}
             onClick={() => window.open('https://www.google.com/')}
           />
           <Card
             title="API"
             content="Homines enim eruditos et sobrios ut infaustos et inutiles vitant, eo quoque accedente quod et nomenclatores adsueti haec et talia venditare, mercede accepta lucris quosdam et prandiis inserunt subditicios ignobiles et obscuros."
-            image={require('../../assets/backgrounds/ace-blur-card-game-1796794.jpg') /* eslint-disable-line */}
+            image={require('../../assets/backgrounds/homepage_card_03.png') /* eslint-disable-line */}
             onClick={() => window.open('https://documenter.getpostman.com/view/5992585/S1a1bUzL?version=latest')}
           />
         </div>

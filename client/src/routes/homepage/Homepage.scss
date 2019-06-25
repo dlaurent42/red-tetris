@@ -8,14 +8,14 @@
   display: flex;
   flex-direction: column;
   & .home-bg {
-    background-image: url('../../assets/backgrounds/arcade03.jpg');
+    background-image: url('../../assets/backgrounds/homepage_blur.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     width: 100vw;
     height: 100vh;
     transition: .5s;
-    filter: grayscale(80%) blur(4px);
+    filter: grayscale(80%);
   }
   & .home-bg-layer {
     @include abs-full-screen;

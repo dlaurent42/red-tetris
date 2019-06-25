@@ -15,7 +15,7 @@ const cardScores = props => (
   <Card className="leaderboard-card">
     <CardMedia
       className="leaderboard-cover"
-      image={require('../../assets/backgrounds/launchboxarcade.png') /* eslint-disable-line */}
+      image={require('../../assets/backgrounds/leaderboard_01.png') /* eslint-disable-line */}
       title="scores"
     />
     <List className="leaderboard-list">

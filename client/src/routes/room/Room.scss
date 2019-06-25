@@ -83,7 +83,7 @@
           & .current-player-ready,
           & .other-player-ready  {
             cursor: default;
-            color: #0F9D58;
+            color: $green;
             border: 1px solid transparent;
             &:hover { cursor: default;}
           }
@@ -92,9 +92,9 @@
             font-size: 14px;
             color: rgba($secondary-color, .5);
             background: white;
-            & .lobby-icon.crown { color: #F4B400; }
-            & .lobby-icon.gamepad { color: #4285F4; }
-            & .lobby-icon.times-circle { color: #DB4437; }
+            & .lobby-icon.crown { color: $yellow; }
+            & .lobby-icon.gamepad { color: $blue; }
+            & .lobby-icon.times-circle { color: $red; }
           }
         }
 
@@ -208,9 +208,9 @@
             font-size: 14px;
             color: rgba($secondary-color, .5);
             background: white;
-            & .lobby-icon.crown { color: #F4B400; }
-            & .lobby-icon.gamepad { color: #4285F4; }
-            & .lobby-icon.times-circle { color: #DB4437; }
+            & .lobby-icon.crown { color: $yellow; }
+            & .lobby-icon.gamepad { color: $blue; }
+            & .lobby-icon.times-circle { color: $red; }
           }
         }
       }
@@ -283,10 +283,10 @@
             height: auto;
             border-radius: 5px;
             &.black { background-color: rgba($secondary-color, .7); }
-            &.blue { background-color: #4285F4; }
-            &.green { background-color: #0F9D58; }
-            &.yellow { background-color: #F4B400; }
-            &.red { background-color: #DB4437; }
+            &.blue { background-color: $blue; }
+            &.green { background-color: $green; }
+            &.yellow { background-color: $yellow; }
+            &.red { background-color: $red; }
             &:before {
               content:'';
               float:left;
@@ -318,9 +318,9 @@
               font-size: 14px;
               color: rgba($secondary-color, .5);
               background: white;
-              & .lobby-icon.crown { color: #F4B400; }
-              & .lobby-icon.gamepad { color: #4285F4; }
-              & .lobby-icon.times-circle { color: #DB4437; }
+              & .lobby-icon.crown { color: $yellow; }
+              & .lobby-icon.gamepad { color: $blue; }
+              & .lobby-icon.times-circle { color: $red; }
             }
           }
         }
@@ -346,10 +346,10 @@
                 flex: 1 0 auto;
                 height: auto;
                 border-radius: 3px;
-                &.blue { background-color: #4285F4; }
-                &.green { background-color: #0F9D58; }
-                &.yellow { background-color: #F4B400; }
-                &.red { background-color: #DB4437; }
+                &.blue { background-color: $blue; }
+                &.green { background-color: $green; }
+                &.yellow { background-color: $yellow; }
+                &.red { background-color: $red; }
                 &:before {
                   content:'';
                   float:left;
@@ -385,7 +385,7 @@
         flex: 1 0 auto;
         height: auto;
         border-radius: 3px;
-        &.grid-cell-filled { background-color: #4285F4; }
+        &.grid-cell-filled { background-color: $blue; }
         &:before {
           content:'';
           float:left;
@@ -419,9 +419,9 @@
       transform: translate(50%, 120%);
       font-size: 14px;
       background: white;
-      & .lobby-icon.crown { color: #F4B400; }
-      & .lobby-icon.gamepad { color: #4285F4; }
-      & .lobby-icon.times-circle { color: #DB4437; }
+      & .lobby-icon.crown { color: $yellow; }
+      & .lobby-icon.gamepad { color: $blue; }
+      & .lobby-icon.times-circle { color: $red; }
     }
   }
 

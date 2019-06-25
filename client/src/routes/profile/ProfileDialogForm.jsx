@@ -11,11 +11,12 @@ import { REGEX } from '../../config/constants';
 
 const profileDialogForm = (props) => {
 
+  const initialValue = props.textFieldValue;
   const [value, setValue] = useState(props.textFieldValue);
   const [isValid, setIsValid] = useState(false);
 
   const onChange = (e) => {
-    setIsValid((props.textFieldLabel === 'username' && REGEX.USERNAME.test(e.target.value))
+    setIsValid((props.textFieldLabel === 'username' && REGEX.USERNAME.test(e.target.value) && e.target.value !== initialValue)
       || (props.textFieldLabel === 'password' && REGEX.PASSWORD.test(e.target.value)));
     setValue(e.target.value);
   };

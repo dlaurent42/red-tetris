@@ -34,7 +34,7 @@ const cardGamesPlayed = props => (
     </List>
     <CardMedia
       className="leaderboard-cover"
-      image={require('../../assets/backgrounds/738909504.jpg') /* eslint-disable-line */}
+      image={require('../../assets/backgrounds/leaderboard_02.png') /* eslint-disable-line */}
       title="games"
     />
   </Card>

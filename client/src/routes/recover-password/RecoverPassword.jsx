@@ -58,11 +58,11 @@ const recoverPassword = (props) => {
               onChange={handleValueChange('email')}
               margin="normal"
             />
+            <Button disabled={Object.values(errors).includes(true) || errors.recoverPassword} variant="contained" className="button" onClick={validateForm}>Validate</Button>
             {(errors.recoverPassword)
               ? <div className="recover-password-error">{typeof errors.recoverPassword === 'string' ? errors.recoverPassword : DEFAULT.ERROR_MESSAGE}</div>
               : null}
             {(message) ? <div className="recover-password-message">{message}</div> : null}
-            <Button disabled={Object.values(errors).includes(true) || errors.recoverPassword} variant="contained" className="button" onClick={validateForm}>Validate</Button>
             <Link className="recover-password-link" to="/signup">Don&#39;t have account?</Link>
             <Link className="recover-password-link" to="/login">Remember password?</Link>
           </form>
