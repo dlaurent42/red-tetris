@@ -55,7 +55,11 @@
   "jest": {
     "testEnvironment": "node",
     "collectCoverageFrom": [
-      "src/**/*.js"
+      "src/**/*.js",
+      "!src/index.js",
+      "!src/utils/index.js",
+      "!src/helpers/index.js",
+      "!src/helpers/Mongo.js"
     ]
   }
 }
