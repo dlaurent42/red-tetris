@@ -17,7 +17,7 @@ class Mail {
   }
 
   send(options) {
-    this.transporter.sendMail(options, err => process.stderr.write(err));
+    this.transporter.sendMail(options, err => process.stderr.write(err.message));
   }
 
   register(user) {
