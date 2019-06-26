@@ -26,7 +26,7 @@ const cardGamesPlayed = props => (
         return (
           <ListItem className="leaderboard-player" key={generateKey(25)} onClick={() => ((user.id) ? props.toggleProfile(user) : null)}>
             <ListItemAvatar>{icon}</ListItemAvatar>
-            <ListItemText primary={user.username} secondary={(user.score === 'N/A') ? user.score : `score: ${user.score}`} />
+            <ListItemText primary={user.username} secondary={(user.score === 'N/A') ? user.score : `games won: ${user.score}`} />
             <ListItemAvatar><Avatar className="leaderboard-avatar" src={require(`../../assets/avatars/${user.avatar}`) /* eslint-disable-line */} alt={user.avatar} /></ListItemAvatar>
           </ListItem>
         );
