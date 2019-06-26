@@ -60,6 +60,9 @@
       "!src/utils/index.js",
       "!src/helpers/index.js",
       "!src/helpers/Mongo.js"
+    ],
+    "coverageReporters": [
+      "html"
     ]
   }
 }
