@@ -161,20 +161,14 @@ class Sockets {
         const lobby = this.lobbies.setPlayerScoring(payload, socket.id);
         if (!lobby) return;
 
-        // Emit for score update
-        socket.emit(SOCKETS.ROOM_UPDATE, lobby);
-        socket.broadcast.emit(SOCKETS.ROOM_UPDATE, lobby);
-
-        // Check if there are more blocked rows
-        if (payload.score - 1 === 0) return;
-
-        lobby.players.forEach(player => (
-          (player.role !== ROOM_ROLES.SPECTATOR && player.socketId !== socket.id)
-            ? this.io.to(player.socketId).emit(SOCKETS.GAME_SCORED, {
-              delta: payload.score - 1,
-              blockedRows: player.blockedRows,
-            }) : null
-        ));
+        lobby.players.forEach((player) => {
+          this.io.to(player.socketId).emit(SOCKETS.ROOM_UPDATE, lobby);
+          if (player.role === ROOM_ROLES.SPECTATOR || player.socketId === socket.id) return;
+          this.io.to(player.socketId).emit(SOCKETS.GAME_SCORED, {
+            delta: payload.score - 1,
+            blockedRows: player.blockedRows,
+          });
+        });
       });
 
       socket.on(SOCKETS.GAME_STARTS, (payload) => {
