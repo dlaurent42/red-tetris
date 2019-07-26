@@ -38,12 +38,12 @@ The goal of this project is to develop a multiplayer tetris game on the network 
 
 ### Homepage
 
-![homepage screenshot](https://github.com/dlaurent42/red-tetris/docs/homepage.png)
+![homepage screenshot](https://github.com/dlaurent42/red-tetris/blob/master/docs/homepage.png)
 
 ### Registration
 
-![registration screenshot](https://github.com/dlaurent42/red-tetris/docs/signup.png)
+![registration screenshot](https://github.com/dlaurent42/red-tetris/blob/master/docs/signup.png)
 
 ### In Game
 
-![in game screenshot](https://github.com/dlaurent42/red-tetris/docs/ingame.png)
+![in game screenshot](https://github.com/dlaurent42/red-tetris/blob/master/docs/ingame.png)
