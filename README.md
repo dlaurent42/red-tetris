@@ -5,17 +5,17 @@
 
 ## Introduction by 42 School
 
-Everyone knows the Tetris Game and everyone knows Javascript, it only  remains to build a Tetris in Javascript.
+Everyone knows the Tetris Game and everyone knows Javascript, it only remains to build a Tetris in Javascript.
 
 Yes, but ...
 
-Your Tetris will be multiplayer and online. It will allow you to disturb intergalactic parties during your long coding nights (There are still some WIFI issues on some planets).
+The Tetris will be multiplayer and online. It will allow you to disturb intergalactic parties during your long coding nights (There are still some WIFI issues on some planets).
 
-Your Tetris will use the latest technologies Javascript which are at the heart of a great intellectual, industrial and financial battle between Facebook and Google whose challenge is to be the master of the world.
+The Tetris will use the latest technologies Javascript which are at the heart of a great intellectual, industrial and financial battle between Facebook and Google whose challenge is to be the master of the world.
 
-Your Tetris will require a lot of brain juice to design the architecture, specify an asynchronous network protocol, implemented in functional  programming, create an algorithm of pieces’ animation and display  everything graphically in HTML!
+The Tetris will require a lot of brain juice to design the architecture, specify an asynchronous network protocol, implemented in functional programming, create an algorithm of pieces’ animation and display everything graphically in HTML!
 
-Good game, good code ... and do not forget to test and retest !!
+Good game, good code ...
 
 ## Objectives
 
